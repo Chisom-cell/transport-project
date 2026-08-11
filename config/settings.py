@@ -133,6 +133,8 @@ AUTH_USER_MODEL = "accounts.User"
 
 
 
+AUTH_USER_MODEL = "accounts.User"
+
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
