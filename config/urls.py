@@ -23,3 +23,4 @@ urlpatterns = [
     # Complaints
     path("complaints/", include("complaints.urls")),
 ]
+

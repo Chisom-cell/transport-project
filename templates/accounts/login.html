@@ -1,0 +1,137 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Abia Transit</title>
+
+    <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+    > 
+</head> 
+ 
+<body> 
+ 
+    <main class="auth-page"> 
+ 
+        <section class="auth-card"> 
+ 
+            <div class="auth-header"> 
+                <h1>Welcome back</h1> 
+                <p>Log in to your Abia Transit account.</p> 
+            </div> 
+ 
+            {% if messages %} 
+                <div class="messages"> 
+                    {% for message in messages %} 
+                        <p>{{ message }}</p> 
+                    {% endfor %} 
+                </div> 
+            {% endif %} 
+ 
+            <form method="POST" class="auth-form"> 
+                {% csrf_token %} 
+ 
+                <div class="form-group"> 
+                    <label for="username">Username</label> 
+ 
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username" 
+                        placeholder="Enter your username" 
+                        required 
+                    > 
+                </div> 
+ 
+                <div class="form-group"> 
+                    <label for="password">Password</label> 
+ 
+                    <div class="password-input"> 
+                        <input 
+                            type="password" 
+                            name="password" 
+                            id="password" 
+                            placeholder="Enter your password" 
+                            required 
+                        > 
+ 
+                        <button 
+                            type="button" 
+                            id="togglePassword" 
+                            aria-label="Show password" 
+                        > 
+                            <i class="fa-solid fa-eye"></i> 
+                        </button> 
+                    </div> 
+                </div> 
+ 
+                <button type="submit" class="auth-button"> 
+                    Log In 
+                </button> 
+ 
+            </form> 
+ 
+            <p class="auth-footer"> 
+                Don't have an account? 
+                <a href="{% url 'accounts:register' %}">Create an account</a>
+            </p> 
+ 
+        </section> 
+ 
+    </main> 
+ 
+    <script> 
+        const passwordInput = document.getElementById("password"); 
+        const togglePassword = document.getElementById("togglePassword"); 
+        const icon = togglePassword.querySelector("i"); 
+ 
+        togglePassword.addEventListener("click", function () { 
+ 
+            if (passwordInput.type === "password") { 
+                passwordInput.type = "text"; 
+ 
+                icon.classList.remove("fa-eye"); 
+                icon.classList.add("fa-eye-slash"); 
+ 
+                togglePassword.setAttribute( 
+                    "aria-label", 
+                    "Hide password" 
+                ); 
+ 
+            } else { 
+                passwordInput.type = "password"; 
+ 
+                icon.classList.remove("fa-eye-slash"); 
+                icon.classList.add("fa-eye"); 
+ 
+                togglePassword.setAttribute( 
+                    "aria-label", 
+                    "Show password" 
+                ); 
+            } 
+ 
+        }); 
+    </script> 
+ 
+</body> 
+</html>      
+
+
+
+
+
+
+
+
+
+
+
+
