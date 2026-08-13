@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+Notifications
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Notification heading -->
+    <h2>
+        Notifications
+        <span class="badge bg-danger">
+            {{ unread_count }}
+        </span>
+    </h2>
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+            <div class="card mb-3">
+                <div class="card-body">
+
+                    <h5>
+                        {{ notification.title }}
+                    </h5>
+
+                    <p>
+                        {{ notification.message }}
+                    </p>
+
+                    <small>
+                        {{ notification.created_at }}
+                    </small>
+
+                    {% if not notification.is_read %}
+                        <a
+                            href="{% url 'notifications:mark_as_read' notification.id %}"
+                            class="btn btn-sm btn-primary"
+                        >
+                            Mark as read
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>You have no notifications.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
