@@ -19,5 +19,5 @@ urlpatterns = [
         views.create_complaint,
         name="create",
     ),
-
+    
 ]

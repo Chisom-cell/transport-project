@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}
+Booking Confirmation
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h2 class="text-success mb-3">
+                        Booking Confirmed
+                    </h2>
+
+                    <p>
+                        Your booking has been successfully created.
+                    </p>
+
+                    <hr>
+
+
+                    <!-- Trip Details -->
+
+                    <h4>
+                        Trip Details
+                    </h4>
+
+                    <p>
+                        <strong>Route:</strong>
+                        {{ booking.trip.route.name }}
+                    </p>
+
+                    <p>
+                        <strong>From:</strong>
+                        {{ booking.boarding_stop.name }}
+                    </p>
+
+                    <p>
+                        <strong>To:</strong>
+                        {{ booking.destination_stop.name }}
+                    </p>
+
+                    <p>
+                        <strong>Departure:</strong>
+                        {{ booking.trip.departure_time }}
+                    </p>
+
+
+                    <hr>
+
+
+                    <!-- Vehicle -->
+
+                    <h4>
+                        Vehicle
+                    </h4>
+
+                    <p>
+                        <strong>Vehicle Code:</strong>
+                        {{ booking.trip.vehicle.vehicle_code }}
+                    </p>
+
+                    <p>
+                        <strong>Vehicle Type:</strong>
+                        {{ booking.trip.vehicle.vehicle_type }}
+                    </p>
+
+
+                    <hr>
+
+
+                    <!-- Booking Status -->
+
+                    <h4>
+                        Booking Status
+                    </h4>
+
+                    {% if booking.status == "CONFIRMED" %}
+
+                        <span class="badge bg-success">
+                            Confirmed
+                        </span>
+
+                    {% elif booking.status == "PENDING" %}
+
+                        <span class="badge bg-warning text-dark">
+                            Pending
+                        </span>
+
+                    {% elif booking.status == "CANCELLED" %}
+
+                        <span class="badge bg-danger">
+                            Cancelled
+                        </span>
+
+                    {% elif booking.status == "COMPLETED" %}
+
+                        <span class="badge bg-secondary">
+                            Completed
+                        </span>
+
+                    {% endif %}
+
+
+                    <hr>
+
+
+                    <p>
+                        <strong>Booking Date:</strong>
+                        {{ booking.created_at }}
+                    </p>
+
+
+                    <div class="mt-4">
+
+                        <a
+                            href="{% url 'my_bookings' %}"
+                            class="btn btn-primary"
+                        >
+                            My Bookings
+                        </a>
+
+                        {% if booking.status == "CONFIRMED" %}
+
+                            <form
+                                method="POST"
+                                action="{% url 'cancel_booking' booking.id %}"
+                                class="d-inline"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger"
+                                >
+                                    Cancel Booking
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

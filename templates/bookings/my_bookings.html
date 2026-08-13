@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Bookings
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2>
+                My Bookings
+            </h2>
+
+            <p class="text-muted">
+                View your current and previous bookings.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if bookings %}
+
+        {% for booking in bookings %}
+
+            <div class="card shadow-sm mb-3">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h5>
+                                {{ booking.trip.route.name }}
+                            </h5>
+
+                            <small class="text-muted">
+                                Booking #{{ booking.id }}
+                            </small>
+
+                        </div>
+
+
+                        <!-- Status -->
+
+                        {% if booking.status == "CONFIRMED" %}
+
+                            <span class="badge bg-success">
+                                Confirmed
+                            </span>
+
+                        {% elif booking.status == "PENDING" %}
+
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+
+                        {% elif booking.status == "CANCELLED" %}
+
+                            <span class="badge bg-danger">
+                                Cancelled
+                            </span>
+
+                        {% elif booking.status == "COMPLETED" %}
+
+                            <span class="badge bg-secondary">
+                                Completed
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <p>
+                        <strong>From:</strong>
+                        {{ booking.boarding_stop.name }}
+                    </p>
+
+                    <p>
+                        <strong>To:</strong>
+                        {{ booking.destination_stop.name }}
+                    </p>
+
+                    <p>
+                        <strong>Departure:</strong>
+                        {{ booking.trip.departure_time }}
+                    </p>
+
+                    <p>
+                        <strong>Vehicle:</strong>
+                        {{ booking.trip.vehicle.vehicle_code }}
+                    </p>
+
+
+                    <p>
+                        <strong>Booked:</strong>
+                        {{ booking.created_at }}
+                    </p>
+
+
+                    <a
+                        href="{% url 'booking_detail' booking.id %}"
+                        class="btn btn-outline-primary"
+                    >
+                        View Booking
+                    </a>
+
+
+                    {% if booking.status == "CONFIRMED" %}
+
+                        {% if booking.trip.status == "SCHEDULED" or booking.trip.status == "BOARDING" %}
+
+                            <form
+                                method="POST"
+                                action="{% url 'cancel_booking' booking.id %}"
+                                class="d-inline"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-danger"
+                                >
+                                    Cancel
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <div class="card shadow-sm">
+
+            <div class="card-body text-center py-5">
+
+                <h4>
+                    No Bookings Yet
+                </h4>
+
+                <p class="text-muted">
+                    You have not made any bookings yet.
+                </p>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
