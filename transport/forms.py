@@ -1,6 +1,8 @@
 from django import forms
 
-from .models import Booking, BusStop
+from bookings.models import Booking
+from transport.models import BusStop
+BusStop
 
 
 class BookingForm(forms.ModelForm):

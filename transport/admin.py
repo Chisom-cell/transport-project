@@ -11,9 +11,7 @@ from .models import (
     RouteStop,
     Vehicle,
     DriverProfile,
-    Trip,
-    Booking,
-    
+    Trip,   
 )
 
 
@@ -116,29 +114,3 @@ class TripAdmin(admin.ModelAdmin):
     ordering = ("-departure_time",)
 
 
-@admin.register(Booking)
-class BookingAdmin(admin.ModelAdmin):
-    list_display = (
-        "booking_reference",
-        "passenger",
-        "trip",
-        "boarding_stop",
-        "destination_stop",
-        "fare",
-        "status",
-        "booked_at",
-    )
-
-    list_filter = (
-        "status",
-        "trip",
-        "booked_at",
-    )
-
-    search_fields = (
-        "booking_reference",
-        "passenger__username",
-        "passenger__email",
-    )
-
-    ordering = ("-booked_at",)
