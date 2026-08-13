@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}
+Book Trip
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h2 class="mb-4">
+                        Book Trip
+                    </h2>
+
+
+                    <!-- Trip Information -->
+
+                    <h4>
+                        {{ trip.route.name }}
+                    </h4>
+
+                    <p>
+                        <strong>From:</strong>
+                        {{ trip.route.origin }}
+                    </p>
+
+                    <p>
+                        <strong>To:</strong>
+                        {{ trip.route.destination }}
+                    </p>
+
+                    <p>
+                        <strong>Departure:</strong>
+                        {{ trip.departure_time }}
+                    </p>
+
+                    <hr>
+
+
+                    <!-- Vehicle Information -->
+
+                    <h5>
+                        Vehicle Information
+                    </h5>
+
+                    <p>
+                        <strong>Vehicle:</strong>
+                        {{ trip.vehicle.vehicle_code }}
+                    </p>
+
+                    <p>
+                        <strong>Capacity:</strong>
+                        {{ trip.vehicle.capacity }}
+                    </p>
+
+                    <p>
+                        <strong>Available Capacity:</strong>
+
+                        {% if available_capacity > 0 %}
+
+                            <span class="badge bg-success">
+                                {{ available_capacity }}
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+                                Full
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+                    <hr>
+
+
+                    {% if error %}
+
+                        <div class="alert alert-danger">
+                            {{ error }}
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if available_capacity > 0 %}
+
+                        <h5 class="mb-3">
+                            Select Your Stops
+                        </h5>
+
+
+                        <!-- IMPORTANT:
+                             This form submits directly to
+                             confirm_booking
+                        -->
+
+                        <form
+                            method="POST"
+                            action="{% url 'confirm_booking' trip.id %}"
+                        >
+
+                            {% csrf_token %}
+
+
+                            <!-- Boarding Stop -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    for="boarding_stop_id"
+                                    class="form-label"
+                                >
+                                    Boarding Stop
+                                </label>
+
+                                <select
+                                    name="boarding_stop_id"
+                                    id="boarding_stop_id"
+                                    class="form-select"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select boarding stop
+                                    </option>
+
+                                    {% for route_stop in route_stops %}
+
+                                        <option
+                                            value="{{ route_stop.bus_stop.id }}"
+                                        >
+                                            {{ route_stop.bus_stop.name }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Destination Stop -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    for="destination_stop_id"
+                                    class="form-label"
+                                >
+                                    Destination Stop
+                                </label>
+
+                                <select
+                                    name="destination_stop_id"
+                                    id="destination_stop_id"
+                                    class="form-select"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select destination stop
+                                    </option>
+
+                                    {% for route_stop in route_stops %}
+
+                                        <option
+                                            value="{{ route_stop.bus_stop.id }}"
+                                        >
+                                            {{ route_stop.bus_stop.name }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Confirm Booking
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <div class="alert alert-danger">
+
+                            This trip is currently full.
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
