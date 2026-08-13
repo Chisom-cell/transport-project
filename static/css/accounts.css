@@ -114,3 +114,68 @@ body {
         font-size: 25px;
     }
 }
+
+
+.password-input {
+    position: relative;
+}
+
+.password-input input {
+    padding-right: 50px;
+}
+
+.password-input button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+}
+
+.form-error {
+    color: #a00000;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.password-input {
+    position: relative;
+    width: 100%;
+}
+
+.password-input input {
+    width: 100%;
+    padding-right: 48px;
+}
+
+.password-input button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border: none;
+    background: transparent;
+
+    cursor: pointer;
+
+    padding: 5px;
+
+    color: #666;
+
+    font-size: 16px;
+}
+
+.password-input button:hover {
+    color: #d62828;
+}
+
+.form-error {
+    color: #a00000;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
