@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Successful | Abia Transit{% endblock %}
+
+{% block content %}
+
+<div class="container" style="padding: 40px 0;">
+
+    <div class="card">
+
+        <h1>Booking Successful! 🎉</h1>
+
+        <p>Your trip has been successfully booked.</p>
+
+        <hr>
+
+        <p>
+            <strong>Booking Reference:</strong>
+            {{ booking.booking_reference }}
+        </p>
+
+        <p>
+            <strong>Route:</strong>
+            {{ booking.trip.route.name }}
+        </p>
+
+        <p>
+            <strong>Boarding:</strong>
+            {{ booking.boarding_stop.name }}
+        </p>
+
+        <p>
+            <strong>Destination:</strong>
+            {{ booking.destination_stop.name }}
+        </p>
+
+        <p>
+            <strong>Fare:</strong>
+            ₦{{ booking.fare }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            {{ booking.status }}
+        </p>
+
+        <a href="/">
+            Back to Abia Transit
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
