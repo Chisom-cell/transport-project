@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Book Trip | Abia Transit{% endblock %}
+
+{% block content %}
+
+<div class="container" style="padding: 40px 0;">
+
+    <div class="card">
+
+        <h1>Book Your Trip</h1>
+
+        <p>
+            <strong>Route:</strong>
+            {{ trip.route.name }}
+        </p>
+
+        <p>
+            <strong>Vehicle:</strong>
+            {{ trip.vehicle.vehicle_code }}
+        </p>
+
+        <p>
+            <strong>Departure:</strong>
+            {{ trip.departure_time }}
+        </p>
+
+        <p>
+            <strong>Available spaces:</strong>
+            {{ trip.available_capacity }}
+        </p>
+
+        {% if trip.available_capacity > 0 %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {{ form.non_field_errors }}
+
+                <div style="margin-bottom: 20px;">
+                    <label for="{{ form.boarding_stop.id_for_label }}">
+                        Boarding Stop
+                    </label>
+
+                    {{ form.boarding_stop }}
+
+                    {{ form.boarding_stop.errors }}
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="{{ form.destination_stop.id_for_label }}">
+                        Destination Stop
+                    </label>
+
+                    {{ form.destination_stop }}
+
+                    {{ form.destination_stop.errors }}
+                </div>
+
+                <button type="submit">
+                    Book Trip
+                </button>
+            </form>
+
+        {% else %}
+
+            <p>
+                This trip is currently full.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
