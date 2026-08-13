@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Trip Details | Abia Transit
+{% endblock %}
+
+{% block content %}
+
+<section class="trip-header">
+
+    <div class="trip-header-content">
+
+        <a
+            href="{% url 'transport:trips' trip.route.id %}"
+            class="back-link"
+        >
+            ← Back to Trips
+        </a>
+
+        <span class="label">
+            TRIP DETAILS
+        </span>
+
+        <h1>
+            {{ trip.route.origin }}
+            <span>→</span>
+            {{ trip.route.destination }}
+        </h1>
+
+        <p>
+            {{ trip.route.name }}
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="trip-content">
+
+    <main>
+
+        <div class="info-card">
+
+            <h2>Journey Information</h2>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+                    <span>Departure</span>
+
+                    <strong>
+                        {{ trip.departure_time|date:"g:i A" }}
+                    </strong>
+
+                    <small>
+                        {{ trip.departure_time|date:"D, d M Y" }}
+                    </small>
+                </div>
+
+
+                <div class="info-item">
+                    <span>Operator</span>
+
+                    <strong>
+                        {{ trip.organization.name }}
+                    </strong>
+                </div>
+
+
+                <div class="info-item">
+                    <span>Vehicle</span>
+
+                    <strong>
+                        {{ trip.vehicle.vehicle_type }}
+                    </strong>
+                </div>
+
+
+                <div class="info-item">
+                    <span>Registration</span>
+
+                    <strong>
+                        {{ trip.vehicle.registration_number }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h2>Capacity</h2>
+
+            <div class="capacity-box">
+
+                <div>
+                    <span>Available spaces</span>
+
+                    <strong>
+                        {{ trip.available_capacity }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Total capacity</span>
+
+                    <strong>
+                        {{ trip.total_capacity }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h2>Trip Status</h2>
+
+            <span class="status">
+                {{ trip.get_status_display }}
+            </span>
+
+        </div>
+
+    </main>
+
+
+    <aside class="booking-card">
+
+        <h2>
+            Ready to travel?
+        </h2>
+
+        <p>
+            Reserve your place on this trip.
+        </p>
+
+
+        {% if trip.available_capacity > 0 %}
+
+            <a
+                href="{% url 'transport:book_trip' trip.id %}"
+                class="book-button"
+            >
+                Book This Trip
+            </a>
+
+        {% else %}
+
+            <div class="full">
+                This trip is full
+            </div>
+
+        {% endif %}
+
+    </aside>
+
+</section>
+
+
+<style>
+
+    .trip-header {
+        background: #c8102e;
+        color: white;
+        padding: 55px 7%;
+    }
+
+    .trip-header-content {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .back-link {
+        display: inline-block;
+        color: white;
+        text-decoration: none;
+        margin-bottom: 25px;
+        font-size: 14px;
+    }
+
+    .label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .trip-header h1 {
+        font-size: 42px;
+        margin-bottom: 8px;
+    }
+
+    .trip-header h1 span {
+        color: #f5c400;
+    }
+
+    .trip-header p {
+        color: #fee2e2;
+    }
+
+    .trip-content {
+        max-width: 1100px;
+        margin: auto;
+        padding: 60px 7%;
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 35px;
+        background: #f8f9fa;
+    }
+
+    .info-card,
+    .booking-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .info-card h2,
+    .booking-card h2 {
+        font-size: 21px;
+        margin-bottom: 25px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+
+    .info-item span,
+    .capacity-box span {
+        display: block;
+        color: #6b7280;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .info-item strong {
+        display: block;
+        font-size: 17px;
+    }
+
+    .info-item small {
+        color: #6b7280;
+    }
+
+    .capacity-box {
+        display: flex;
+        gap: 70px;
+    }
+
+    .capacity-box strong {
+        display: block;
+        font-size: 28px;
+        color: #c8102e;
+    }
+
+    .status {
+        display: inline-block;
+        background: #dcfce7;
+        color: #166534;
+        padding: 7px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .booking-card {
+        height: fit-content;
+    }
+
+    .booking-card p {
+        color: #6b7280;
+        margin-bottom: 25px;
+    }
+
+    .book-button {
+        display: block;
+        text-align: center;
+        background: #c8102e;
+        color: white;
+        text-decoration: none;
+        padding: 14px;
+        border-radius: 7px;
+        font-weight: 600;
+    }
+
+    .book-button:hover {
+        background: #a50d26;
+    }
+
+    .full {
+        background: #e5e7eb;
+        color: #6b7280;
+        padding: 14px;
+        text-align: center;
+        border-radius: 7px;
+        font-weight: 600;
+    }
+
+    @media (max-width: 800px) {
+
+        .trip-content {
+            grid-template-columns: 1fr;
+            padding: 45px 6%;
+        }
+
+        .trip-header {
+            padding: 45px 6%;
+        }
+
+        .trip-header h1 {
+            font-size: 32px;
+        }
+
+    }
+
+    @media (max-width: 500px) {
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .capacity-box {
+            gap: 35px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}

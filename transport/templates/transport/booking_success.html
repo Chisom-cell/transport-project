@@ -1,55 +1,243 @@
 {% extends "base.html" %}
 
-{% block title %}Booking Successful | Abia Transit{% endblock %}
+{% block title %}
+    Booking Confirmed | Abia Transit
+{% endblock %}
 
 {% block content %}
 
-<div class="container" style="padding: 40px 0;">
+<section class="success-page">
 
-    <div class="card">
+    <div class="success-card">
 
-        <h1>Booking Successful! 🎉</h1>
+        <div class="success-icon">
+            ✓
+        </div>
 
-        <p>Your trip has been successfully booked.</p>
+        <span class="success-label">
+            BOOKING CONFIRMED
+        </span>
 
-        <hr>
+        <h1>
+            Your trip is booked!
+        </h1>
 
-        <p>
-            <strong>Booking Reference:</strong>
-            {{ booking.booking_reference }}
+        <p class="intro">
+            Your booking has been successfully created.
+            Keep the details below for your journey.
         </p>
 
-        <p>
-            <strong>Route:</strong>
-            {{ booking.trip.route.name }}
-        </p>
 
-        <p>
-            <strong>Boarding:</strong>
-            {{ booking.boarding_stop.name }}
-        </p>
+        <div class="booking-details">
 
-        <p>
-            <strong>Destination:</strong>
-            {{ booking.destination_stop.name }}
-        </p>
+            <div class="detail">
+                <span>Route</span>
+                <strong>
+                    {{ booking.trip.route.origin }}
+                    →
+                    {{ booking.trip.route.destination }}
+                </strong>
+            </div>
 
-        <p>
-            <strong>Fare:</strong>
-            ₦{{ booking.fare }}
-        </p>
+            <div class="detail">
+                <span>Departure</span>
+                <strong>
+                    {{ booking.trip.departure_time|date:"D, d M Y" }}
+                    ·
+                    {{ booking.trip.departure_time|date:"g:i A" }}
+                </strong>
+            </div>
 
-        <p>
-            <strong>Status:</strong>
-            {{ booking.status }}
-        </p>
+            <div class="detail">
+                <span>Boarding Stop</span>
+                <strong>
+                    {{ booking.boarding_stop.name }}
+                </strong>
+            </div>
 
-        <a href="/">
-            Back to Abia Transit
-        </a>
+            <div class="detail">
+                <span>Destination Stop</span>
+                <strong>
+                    {{ booking.destination_stop.name }}
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Operator</span>
+                <strong>
+                    {{ booking.trip.organization.name }}
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Status</span>
+                <strong class="status">
+                    {{ booking.get_status_display }}
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Booking ID</span>
+                <strong>
+                    #{{ booking.id }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <a
+                href="{% url 'transport:home' %}"
+                class="primary-button"
+            >
+                Back to Home
+            </a>
+
+            <a
+                href="{% url 'bookings:my_bookings' %}"
+                class="secondary-button"
+            >
+                My Bookings
+            </a>
+
+        </div>
 
     </div>
 
-</div>
+</section>
+
+
+<style>
+
+.success-page {
+    min-height: 100vh;
+    background: #f8f9fa;
+    padding: 60px 6%;
+    display: flex;
+    justify-content: center;
+}
+
+.success-card {
+    width: 100%;
+    max-width: 700px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 45px;
+    text-align: center;
+}
+
+.success-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #166534;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    font-weight: 700;
+}
+
+.success-label {
+    color: #166534;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.success-card h1 {
+    font-size: 34px;
+    margin: 10px 0;
+}
+
+.intro {
+    color: #6b7280;
+    margin-bottom: 30px;
+}
+
+.booking-details {
+    text-align: left;
+    border-top: 1px solid #e5e7eb;
+}
+
+.detail {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detail span {
+    color: #6b7280;
+}
+
+.detail strong {
+    text-align: right;
+}
+
+.status {
+    color: #166534;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.primary-button,
+.secondary-button {
+    flex: 1;
+    padding: 13px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.primary-button {
+    background: #c8102e;
+    color: white;
+}
+
+.secondary-button {
+    border: 1px solid #d1d5db;
+    color: #374151;
+}
+
+@media (max-width: 600px) {
+
+    .success-page {
+        padding: 30px 5%;
+    }
+
+    .success-card {
+        padding: 30px 20px;
+    }
+
+    .success-card h1 {
+        font-size: 28px;
+    }
+
+    .detail {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .detail strong {
+        text-align: left;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+}
+
+</style>
 
 {% endblock %}
