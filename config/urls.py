@@ -22,4 +22,5 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("transport/", include("transport.urls")),
     path("notifications/", include("notifications.urls")),
+    path("complaints/",include("complaints.urls")),
 ]
