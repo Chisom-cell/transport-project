@@ -3,13 +3,35 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-
+from datetime import date
 from .forms import BookingForm
 from .models import Trip
 from bookings.models import Booking
 from .services import create_booking
+from accounts.forms import PassengerRegistrationForm
+from django.urls import reverse
 
 # Create your views here.
+
+
+def home(request):
+    year = date.today().year
+
+    # Handle inline registration submitted from the home page
+    if request.method == "POST" and request.POST.get("register_submit"):
+        form = PassengerRegistrationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Account created. Please log in.")
+            return redirect(reverse("accounts:login"))
+        else:
+            # Render home with form errors
+            return render(request, "transport/home.html", {"year": year, "register_form": form})
+
+    # GET
+    form = PassengerRegistrationForm()
+    return render(request, "transport/home.html", {"year": year, "register_form": form})
 
 @login_required
 def book_trip(request, trip_id):

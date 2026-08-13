@@ -1,54 +1,53 @@
-from transport.models import Seat
-from .models import Booking
-from decimal import Decimal
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
-from transport.models import Seat
-from .models import Booking, FareBand
+from .models import Booking
 
 
-def get_available_seats(trip):
-    booked_seat_ids = Booking.objects.filter(
+def get_available_capacity(trip):
+    """
+    Return the number of passenger spaces still available
+    on a trip.
+    """
+
+    capacity = trip.vehicle.capacity
+
+    confirmed_bookings = Booking.objects.filter(
         trip=trip,
         status=Booking.Status.CONFIRMED,
-    ).values_list("seat_id", flat=True)
+    ).count()
 
-    return Seat.objects.filter(
-        vehicle=trip.vehicle
-    ).exclude(id__in=booked_seat_ids).order_by("seat_number")
-    
-    
-def calculate_fare(boarding_stop, destination_stop):
-
- def get_available_seats(trip):
-    booked_seat_ids = Booking.objects.filter(
-        trip=trip,
-        status=Booking.Status.CONFIRMED,
-    ).values_list("seat_id", flat=True)
-
-    return Seat.objects.filter(
-        vehicle=trip.vehicle
-    ).exclude(id__in=booked_seat_ids).order_by("seat_number")
+    return max(capacity - confirmed_bookings, 0)
 
 
 @transaction.atomic
-def create_booking(passenger, trip, seat, boarding_stop, destination_stop):
-    existing = Booking.objects.select_for_update().filter(
-        trip=trip,
-        seat=seat,
-        status=Booking.Status.CONFIRMED,
-    )
-    if existing.exists():
-        raise ValidationError("This seat has just been booked. Please choose another.")
+def create_booking(
+    passenger,
+    trip,
+    boarding_stop,
+    destination_stop,
+):
+    """
+    Create a booking if the vehicle still has available capacity.
+    """
 
-    distance, fare = calculate_fare(boarding_stop, destination_stop)
+    # Lock the trip while checking capacity so two bookings
+    # cannot consume the same final space at the same time.
+    trip = type(trip).objects.select_for_update().get(pk=trip.pk)
 
-    return Booking.objects.create(
+    available_capacity = get_available_capacity(trip)
+
+    if available_capacity <= 0:
+        raise ValidationError(
+            "This trip is full. Please choose another trip."
+        )
+
+    booking = Booking.objects.create(
         passenger=passenger,
         trip=trip,
-        seat=seat,
         boarding_stop=boarding_stop,
         destination_stop=destination_stop,
-        fare=fare,
+        status=Booking.Status.CONFIRMED,
     )
+
+    return booking

@@ -10,7 +10,7 @@ def register(request):
 
         if form.is_valid():
             form.save()
-            return redirect("login")
+            return redirect("accounts:login")
 
     else:
         form = PassengerRegistrationForm()
@@ -30,7 +30,7 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-            return redirect("dashboard")
+            return redirect("transport:home")
 
         messages.error(request, "Invalid username or password.")
 
