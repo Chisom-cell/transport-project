@@ -71,65 +71,33 @@
                     My Bookings
                 </a>
 
-                <a href="#" class="nav-button">
+                <a href="{% url 'accounts:profile' %}" class="nav-button">
                     Account
                 </a>
 
             {% else %}
 
-                <button
-                    id="login-toggle"
-                    class="login-toggle nav-button"
-                >
+                <a href="{% url 'accounts:register' %}" class="nav-button">
+                    Get Started
+                </a>
+
+                <button id="login-toggle" class="login-toggle nav-button">
                     Login
                 </button>
 
-                <div
-                    id="login-form"
-                    class="login-form"
-                    aria-hidden="true"
-                >
-
-                    <form
-                        method="post"
-                        action="{% url 'accounts:login' %}"
-                    >
-
+                <div id="login-form" class="login-form" aria-hidden="true">
+                    <form method="post" action="{% url 'accounts:login' %}">
                         {% csrf_token %}
-
-                        <input
-                            type="text"
-                            name="username"
-                            placeholder="Username"
-                            required
-                        >
-
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            required
-                        >
-
-                        <button type="submit">
-                            Log In
-                        </button>
-
+                        <input type="text" name="username" placeholder="Username" required>
+                        <input type="password" name="password" placeholder="Password" required>
+                        <button type="submit">Log In</button>
                     </form>
-
-                    <p
-                        style="
-                            margin-top:8px;
-                            font-size:13px;
-                            text-align:center;
-                        "
-                    >
-                        <a href="{% url 'accounts:register' %}">
-                            Register
-                        </a>
+                    <p style="margin-top:8px; font-size:13px; text-align:center;">
+                        <a href="{% url 'accounts:register' %}">Register</a>
                     </p>
-
                 </div>
+
+                
 
             {% endif %}
 
