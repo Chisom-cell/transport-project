@@ -8,7 +8,6 @@ class BookingAdmin(admin.ModelAdmin):
         "id",
         "passenger",
         "trip",
-        "seat",
         "boarding_stop",
         "destination_stop",
         "status",

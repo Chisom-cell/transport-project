@@ -241,11 +241,11 @@ class Trip(models.Model):
     @property
     def total_capacity(self):
         return self.vehicle.capacity
-
+    
     @property
     def booked_capacity(self):
         return self.bookings.filter(
-            status=Booking.Status.CONFIRMED
+            status="CONFIRMED"
         ).count()
 
     @property
@@ -261,54 +261,3 @@ class Trip(models.Model):
     
     
 
-class Booking(models.Model):
-    class Status(models.TextChoices):
-        CONFIRMED = "CONFIRMED", "Confirmed"
-        CANCELLED = "CANCELLED", "Cancelled"
-
-    passenger = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.PROTECT,
-        related_name="transport_bookings",
-    )
-
-    trip = models.ForeignKey(
-        Trip,
-        on_delete=models.PROTECT,
-        related_name="bookings",
-    )
-
-    boarding_stop = models.ForeignKey(
-        BusStop,
-        on_delete=models.PROTECT,
-        related_name="boarding_bookings",
-    )
-
-    destination_stop = models.ForeignKey(
-        BusStop,
-        on_delete=models.PROTECT,
-        related_name="destination_bookings",
-    )
-
-    booking_reference = models.CharField(
-        max_length=20,
-        unique=True,
-    )
-
-    fare = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-    )
-
-    status = models.CharField(
-        max_length=20,
-        choices=Status.choices,
-        default=Status.CONFIRMED,
-    )
-
-    booked_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.booking_reference
-    
-    

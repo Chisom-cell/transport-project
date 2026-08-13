@@ -1,7 +1,7 @@
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
-from .models import Booking
+from bookings.models import Booking
 
 
 @transaction.atomic

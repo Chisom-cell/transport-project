@@ -5,7 +5,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
 from .forms import BookingForm
-from .models import Trip, Booking
+from .models import Trip
+from bookings.models import Booking
 from .services import create_booking
 
 # Create your views here.
