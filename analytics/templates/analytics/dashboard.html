@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Analytics Dashboard{% endblock %}
+{% block content %}
+  <h1>Analytics Dashboard</h1>
+  <div class="stats">
+    <p>Total trips: {{ total_trips }}</p>
+    <p>Total bookings: {{ total_bookings }}</p>
+    <p>Active vehicles: {{ active_vehicles }}</p>
+  </div>
+  <h2>Recent activity</h2>
+  <ul>
+    {% for item in recent_activity %}
+      <li>{{ item }}</li>
+    {% empty %}
+      <li>No recent activity.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

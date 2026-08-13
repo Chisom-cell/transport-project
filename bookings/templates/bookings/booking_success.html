@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Booking Successful{% endblock %}
+{% block content %}
+  <h1>Booking Confirmed</h1>
+  <p>Your booking <strong>#{{ booking.id }}</strong> was successful.</p>
+  <p>Trip: {{ booking.trip }}</p>
+  <a href="{% url 'bookings:list' %}">View all bookings</a>
+{% endblock %}
