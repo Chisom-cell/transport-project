@@ -5,6 +5,7 @@ from . import views
 app_name = "transport"
 
 urlpatterns = [
+    path("", views.home, name="home"),
     path(
         "book/<int:trip_id>/",
         views.book_trip,

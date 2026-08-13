@@ -11,6 +11,12 @@ from .services import create_booking
 
 # Create your views here.
 
+
+
+
+def home(request):
+    return render(request, "transport/home.html")
+
 @login_required
 def book_trip(request, trip_id):
     trip = get_object_or_404(

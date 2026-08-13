@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Home | Abia Transit
+{% endblock %}
+
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="hero-label">
+            ABIA STATE TRANSPORT
+        </span>
+
+        <h1>
+            Travel across Abia<br>
+            with confidence.
+        </h1>
+
+        <p>
+            Find routes, check available trips, book your journey
+            and stay informed about your trip.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="#" class="primary-button">
+                Find a Trip
+            </a>
+
+            <a href="#" class="secondary-button">
+                Track a Bus
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="search-section">
+
+    <div class="search-card">
+
+        <h2>
+            Where are you going?
+        </h2>
+
+        <p>
+            Find available trips for your journey.
+        </p>
+
+        <div class="search-form">
+
+            <div class="form-group">
+
+                <label>
+                    From
+                </label>
+
+                <select>
+                    <option>Select departure</option>
+                    <option>Umuahia</option>
+                    <option>Aba</option>
+                    <option>Ohafia</option>
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    To
+                </label>
+
+                <select>
+                    <option>Select destination</option>
+                    <option>Aba</option>
+                    <option>Umuahia</option>
+                    <option>Ohafia</option>
+                </select>
+
+            </div>
+
+
+            <button type="button">
+                Find Trips
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="features">
+
+    <div class="section-heading">
+
+        <span>
+            HOW IT WORKS
+        </span>
+
+        <h2>
+            Everything you need for your journey
+        </h2>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <div class="feature-number">
+                01
+            </div>
+
+            <h3>
+                Find your route
+            </h3>
+
+            <p>
+                Choose your departure point and destination
+                to find available routes.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-number">
+                02
+            </div>
+
+            <h3>
+                Book your trip
+            </h3>
+
+            <p>
+                Select an available trip and reserve your
+                place on the bus.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-number">
+                03
+            </div>
+
+            <h3>
+                Track your journey
+            </h3>
+
+            <p>
+                Stay updated about your bus and know
+                where it is during your journey.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<style>
+
+    .hero {
+        background: linear-gradient(
+            135deg,
+            #c8102e,
+            #9f1239
+        );
+
+        color: white;
+        padding: 90px 7%;
+    }
+
+
+    .hero-content {
+        max-width: 750px;
+    }
+
+
+    .hero-label {
+        display: inline-block;
+        background: rgba(255,255,255,0.15);
+        padding: 7px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+
+    .hero h1 {
+        font-size: 52px;
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+
+
+    .hero p {
+        font-size: 19px;
+        max-width: 650px;
+        color: #fce7e7;
+        margin-bottom: 30px;
+    }
+
+
+    .hero-actions {
+        display: flex;
+        gap: 15px;
+    }
+
+
+    .primary-button,
+    .secondary-button {
+        text-decoration: none;
+        padding: 13px 24px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+
+    .primary-button {
+        background: #f5c400;
+        color: #111827;
+    }
+
+
+    .secondary-button {
+        border: 1px solid white;
+        color: white;
+    }
+
+
+    .search-section {
+        padding: 60px 7%;
+        background: #f8f9fa;
+    }
+
+
+    .search-card {
+        max-width: 1100px;
+        margin: auto;
+        background: white;
+        padding: 35px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+
+    .search-card h2 {
+        margin-bottom: 5px;
+    }
+
+
+    .search-card p {
+        color: #6b7280;
+        margin-bottom: 25px;
+    }
+
+
+    .search-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 15px;
+        align-items: end;
+    }
+
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+
+    .form-group label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+
+    .form-group select {
+        padding: 13px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background: white;
+    }
+
+
+    .search-form button {
+        border: none;
+        background: #c8102e;
+        color: white;
+        padding: 13px 24px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+
+    .features {
+        padding: 70px 7%;
+        background: white;
+    }
+
+
+    .section-heading {
+        text-align: center;
+        max-width: 650px;
+        margin: 0 auto 40px;
+    }
+
+
+    .section-heading span {
+        color: #c8102e;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    .section-heading h2 {
+        font-size: 32px;
+        margin-top: 8px;
+    }
+
+
+    .feature-grid {
+        max-width: 1100px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+
+    .feature-card {
+        padding: 30px;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+
+
+    .feature-number {
+        color: #c8102e;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+
+    .feature-card h3 {
+        margin-bottom: 10px;
+    }
+
+
+    .feature-card p {
+        color: #6b7280;
+    }
+
+
+    @media (max-width: 768px) {
+
+        .hero {
+            padding: 60px 6%;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+        }
+
+        .hero p {
+            font-size: 17px;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+        }
+
+        .search-form {
+            grid-template-columns: 1fr;
+        }
+
+        .feature-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
