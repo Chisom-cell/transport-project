@@ -30,7 +30,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+LOGIN_REDIRECT_URL = 'dashboard'  # Redirects to dashboard after successful login
+LOGOUT_REDIRECT_URL = 'login'     # Redirects to login page after logout
+LOGIN_URL = 'login'               # Default login URL name
 
 # Application definition
 

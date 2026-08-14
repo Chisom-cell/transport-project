@@ -1,0 +1,140 @@
+{% extends "dashboards/dashboard_base.html" %}
+
+{% block dashboard_title %}
+Driver Dashboard
+{% endblock %}
+
+{% block role_name %}
+Driver
+{% endblock %}
+
+
+{% block dashboard_navigation %}
+
+<a href="{% url 'accounts:dashboard' %}">
+    Dashboard
+</a>
+
+<a href="#">
+    My Trips
+</a>
+
+<a href="#">
+    My Vehicle
+</a>
+
+<a href="{% url 'notifications:list' %}">
+    Notifications
+</a>
+
+<a href="{% url 'complaints:list' %}">
+    Report an Issue
+</a>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<section class="dashboard-welcome">
+
+    <h2>
+        Driver Dashboard
+    </h2>
+
+    <p>
+        Manage your assigned trips and keep passengers informed.
+    </p>
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Today's Trip</h2>
+
+    {% if todays_trip %}
+
+        <div class="trip-card">
+
+            <h3>
+                {{ todays_trip.route }}
+            </h3>
+
+            <p>
+                Time: {{ todays_trip.time }}
+            </p>
+
+            <p>
+                Vehicle: {{ todays_trip.vehicle }}
+            </p>
+
+            <p>
+                Passengers: {{ todays_trip.passenger_count }}
+            </p>
+
+            <p>
+                Status: {{ todays_trip.status }}
+            </p>
+
+            <a href="#">
+                View Trip
+            </a>
+
+        </div>
+
+    {% else %}
+
+        <p>
+            You have no assigned trip for today.
+        </p>
+
+    {% endif %}
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Trip Status</h2>
+
+    <div class="trip-status">
+
+        <p>Scheduled</p>
+        <p>Boarding</p>
+        <p>Departed</p>
+        <p>In Transit</p>
+        <p>Arrived</p>
+
+    </div>
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Quick Actions</h2>
+
+    <div class="quick-actions">
+
+        <a href="#">
+            View Today's Trip
+        </a>
+
+        <a href="#">
+            View Passengers
+        </a>
+
+        <a href="#">
+            View Route
+        </a>
+
+        <a href="{% url 'complaints:submit' %}">
+            Report an Issue
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

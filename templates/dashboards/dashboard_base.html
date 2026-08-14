@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block title %}{% block dashboard_title %}Dashboard{% endblock %}{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <!-- Dashboard Sidebar -->
+    <aside class="dashboard-sidebar">
+
+        <div class="dashboard-brand">
+            <h2>Abia Transit</h2>
+            <p>{% block role_name %}Dashboard{% endblock %}</p>
+        </div>
+
+        <nav class="dashboard-nav">
+
+            {% block dashboard_navigation %}
+            {% endblock %}
+
+        </nav>
+
+        <div class="dashboard-sidebar-bottom">
+
+            <a href="{% url 'accounts:profile' %}">
+                Profile
+            </a>
+
+            <a href="{% url 'accounts:logout' %}">
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Dashboard Main Area -->
+    <section class="dashboard-main">
+
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+
+            <div>
+                <p>Welcome back,</p>
+
+                <h1>
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </h1>
+            </div>
+
+            <div class="dashboard-header-actions">
+
+                <a href="{% url 'notifications:list' %}">
+                    Notifications
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- Dashboard Content -->
+        <main class="dashboard-content">
+
+            {% if messages %}
+                <div class="dashboard-messages">
+
+                    {% for message in messages %}
+
+                        <div class="message message-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+
+            {% block dashboard_content %}
+            {% endblock %}
+
+        </main>
+
+    </section>
+
+</div>
+
+{% endblock %}

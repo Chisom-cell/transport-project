@@ -1,0 +1,191 @@
+{% extends "dashboards/dashboard_base.html" %}
+
+{% block dashboard_title %}
+Operator Dashboard
+{% endblock %}
+
+{% block role_name %}
+Operator Admin
+{% endblock %}
+
+
+{% block dashboard_navigation %}
+
+<a href="{% url 'accounts:dashboard' %}">
+    Dashboard
+</a>
+
+<a href="#">
+    Trips
+</a>
+
+<a href="#">
+    Buses
+</a>
+
+<a href="#">
+    Drivers
+</a>
+
+<a href="{% url 'bookings:my_bookings' %}">
+    Bookings
+</a>
+
+<a href="#">
+    Organization
+</a>
+
+<a href="{% url 'notifications:list' %}">
+    Notifications
+</a>
+
+<a href="{% url 'complaints:list' %}">
+    Complaints
+</a>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<section class="dashboard-welcome">
+
+    <h2>
+        Operator Overview
+    </h2>
+
+    <p>
+        Manage your organization's transport operations.
+    </p>
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Today's Overview</h2>
+
+    <div class="statistics">
+
+        <div>
+            <h3>{{ total_trips|default:"0" }}</h3>
+            <p>Today's Trips</p>
+        </div>
+
+        <div>
+            <h3>{{ active_buses|default:"0" }}</h3>
+            <p>Active Buses</p>
+        </div>
+
+        <div>
+            <h3>{{ total_drivers|default:"0" }}</h3>
+            <p>Drivers</p>
+        </div>
+
+        <div>
+            <h3>{{ total_bookings|default:"0" }}</h3>
+            <p>Bookings</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Upcoming Trips</h2>
+
+    {% if upcoming_trips %}
+
+        {% for trip in upcoming_trips %}
+
+            <div class="trip-item">
+
+                <h3>
+                    {{ trip.route }}
+                </h3>
+
+                <p>
+                    {{ trip.date }} · {{ trip.time }}
+                </p>
+
+                <p>
+                    Vehicle: {{ trip.vehicle }}
+                </p>
+
+                <p>
+                    Driver: {{ trip.driver }}
+                </p>
+
+                <a href="#">
+                    Manage Trip
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            No upcoming trips.
+        </p>
+
+    {% endif %}
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Management</h2>
+
+    <div class="quick-actions">
+
+        <a href="#">
+            Manage Drivers
+        </a>
+
+        <a href="#">
+            Manage Buses
+        </a>
+
+        <a href="#">
+            Manage Trips
+        </a>
+
+        <a href="#">
+            View Bookings
+        </a>
+
+    </div>
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Recent Activity</h2>
+
+    {% if recent_activity %}
+
+        {% for activity in recent_activity %}
+
+            <p>
+                {{ activity }}
+            </p>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            No recent activity.
+        </p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

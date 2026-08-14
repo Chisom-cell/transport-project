@@ -1,0 +1,186 @@
+{% extends "dashboards/dashboard_base.html" %}
+
+{% block dashboard_title %}
+Government Dashboard
+{% endblock %}
+
+{% block role_name %}
+Government Admin
+{% endblock %}
+
+
+{% block dashboard_navigation %}
+
+<a href="{% url 'accounts:dashboard' %}">
+    Dashboard
+</a>
+
+<a href="#">
+    Operators
+</a>
+
+<a href="#">
+    Routes
+</a>
+
+<a href="#">
+    Bus Stops
+</a>
+
+<a href="#">
+    Vehicles
+</a>
+
+<a href="#">
+    Drivers
+</a>
+
+<a href="#">
+    Trips
+</a>
+
+<a href="{% url 'complaints:list' %}">
+    Complaints
+</a>
+
+<a href="{% url 'notifications:list' %}">
+    Notifications
+</a>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<section class="dashboard-welcome">
+
+    <h2>
+        Government Transport Overview
+    </h2>
+
+    <p>
+        Monitor and regulate transportation activity across Abia State.
+    </p>
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Transport Statistics</h2>
+
+    <div class="statistics">
+
+        <div>
+            <h3>{{ total_operators|default:"0" }}</h3>
+            <p>Operators</p>
+        </div>
+
+        <div>
+            <h3>{{ total_vehicles|default:"0" }}</h3>
+            <p>Registered Vehicles</p>
+        </div>
+
+        <div>
+            <h3>{{ total_drivers|default:"0" }}</h3>
+            <p>Drivers</p>
+        </div>
+
+        <div>
+            <h3>{{ total_trips|default:"0" }}</h3>
+            <p>Trips Today</p>
+        </div>
+
+        <div>
+            <h3>{{ total_bookings|default:"0" }}</h3>
+            <p>Bookings Today</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Pending Approvals</h2>
+
+    {% if pending_approvals %}
+
+        {% for approval in pending_approvals %}
+
+            <div class="approval-item">
+
+                <h3>
+                    {{ approval.name }}
+                </h3>
+
+                <p>
+                    {{ approval.type }}
+                </p>
+
+                <a href="#">
+                    Review
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            No pending approvals.
+        </p>
+
+    {% endif %}
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Management</h2>
+
+    <div class="quick-actions">
+
+        <a href="#">
+            Manage Operators
+        </a>
+
+        <a href="#">
+            Manage Routes
+        </a>
+
+        <a href="#">
+            Manage Bus Stops
+        </a>
+
+        <a href="#">
+            View Vehicles
+        </a>
+
+        <a href="#">
+            View Drivers
+        </a>
+
+    </div>
+
+</section>
+
+
+<section class="dashboard-section">
+
+    <h2>Complaints</h2>
+
+    <p>
+        Monitor passenger complaints and transport issues.
+    </p>
+
+    <a href="{% url 'complaints:list' %}">
+        View Complaints
+    </a>
+
+</section>
+
+{% endblock %}

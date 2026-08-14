@@ -2,25 +2,25 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import PassengerRegistrationForm
-from .services import verify_identity_numbers
-from .forms import IdentityVerificationForm
+
+from .forms import PassengerRegistrationForm, IdentityVerificationForm
 from .services import verify_identity_numbers
 
-from django.contrib.auth import authenticate, login, logout
 
 def register(request):
+    """Registers a new user and redirects them to the login page."""
+    if request.user.is_authenticated:
+        return redirect('accounts:dashboard')  # Changed from accounts:profile
+
     if request.method == 'POST':
         form = PassengerRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            form.save()
             messages.success(
                 request,
-                "Account created successfully! You can verify your NIN and "
-                "ABSSIN anytime from your profile."
+                "Account created successfully! Please log in to access your dashboard."
             )
-            return redirect('accounts:profile')
+            return redirect('accounts:login')
     else:
         form = PassengerRegistrationForm()
 
@@ -28,6 +28,9 @@ def register(request):
 
 
 def user_login(request):
+    """Logs in an existing user and redirects them to their profile."""
+    if request.user.is_authenticated:
+        return redirect("accounts:dashboard")
 
     if request.method == "POST":
         username = request.POST.get("username")
@@ -42,35 +45,47 @@ def user_login(request):
         if user is not None:
             login(request, user)
             messages.success(request, "Login successful.")
+            return redirect("accounts:dashboard")
 
-            # Temporarily stay on login until the dashboard exists
-            return redirect("accounts:profile")
-
-        messages.error(
-            request,
-            "Invalid username or password."
-        )
+        messages.error(request, "Invalid username or password.")
 
     return render(request, "accounts/login.html")
 
 @login_required
+def dashboard(request):
+    user = request.user
+
+    if user.role == user.Role.SUPER_ADMIN:
+        return render(request, "dashboards/super_admin.html")
+
+    elif user.role == user.Role.GOVERNMENT_ADMIN:
+        return render(request, "dashboards/government_admin.html")
+
+    elif user.role == user.Role.OPERATOR_ADMIN:
+        return render(request, "dashboards/operator_admin.html")
+
+    elif user.role == user.Role.DRIVER:
+        return render(request, "dashboards/driver.html")
+
+    return render(request, "dashboards/passenger.html")
+
+
+@login_required
 def profile(request):
+    """Displays the authenticated user's profile page."""
     return render(request, "accounts/profile.html", {"user": request.user})
 
 
 def user_logout(request):
+    """Logs out the user and redirects to the login page."""
     logout(request)
-    messages.success(
-        request,
-        "You have been logged out successfully."
-    )
+    messages.success(request, "You have been logged out successfully.")
     return redirect("accounts:login")
-
-
 
 
 @login_required
 def verify_identity(request):
+    """Allows passengers to verify their NIN and ABSSIN."""
     if request.user.is_verified:
         messages.info(request, "Your account is already verified.")
         return redirect("accounts:profile")

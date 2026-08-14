@@ -102,6 +102,7 @@ body {
 /* =========================================================
    PASSWORD INPUT
 ========================================================= */
+/* Password Input Wrapper */
 .password-input {
     position: relative;
     width: 100%;
@@ -118,27 +119,17 @@ body {
     outline: none;
 }
 
-.password-input input:focus {
-    border-color: #c8102e;
-    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
-}
-
 .password-input button {
     position: absolute;
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-
     width: 36px;
     height: 36px;
-
     border: none;
     background: transparent;
     color: #666;
-
     cursor: pointer;
-    padding: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -147,7 +138,6 @@ body {
 .password-input button:hover {
     color: #c8102e;
 }
-
 
 /* =========================================================
    BUTTON
