@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from datetime import date
 from .forms import BookingForm
-from .models import Trip
+from .models import Trip, Route
 from bookings.models import Booking
 from .services import create_booking
 from accounts.forms import PassengerRegistrationForm
@@ -109,5 +109,92 @@ def booking_success(request, booking_id):
         "transport/booking_success.html",
         {
             "booking": booking,
+        },
+    )
+
+
+def routes(request):
+    routes = (
+        Route.objects
+        .filter(is_active=True)
+        .prefetch_related("route_stops__bus_stop")
+    )
+
+    return render(
+        request,
+        "transport/routes.html",
+        {
+            "routes": routes,
+        },
+    )
+
+
+def route_detail(request, route_id):
+    route = get_object_or_404(
+        Route.objects.prefetch_related(
+            "route_stops__bus_stop"
+        ),
+        id=route_id,
+        is_active=True,
+    )
+
+    return render(
+        request,
+        "transport/route_detail.html",
+        {
+            "route": route,
+        },
+    )
+
+
+def trips(request, route_id):
+    route = get_object_or_404(
+        Route,
+        id=route_id,
+        is_active=True,
+    )
+
+    trips = (
+        Trip.objects
+        .filter(
+            route=route,
+            status__in=[
+                Trip.Status.SCHEDULED,
+                Trip.Status.BOARDING,
+            ],
+        )
+        .select_related(
+            "organization",
+            "vehicle",
+            "driver",
+        )
+        .order_by("departure_time")
+    )
+
+    return render(
+        request,
+        "transport/trips.html",
+        {
+            "route": route,
+            "trips": trips,
+        },
+    )
+    
+def trip_detail(request, trip_id):
+    trip = get_object_or_404(
+        Trip.objects.select_related(
+            "route",
+            "vehicle",
+            "driver",
+            "organization",
+        ),
+        id=trip_id,
+    )
+
+    return render(
+        request,
+        "transport/trip_detail.html",
+        {
+            "trip": trip,
         },
     )
