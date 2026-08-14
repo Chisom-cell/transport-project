@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-My Bookings
+My Bookings | Abia Transit
 {% endblock %}
 
 {% block content %}
@@ -102,7 +102,6 @@ My Bookings
                         {{ booking.trip.vehicle.vehicle_code }}
                     </p>
 
-
                     <p>
                         <strong>Booked:</strong>
                         {{ booking.created_at }}
@@ -110,7 +109,7 @@ My Bookings
 
 
                     <a
-                        href="{% url 'booking_detail' booking.id %}"
+                        href="{% url 'bookings:booking_detail' booking.id %}"
                         class="btn btn-outline-primary"
                     >
                         View Booking
@@ -123,7 +122,7 @@ My Bookings
 
                             <form
                                 method="POST"
-                                action="{% url 'cancel_booking' booking.id %}"
+                                action="{% url 'bookings:cancel_booking' booking.id %}"
                                 class="d-inline"
                             >
 

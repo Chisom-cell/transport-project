@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Book Trip
+Book Trip | Abia Transit
 {% endblock %}
 
 {% block content %}
@@ -83,6 +83,8 @@ Book Trip
                     <hr>
 
 
+                    <!-- Error Message -->
+
                     {% if error %}
 
                         <div class="alert alert-danger">
@@ -99,14 +101,9 @@ Book Trip
                         </h5>
 
 
-                        <!-- IMPORTANT:
-                             This form submits directly to
-                             confirm_booking
-                        -->
-
                         <form
                             method="POST"
-                            action="{% url 'confirm_booking' trip.id %}"
+                            action="{% url 'bookings:confirm_booking' trip.id %}"
                         >
 
                             {% csrf_token %}

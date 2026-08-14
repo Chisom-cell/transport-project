@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "transport/base.html" %}
 
 {% block title %}
-Booking Confirmation
+Booking Confirmation | Abia Transit
 {% endblock %}
 
 {% block content %}
@@ -15,6 +15,8 @@ Booking Confirmation
             <div class="card shadow-sm">
 
                 <div class="card-body">
+
+                    <!-- Success Message -->
 
                     <h2 class="text-success mb-3">
                         Booking Confirmed
@@ -57,7 +59,7 @@ Booking Confirmation
                     <hr>
 
 
-                    <!-- Vehicle -->
+                    <!-- Vehicle Details -->
 
                     <h4>
                         Vehicle
@@ -113,26 +115,31 @@ Booking Confirmation
                     <hr>
 
 
+                    <!-- Booking Date -->
+
                     <p>
                         <strong>Booking Date:</strong>
                         {{ booking.created_at }}
                     </p>
 
 
+                    <!-- Actions -->
+
                     <div class="mt-4">
 
                         <a
-                            href="{% url 'my_bookings' %}"
+                            href="{% url 'bookings:my_bookings' %}"
                             class="btn btn-primary"
                         >
                             My Bookings
                         </a>
 
+
                         {% if booking.status == "CONFIRMED" %}
 
                             <form
                                 method="POST"
-                                action="{% url 'cancel_booking' booking.id %}"
+                                action="{% url 'bookings:cancel_booking' booking.id %}"
                                 class="d-inline"
                             >
 
