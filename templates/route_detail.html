@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ route.name }} | Abia Transit
+{% endblock %}
+
+{% block content %}
+
+<section class="route-detail">
+
+    <h1>{{ route.name }}</h1>
+
+    <p>
+        {{ route.origin }}
+        →
+        {{ route.destination }}
+    </p>
+
+    <hr>
+
+    <h2>Bus Stops</h2>
+
+    {% if route.route_stops.all %}
+
+        <ol>
+            {% for route_stop in route.route_stops.all %}
+                <li>
+                    <strong>
+                        {{ route_stop.bus_stop.name }}
+                    </strong>
+
+                    <span>
+                        {{ route_stop.distance_from_origin_km }} km
+                    </span>
+
+                    {% if route_stop.bus_stop.description %}
+                        <p>
+                            {{ route_stop.bus_stop.description }}
+                        </p>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+
+    {% else %}
+
+        <p>No bus stops have been added to this route yet.</p>
+
+    {% endif %}
+
+    <hr>
+
+    <a href="{% url 'transport:trips' route.id %}">
+        View Available Trips
+    </a>
+
+</section>
+
+{% endblock %}

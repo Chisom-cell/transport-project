@@ -4,33 +4,38 @@ from . import views
 app_name = "bookings"
 
 urlpatterns = [
+    # Seat selection for a particular trip
     path(
         "trips/<int:trip_id>/seats/",
         views.seat_selection,
-        name="seat_selection"
+        name="seat_selection",
     ),
 
+    # Confirm a booking
     path(
         "trips/<int:trip_id>/confirm/",
         views.confirm_booking,
-        name="confirm_booking"
+        name="confirm_booking",
     ),
 
+    # User's bookings
     path(
-        "my-bookings/",
+        "",
         views.my_bookings,
-        name="my_bookings"
+        name="my_bookings",
     ),
 
+    # Booking details
     path(
-        "bookings/<int:booking_id>/",
+        "<int:booking_id>/",
         views.booking_detail,
-        name="booking_detail"
+        name="booking_detail",
     ),
 
+    # Cancel booking
     path(
-        "bookings/<int:booking_id>/cancel/",
+        "<int:booking_id>/cancel/",
         views.cancel_booking,
-        name="cancel_booking"
+        name="cancel_booking",
     ),
 ]

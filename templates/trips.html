@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}Available Trips - Abia Transit{% endblock %}
+
+{% block content %}
+
+<section class="trips-page">
+
+    <div class="trips-header">
+        <p class="eyebrow">ABIA TRANSIT</p>
+
+        <h1>Available Trips</h1>
+
+        <p>
+            Trips available on
+            <strong>{{ route.name }}</strong>
+        </p>
+    </div>
+
+
+    {% if trips %}
+
+        <div class="trips-list">
+
+            {% for trip in trips %}
+
+                <div class="trip-card">
+
+                    <div class="trip-main">
+
+                        <div>
+                            <span class="trip-label">Route</span>
+
+                            <h2>
+                                {{ trip.route.origin }}
+                                →
+                                {{ trip.route.destination }}
+                            </h2>
+                        </div>
+
+                        <div class="trip-status">
+                            {{ trip.get_status_display }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="trip-details">
+
+                        <div class="trip-info">
+                            <span>Departure</span>
+                            <strong>
+                                {{ trip.departure_time|date:"D, d M Y" }}
+                            </strong>
+                            <strong>
+                                {{ trip.departure_time|date:"h:i A" }}
+                            </strong>
+                        </div>
+
+
+                        <div class="trip-info">
+                            <span>Vehicle</span>
+                            <strong>
+                                {{ trip.vehicle.vehicle_code }}
+                            </strong>
+                            <small>
+                                {{ trip.vehicle.vehicle_type }}
+                            </small>
+                        </div>
+
+
+                        <div class="trip-info">
+                            <span>Seats</span>
+                            <strong>
+                                {{ trip.available_capacity }}
+                                available
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="trip-footer">
+
+                        <a
+                            href="{% url 'transport:trip_detail' trip.id %}"
+                            class="trip-button"
+                        >
+                            View Trip
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-trips">
+
+            <h2>No trips available</h2>
+
+            <p>
+                There are currently no scheduled trips for
+                {{ route.name }}.
+            </p>
+
+            <a href="{% url 'transport:routes' %}">
+                ← Back to Routes
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+
+<style>
+
+    .trips-page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 60px 7%;
+    }
+
+    .trips-header {
+        margin-bottom: 40px;
+    }
+
+    .eyebrow {
+        color: #c8102e;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+    }
+
+    .trips-header h1 {
+        font-size: 38px;
+        margin-bottom: 8px;
+        color: #111827;
+    }
+
+    .trips-header p {
+        color: #6b7280;
+    }
+
+    .trips-list {
+        display: grid;
+        gap: 22px;
+    }
+
+    .trip-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .trip-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .trip-label {
+        display: block;
+        color: #6b7280;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .trip-main h2 {
+        font-size: 22px;
+        color: #111827;
+    }
+
+    .trip-status {
+        background: #fff7cc;
+        color: #8a6800;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .trip-details {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 25px 0;
+        padding: 20px 0;
+        border-top: 1px solid #e5e7eb;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .trip-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .trip-info span {
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .trip-info strong {
+        color: #111827;
+    }
+
+    .trip-info small {
+        color: #6b7280;
+    }
+
+    .trip-footer {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .trip-button {
+        display: inline-block;
+        background: #c8102e;
+        color: white;
+        text-decoration: none;
+        padding: 11px 20px;
+        border-radius: 7px;
+        font-weight: 600;
+    }
+
+    .trip-button:hover {
+        opacity: 0.9;
+    }
+
+    .empty-trips {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 50px 30px;
+        text-align: center;
+    }
+
+    .empty-trips h2 {
+        margin-bottom: 10px;
+    }
+
+    .empty-trips p {
+        color: #6b7280;
+        margin-bottom: 20px;
+    }
+
+    .empty-trips a {
+        color: #c8102e;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    @media (max-width: 700px) {
+
+        .trips-page {
+            padding: 40px 5%;
+        }
+
+        .trips-header h1 {
+            font-size: 30px;
+        }
+
+        .trip-main {
+            flex-direction: column;
+        }
+
+        .trip-details {
+            grid-template-columns: 1fr;
+        }
+
+        .trip-footer {
+            justify-content: stretch;
+        }
+
+        .trip-button {
+            width: 100%;
+            text-align: center;
+        }
+
+    }
+
+</style>
+
+{% endblock %}

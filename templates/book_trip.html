@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Book Trip | Abia Transit
+{% endblock %}
+
+{% block content %}
+
+<section class="booking-page">
+
+    <div class="booking-container">
+
+        <a
+            href="{% url 'transport:trip_detail' trip.id %}"
+            class="back-link"
+        >
+            ← Back to Trip
+        </a>
+
+        <div class="booking-header">
+            <span>BOOK YOUR TRIP</span>
+
+            <h1>
+                {{ trip.route.origin }}
+                →
+                {{ trip.route.destination }}
+            </h1>
+
+            <p>
+                {{ trip.departure_time|date:"D, d M Y" }}
+                ·
+                {{ trip.departure_time|date:"g:i A" }}
+            </p>
+        </div>
+
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+
+        <form method="POST" class="booking-card">
+
+            {% csrf_token %}
+
+            <div class="form-section">
+
+                <h2>Choose your stops</h2>
+
+                <p class="help-text">
+                    Select where you will board the bus and where you
+                    want to get off.
+                </p>
+
+
+                <div class="form-group">
+
+                    <label for="boarding_stop">
+                        Boarding stop
+                    </label>
+
+                    <select
+                        name="boarding_stop"
+                        id="boarding_stop"
+                        required
+                    >
+
+                        <option value="">
+                            Select boarding stop
+                        </option>
+
+                        {% for route_stop in route_stops %}
+
+                            <option value="{{ route_stop.bus_stop.id }}">
+                                {{ route_stop.stop_order }}.
+                                {{ route_stop.bus_stop.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="destination_stop">
+                        Destination stop
+                    </label>
+
+                    <select
+                        name="destination_stop"
+                        id="destination_stop"
+                        required
+                    >
+
+                        <option value="">
+                            Select destination stop
+                        </option>
+
+                        {% for route_stop in route_stops %}
+
+                            <option value="{{ route_stop.bus_stop.id }}">
+                                {{ route_stop.stop_order }}.
+                                {{ route_stop.bus_stop.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="trip-summary">
+
+                <h2>Trip Summary</h2>
+
+                <div class="summary-row">
+                    <span>Route</span>
+                    <strong>
+                        {{ trip.route.name }}
+                    </strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Operator</span>
+                    <strong>
+                        {{ trip.organization.name }}
+                    </strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Vehicle</span>
+                    <strong>
+                        {{ trip.vehicle.vehicle_type }}
+                    </strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Available spaces</span>
+                    <strong>
+                        {{ trip.available_capacity }}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="confirm-button"
+            >
+                Confirm Booking
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<style>
+
+.booking-page {
+    background: #f8f9fa;
+    min-height: 100vh;
+    padding: 50px 7%;
+}
+
+.booking-container {
+    max-width: 850px;
+    margin: auto;
+}
+
+.back-link {
+    display: inline-block;
+    color: #c8102e;
+    text-decoration: none;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.booking-header {
+    background: #c8102e;
+    color: white;
+    padding: 35px;
+    border-radius: 12px 12px 0 0;
+}
+
+.booking-header span {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.booking-header h1 {
+    margin: 10px 0;
+    font-size: 32px;
+}
+
+.booking-header p {
+    color: #fee2e2;
+    margin: 0;
+}
+
+.booking-card {
+    background: white;
+    padding: 35px;
+    border-radius: 0 0 12px 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.form-section h2,
+.trip-summary h2 {
+    margin-bottom: 8px;
+}
+
+.help-text {
+    color: #6b7280;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 15px;
+    background: white;
+}
+
+.trip-summary {
+    border-top: 1px solid #e5e7eb;
+    margin-top: 30px;
+    padding-top: 25px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.summary-row span {
+    color: #6b7280;
+}
+
+.confirm-button {
+    width: 100%;
+    margin-top: 30px;
+    padding: 15px;
+    border: none;
+    border-radius: 7px;
+    background: #c8102e;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.confirm-button:hover {
+    background: #a50d26;
+}
+
+.message {
+    background: #dcfce7;
+    color: #166534;
+    padding: 14px;
+    margin: 15px 0;
+    border-radius: 7px;
+}
+
+@media (max-width: 600px) {
+
+    .booking-page {
+        padding: 30px 5%;
+    }
+
+    .booking-header {
+        padding: 25px;
+    }
+
+    .booking-header h1 {
+        font-size: 25px;
+    }
+
+    .booking-card {
+        padding: 25px;
+    }
+
+    .summary-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
