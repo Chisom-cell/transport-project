@@ -14,9 +14,13 @@ urlpatterns = [
     # Bookings
     path("bookings/", include("bookings.urls")),
 
+    # Tracking
+    path("tracking/", include("tracking.urls")),
+
     # Notifications
     path("notifications/", include("notifications.urls")),
 
     # Complaints
     path("complaints/", include("complaints.urls")),
 ]
+

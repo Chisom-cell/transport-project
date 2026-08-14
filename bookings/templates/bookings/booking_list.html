@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}My Bookings{% endblock %}
+{% block content %}
+  <h1>My Bookings</h1>
+  <ul>
+    {% for booking in bookings %}
+      <li>
+        <a href="{% url 'bookings:detail' booking.id %}">Booking #{{ booking.id }}</a>
+        — {{ booking.trip }} — {{ booking.status }}
+      </li>
+    {% empty %}
+      <li>You have no bookings.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

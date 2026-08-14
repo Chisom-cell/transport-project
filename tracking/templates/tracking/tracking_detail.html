@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Tracking — Trip Detail{% endblock %}
+{% block content %}
+  <h1>Trip: {{ trip }}</h1>
+  <p>Status: {{ trip.status }}</p>
+  <p>Vehicle: {{ trip.vehicle }}</p>
+  <p>Route: {{ trip.route }}</p>
+  <p>Estimated arrival: {{ trip.eta }}</p>
+  <a href="{% url 'tracking:list' %}">Back to trips</a>
+{% endblock %}

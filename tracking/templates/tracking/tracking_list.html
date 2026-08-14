@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Tracking — Active Trips{% endblock %}
+{% block content %}
+  <h1>Active Trips</h1>
+  <ul>
+    {% for trip in trips %}
+      <li>
+        <a href="{% url 'tracking:detail' trip.id %}">{{ trip }}</a>
+        — {{ trip.status }}
+      </li>
+    {% empty %}
+      <li>No active trips.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

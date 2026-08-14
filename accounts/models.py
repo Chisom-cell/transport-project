@@ -20,7 +20,17 @@ class User(AbstractUser):
         default=Role.PASSENGER,
     )
 
-    date_joined = models.DateTimeField(auto_now_add=True)
+    # Verification Identification Fields
+    nin = models.CharField(
+        max_length=11, unique=True, null=True, blank=True, verbose_name="NIN"
+    )
+    abssin = models.CharField(
+        max_length=10, unique=True, null=True, blank=True, verbose_name="ABSSIN"
+    )
+    is_verified = models.BooleanField(
+        default=False,
+        help_text="Designates whether the user's NIN/ABSSIN has been verified.",
+    )
 
     def __str__(self):
-        return self.email
+        return f"{self.email} ({self.get_role_display()})"

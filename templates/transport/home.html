@@ -1,0 +1,242 @@
+{% extends "transport/base.html" %}
+{% load static %}
+
+{% block title %}Abia Transit | Move Around Abia Smarter{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="hero-tag">ABIA STATE TRANSPORT</span>
+
+        <h1>
+            Move Around Abia,
+            <span>Smarter.</span>
+        </h1>
+
+        <p>
+            Book your trip, find your route and get reliable
+            transport information, all in one place.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="{% url 'accounts:register' %}" class="primary-btn">
+                Get Started
+            </a>
+
+            <a href="{% url 'accounts:login' %}" class="secondary-btn">
+                Log In
+            </a>
+        </div>
+
+    </div>
+
+    <div class="hero-image">
+        <img
+            src="{% static 'images/abia-bus-terminal.jpg.jpg' %}"
+            alt="Abia State bus terminal"
+        >
+    </div>
+
+</section>
+
+
+<!-- ================= INTRO ================= -->
+<section class="intro-section">
+
+    <div class="intro-image">
+        <img
+            src="{% static 'images/abia-green-shuttle.jpg.jpg' %}"
+            alt="Abia State Green Shuttle bus"
+        >
+    </div>
+
+    <div class="intro-content">
+
+        <span class="section-tag">YOUR JOURNEY STARTS HERE</span>
+
+        <h2>
+            Transportation made
+            <span>simpler.</span>
+        </h2>
+
+        <p>
+            Abia Transit connects passengers with transport operators
+            and routes across Abia State.
+        </p>
+
+        <p>
+            From choosing your destination to booking your seat,
+            we make your journey easier to plan.
+        </p>
+
+        <a href="{% url 'accounts:register' %}" class="text-btn">
+            Start your journey →
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="how-section" id="routes">
+
+    <div class="section-heading">
+
+        <span class="section-tag">HOW IT WORKS</span>
+
+        <h2>
+            Your journey in
+            <span>3 simple steps.</span>
+        </h2>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step-card">
+
+            <div class="step-number">01</div>
+
+            <h3>Choose your route</h3>
+
+            <p>
+                Find the route and destination that works
+                for your journey.
+            </p>
+
+        </div>
+
+
+        <div class="step-card">
+
+            <div class="step-number">02</div>
+
+            <h3>Book your trip</h3>
+
+            <p>
+                Select your trip, choose your seat and
+                secure your booking.
+            </p>
+
+        </div>
+
+
+        <div class="step-card">
+
+            <div class="step-number">03</div>
+
+            <h3>Track your journey</h3>
+
+            <p>
+                Stay informed about your trip and
+                follow your journey.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= WHY ABIA TRANSIT ================= -->
+<section class="why-section">
+
+    <div class="section-heading">
+
+        <span class="section-tag">WHY ABIA TRANSIT?</span>
+
+        <h2>
+            Less stress.
+            <span>Better journeys.</span>
+        </h2>
+
+    </div>
+
+
+    <div class="benefits">
+
+        <div class="benefit-card">
+
+            <div class="benefit-icon">
+                <i class="fa-solid fa-ticket"></i>
+            </div>
+
+            <h3>Easy Booking</h3>
+
+            <p>
+                Book your trip without spending unnecessary
+                time at the terminal.
+            </p>
+
+        </div>
+
+
+        <div class="benefit-card">
+
+            <div class="benefit-icon">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+
+            <h3>Know Your Route</h3>
+
+            <p>
+                Get clearer information about routes,
+                destinations and available trips.
+            </p>
+
+        </div>
+
+
+        <div class="benefit-card">
+
+            <div class="benefit-icon">
+                <i class="fa-solid fa-route"></i>
+            </div>
+
+            <h3>Track Your Journey</h3>
+
+            <p>
+                Keep up with your trip and stay informed
+                while travelling.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CTA ================= -->
+<section class="cta-section">
+
+    <div class="cta-content">
+
+        <span class="section-tag">READY TO MOVE?</span>
+
+        <h2>
+            Your next journey
+            starts here.
+        </h2>
+
+        <p>
+            Create your Abia Transit account and
+            start planning your trips.
+        </p>
+
+        <a href="{% url 'accounts:register' %}" class="primary-btn">
+            Get Started
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}
