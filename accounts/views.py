@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+
+from bookings.models import Booking
 
 from .forms import PassengerRegistrationForm, IdentityVerificationForm
 from .services import verify_identity_numbers
@@ -51,6 +54,7 @@ def user_login(request):
 
     return render(request, "accounts/login.html")
 
+
 @login_required
 def dashboard(request):
     user = request.user
@@ -67,7 +71,38 @@ def dashboard(request):
     elif user.role == user.Role.DRIVER:
         return render(request, "dashboards/driver.html")
 
-    return render(request, "dashboards/passenger.html")
+    # -----------------------------------------
+    # PASSENGER DASHBOARD
+    # -----------------------------------------
+
+    recent_bookings = (
+        Booking.objects
+        .filter(passenger=user)
+        .select_related("trip")
+        .order_by("-created_at")[:5]
+    )
+
+    upcoming_trip = (
+        Booking.objects
+        .filter(
+            passenger=user,
+            status="CONFIRMED"
+        )
+        .select_related("trip")
+        .order_by("created_at")
+        .first()
+    )
+
+    return render(
+        request,
+        "dashboards/passenger.html",
+        {
+            "recent_bookings": recent_bookings,
+            "upcoming_trip": upcoming_trip,
+        }
+    )
+
+
 
 
 @login_required

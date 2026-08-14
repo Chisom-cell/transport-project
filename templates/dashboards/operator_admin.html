@@ -1,46 +1,113 @@
 {% extends "dashboards/dashboard_base.html" %}
 
+
 {% block dashboard_title %}
 Operator Dashboard
 {% endblock %}
+
+
+{% block dashboard_heading %}
+Operator Dashboard
+{% endblock %}
+
 
 {% block role_name %}
 Operator Admin
 {% endblock %}
 
 
+{% block dashboard_description %}
+Manage your organization's trips, buses, drivers and bookings.
+{% endblock %}
+
+
 {% block dashboard_navigation %}
 
-<a href="{% url 'accounts:dashboard' %}">
-    Dashboard
+<a href="{% url 'accounts:dashboard' %}" class="active">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-house"></i>
+    </span>
+
+    <span>Dashboard</span>
+
 </a>
 
-<a href="#">
-    Trips
-</a>
 
 <a href="#">
-    Buses
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-route"></i>
+    </span>
+
+    <span>Trips</span>
+
 </a>
 
+
 <a href="#">
-    Drivers
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-bus"></i>
+    </span>
+
+    <span>Buses</span>
+
 </a>
+
+
+<a href="#">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-id-card"></i>
+    </span>
+
+    <span>Drivers</span>
+
+</a>
+
 
 <a href="{% url 'bookings:my_bookings' %}">
-    Bookings
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-calendar-check"></i>
+    </span>
+
+    <span>Bookings</span>
+
 </a>
+
 
 <a href="#">
-    Organization
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-building"></i>
+    </span>
+
+    <span>Organization</span>
+
 </a>
+
 
 <a href="{% url 'notifications:list' %}">
-    Notifications
+
+    <span class="nav-icon">
+        <i class="fa-regular fa-bell"></i>
+    </span>
+
+    <span>Notifications</span>
+
 </a>
 
+
 <a href="{% url 'complaints:list' %}">
-    Complaints
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-circle-exclamation"></i>
+    </span>
+
+    <span>Complaints</span>
+
 </a>
 
 {% endblock %}
@@ -48,43 +115,67 @@ Operator Admin
 
 {% block dashboard_content %}
 
-<section class="dashboard-welcome">
 
-    <h2>
-        Operator Overview
-    </h2>
-
-    <p>
-        Manage your organization's transport operations.
-    </p>
-
-</section>
-
+<!-- Statistics -->
 
 <section class="dashboard-section">
 
-    <h2>Today's Overview</h2>
+    <h2>
+        Today's Overview
+    </h2>
+
 
     <div class="statistics">
 
         <div>
-            <h3>{{ total_trips|default:"0" }}</h3>
-            <p>Today's Trips</p>
+
+            <h3>
+                {{ total_trips|default:"0" }}
+            </h3>
+
+            <p>
+                Today's Trips
+            </p>
+
         </div>
 
-        <div>
-            <h3>{{ active_buses|default:"0" }}</h3>
-            <p>Active Buses</p>
-        </div>
 
         <div>
-            <h3>{{ total_drivers|default:"0" }}</h3>
-            <p>Drivers</p>
+
+            <h3>
+                {{ active_buses|default:"0" }}
+            </h3>
+
+            <p>
+                Active Buses
+            </p>
+
         </div>
 
+
         <div>
-            <h3>{{ total_bookings|default:"0" }}</h3>
-            <p>Bookings</p>
+
+            <h3>
+                {{ total_drivers|default:"0" }}
+            </h3>
+
+            <p>
+                Drivers
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                {{ total_bookings|default:"0" }}
+            </h3>
+
+            <p>
+                Bookings
+            </p>
+
         </div>
 
     </div>
@@ -92,9 +183,15 @@ Operator Admin
 </section>
 
 
+
+<!-- Upcoming Trips -->
+
 <section class="dashboard-section">
 
-    <h2>Upcoming Trips</h2>
+    <h2>
+        Upcoming Trips
+    </h2>
+
 
     {% if upcoming_trips %}
 
@@ -128,34 +225,48 @@ Operator Admin
 
     {% else %}
 
-        <p>
-            No upcoming trips.
-        </p>
+        <div class="dashboard-empty">
+
+            <p>
+                No upcoming trips.
+            </p>
+
+        </div>
 
     {% endif %}
 
 </section>
 
 
+
+<!-- Management -->
+
 <section class="dashboard-section">
 
-    <h2>Management</h2>
+    <h2>
+        Management
+    </h2>
+
 
     <div class="quick-actions">
 
         <a href="#">
+            <i class="fa-solid fa-id-card"></i>&nbsp;
             Manage Drivers
         </a>
 
         <a href="#">
+            <i class="fa-solid fa-bus"></i>&nbsp;
             Manage Buses
         </a>
 
         <a href="#">
+            <i class="fa-solid fa-route"></i>&nbsp;
             Manage Trips
         </a>
 
-        <a href="#">
+        <a href="{% url 'bookings:my_bookings' %}">
+            <i class="fa-solid fa-calendar-check"></i>&nbsp;
             View Bookings
         </a>
 
@@ -164,9 +275,15 @@ Operator Admin
 </section>
 
 
+
+<!-- Recent Activity -->
+
 <section class="dashboard-section">
 
-    <h2>Recent Activity</h2>
+    <h2>
+        Recent Activity
+    </h2>
+
 
     {% if recent_activity %}
 
@@ -180,9 +297,13 @@ Operator Admin
 
     {% else %}
 
-        <p>
-            No recent activity.
-        </p>
+        <div class="dashboard-empty">
+
+            <p>
+                No recent activity.
+            </p>
+
+        </div>
 
     {% endif %}
 

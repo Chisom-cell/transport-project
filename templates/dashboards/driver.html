@@ -1,34 +1,80 @@
 {% extends "dashboards/dashboard_base.html" %}
 
+
 {% block dashboard_title %}
 Driver Dashboard
 {% endblock %}
+
+
+{% block dashboard_heading %}
+Driver Dashboard
+{% endblock %}
+
 
 {% block role_name %}
 Driver
 {% endblock %}
 
 
+{% block dashboard_description %}
+Manage your assigned trips, vehicle and passenger operations from one place.
+{% endblock %}
+
+
 {% block dashboard_navigation %}
 
-<a href="{% url 'accounts:dashboard' %}">
-    Dashboard
+<a href="{% url 'accounts:dashboard' %}" class="active">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-house"></i>
+    </span>
+
+    <span>Dashboard</span>
+
 </a>
 
-<a href="#">
-    My Trips
-</a>
 
 <a href="#">
-    My Vehicle
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-route"></i>
+    </span>
+
+    <span>My Trips</span>
+
 </a>
+
+
+<a href="#">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-bus"></i>
+    </span>
+
+    <span>My Vehicle</span>
+
+</a>
+
 
 <a href="{% url 'notifications:list' %}">
-    Notifications
+
+    <span class="nav-icon">
+        <i class="fa-regular fa-bell"></i>
+    </span>
+
+    <span>Notifications</span>
+
 </a>
 
+
 <a href="{% url 'complaints:list' %}">
-    Report an Issue
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-circle-exclamation"></i>
+    </span>
+
+    <span>Report an Issue</span>
+
 </a>
 
 {% endblock %}
@@ -36,22 +82,15 @@ Driver
 
 {% block dashboard_content %}
 
-<section class="dashboard-welcome">
 
-    <h2>
-        Driver Dashboard
-    </h2>
-
-    <p>
-        Manage your assigned trips and keep passengers informed.
-    </p>
-
-</section>
-
+<!-- Today's Trip -->
 
 <section class="dashboard-section">
 
-    <h2>Today's Trip</h2>
+    <h2>
+        Today's Trip
+    </h2>
+
 
     {% if todays_trip %}
 
@@ -62,19 +101,23 @@ Driver
             </h3>
 
             <p>
-                Time: {{ todays_trip.time }}
+                <strong>Time:</strong>
+                {{ todays_trip.time }}
             </p>
 
             <p>
-                Vehicle: {{ todays_trip.vehicle }}
+                <strong>Vehicle:</strong>
+                {{ todays_trip.vehicle }}
             </p>
 
             <p>
-                Passengers: {{ todays_trip.passenger_count }}
+                <strong>Passengers:</strong>
+                {{ todays_trip.passenger_count }}
             </p>
 
             <p>
-                Status: {{ todays_trip.status }}
+                <strong>Status:</strong>
+                {{ todays_trip.status }}
             </p>
 
             <a href="#">
@@ -85,18 +128,29 @@ Driver
 
     {% else %}
 
-        <p>
-            You have no assigned trip for today.
-        </p>
+        <div class="dashboard-empty">
+
+            <i class="fa-solid fa-calendar-xmark"></i>
+
+            <p>
+                You have no assigned trip for today.
+            </p>
+
+        </div>
 
     {% endif %}
 
 </section>
 
 
+
+<!-- Trip Status -->
+
 <section class="dashboard-section">
 
-    <h2>Trip Status</h2>
+    <h2>
+        Trip Status
+    </h2>
 
     <div class="trip-status">
 
@@ -111,26 +165,35 @@ Driver
 </section>
 
 
+
+<!-- Quick Actions -->
+
 <section class="dashboard-section">
 
-    <h2>Quick Actions</h2>
+    <h2>
+        Quick Actions
+    </h2>
 
     <div class="quick-actions">
 
         <a href="#">
-            View Today's Trip
+            <i class="fa-solid fa-route"></i>&nbsp;
+            Today's Trip
         </a>
 
         <a href="#">
+            <i class="fa-solid fa-users"></i>&nbsp;
             View Passengers
         </a>
 
         <a href="#">
+            <i class="fa-solid fa-map-location-dot"></i>&nbsp;
             View Route
         </a>
 
         <a href="{% url 'complaints:submit' %}">
-            Report an Issue
+            <i class="fa-solid fa-triangle-exclamation"></i>&nbsp;
+            Report Issue
         </a>
 
     </div>

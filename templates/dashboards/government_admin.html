@@ -1,50 +1,124 @@
 {% extends "dashboards/dashboard_base.html" %}
 
+
 {% block dashboard_title %}
 Government Dashboard
 {% endblock %}
+
+
+{% block dashboard_heading %}
+Government Dashboard
+{% endblock %}
+
 
 {% block role_name %}
 Government Admin
 {% endblock %}
 
 
+{% block dashboard_description %}
+Monitor and regulate transportation activity across Abia State.
+{% endblock %}
+
+
 {% block dashboard_navigation %}
 
-<a href="{% url 'accounts:dashboard' %}">
-    Dashboard
+<a href="{% url 'accounts:dashboard' %}" class="active">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-house"></i>
+    </span>
+
+    <span>Dashboard</span>
+
 </a>
 
-<a href="#">
-    Operators
-</a>
 
 <a href="#">
-    Routes
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-building"></i>
+    </span>
+
+    <span>Operators</span>
+
 </a>
 
-<a href="#">
-    Bus Stops
-</a>
 
 <a href="#">
-    Vehicles
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-route"></i>
+    </span>
+
+    <span>Routes</span>
+
 </a>
 
-<a href="#">
-    Drivers
-</a>
 
 <a href="#">
-    Trips
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-location-dot"></i>
+    </span>
+
+    <span>Bus Stops</span>
+
 </a>
+
+
+<a href="#">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-bus"></i>
+    </span>
+
+    <span>Vehicles</span>
+
+</a>
+
+
+<a href="#">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-id-card"></i>
+    </span>
+
+    <span>Drivers</span>
+
+</a>
+
+
+<a href="#">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-road"></i>
+    </span>
+
+    <span>Trips</span>
+
+</a>
+
 
 <a href="{% url 'complaints:list' %}">
-    Complaints
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-circle-exclamation"></i>
+    </span>
+
+    <span>Complaints</span>
+
 </a>
 
+
 <a href="{% url 'notifications:list' %}">
-    Notifications
+
+    <span class="nav-icon">
+        <i class="fa-regular fa-bell"></i>
+    </span>
+
+    <span>Notifications</span>
+
 </a>
 
 {% endblock %}
@@ -52,48 +126,65 @@ Government Admin
 
 {% block dashboard_content %}
 
-<section class="dashboard-welcome">
-
-    <h2>
-        Government Transport Overview
-    </h2>
-
-    <p>
-        Monitor and regulate transportation activity across Abia State.
-    </p>
-
-</section>
-
 
 <section class="dashboard-section">
 
-    <h2>Transport Statistics</h2>
+    <h2>
+        Transport Statistics
+    </h2>
+
 
     <div class="statistics">
 
         <div>
-            <h3>{{ total_operators|default:"0" }}</h3>
-            <p>Operators</p>
+
+            <h3>
+                {{ total_operators|default:"0" }}
+            </h3>
+
+            <p>
+                Operators
+            </p>
+
         </div>
 
-        <div>
-            <h3>{{ total_vehicles|default:"0" }}</h3>
-            <p>Registered Vehicles</p>
-        </div>
 
         <div>
-            <h3>{{ total_drivers|default:"0" }}</h3>
-            <p>Drivers</p>
+
+            <h3>
+                {{ total_vehicles|default:"0" }}
+            </h3>
+
+            <p>
+                Registered Vehicles
+            </p>
+
         </div>
 
-        <div>
-            <h3>{{ total_trips|default:"0" }}</h3>
-            <p>Trips Today</p>
-        </div>
 
         <div>
-            <h3>{{ total_bookings|default:"0" }}</h3>
-            <p>Bookings Today</p>
+
+            <h3>
+                {{ total_drivers|default:"0" }}
+            </h3>
+
+            <p>
+                Drivers
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                {{ total_trips|default:"0" }}
+            </h3>
+
+            <p>
+                Trips Today
+            </p>
+
         </div>
 
     </div>
@@ -101,9 +192,13 @@ Government Admin
 </section>
 
 
+
 <section class="dashboard-section">
 
-    <h2>Pending Approvals</h2>
+    <h2>
+        Pending Approvals
+    </h2>
+
 
     {% if pending_approvals %}
 
@@ -129,39 +224,52 @@ Government Admin
 
     {% else %}
 
-        <p>
-            No pending approvals.
-        </p>
+        <div class="dashboard-empty">
+
+            <p>
+                No pending approvals.
+            </p>
+
+        </div>
 
     {% endif %}
 
 </section>
 
 
+
 <section class="dashboard-section">
 
-    <h2>Management</h2>
+    <h2>
+        Management
+    </h2>
+
 
     <div class="quick-actions">
 
         <a href="#">
-            Manage Operators
+            <i class="fa-solid fa-building"></i>&nbsp;
+            Operators
         </a>
 
         <a href="#">
-            Manage Routes
+            <i class="fa-solid fa-route"></i>&nbsp;
+            Routes
         </a>
 
         <a href="#">
-            Manage Bus Stops
+            <i class="fa-solid fa-location-dot"></i>&nbsp;
+            Bus Stops
         </a>
 
         <a href="#">
-            View Vehicles
+            <i class="fa-solid fa-bus"></i>&nbsp;
+            Vehicles
         </a>
 
         <a href="#">
-            View Drivers
+            <i class="fa-solid fa-id-card"></i>&nbsp;
+            Drivers
         </a>
 
     </div>
@@ -169,12 +277,15 @@ Government Admin
 </section>
 
 
+
 <section class="dashboard-section">
 
-    <h2>Complaints</h2>
+    <h2>
+        Complaints
+    </h2>
 
     <p>
-        Monitor passenger complaints and transport issues.
+        Monitor passenger complaints and transport issues across the system.
     </p>
 
     <a href="{% url 'complaints:list' %}">

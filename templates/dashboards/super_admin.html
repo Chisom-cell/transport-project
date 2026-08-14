@@ -1,63 +1,146 @@
-<h1>SUPER ADMIN DASHBOARD</h1>
 {% extends "dashboards/dashboard_base.html" %}
+
 
 {% block dashboard_title %}
 Super Admin Dashboard
 {% endblock %}
+
+
+{% block dashboard_heading %}
+Platform Dashboard
+{% endblock %}
+
 
 {% block role_name %}
 Super Admin
 {% endblock %}
 
 
+{% block dashboard_description %}
+Manage and monitor the entire Abia Transit platform.
+{% endblock %}
+
+
 {% block dashboard_navigation %}
 
-<a href="{% url 'accounts:dashboard' %}">
-    Dashboard
+<a href="{% url 'accounts:dashboard' %}" class="active">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-house"></i>
+    </span>
+
+    <span>Dashboard</span>
+
 </a>
 
-<a href="#">
-    Users
-</a>
 
 <a href="#">
-    Government Admins
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-users"></i>
+    </span>
+
+    <span>Users</span>
+
 </a>
 
-<a href="#">
-    Organizations
-</a>
 
 <a href="#">
-    Operators
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-user-shield"></i>
+    </span>
+
+    <span>Government Admins</span>
+
 </a>
 
-<a href="#">
-    Routes
-</a>
 
 <a href="#">
-    Bus Stops
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-building"></i>
+    </span>
+
+    <span>Organizations</span>
+
 </a>
 
-<a href="#">
-    Vehicles
-</a>
 
 <a href="#">
-    Trips
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-bus"></i>
+    </span>
+
+    <span>Operators</span>
+
 </a>
 
-<a href="#">
-    Bookings
-</a>
 
 <a href="#">
-    Complaints
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-route"></i>
+    </span>
+
+    <span>Routes</span>
+
 </a>
 
+
 <a href="#">
-    Analytics
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-location-dot"></i>
+    </span>
+
+    <span>Bus Stops</span>
+
+</a>
+
+
+<a href="#">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-road"></i>
+    </span>
+
+    <span>Trips</span>
+
+</a>
+
+
+<a href="#">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-ticket"></i>
+    </span>
+
+    <span>Bookings</span>
+
+</a>
+
+
+<a href="#">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-circle-exclamation"></i>
+    </span>
+
+    <span>Complaints</span>
+
+</a>
+
+
+<a href="#">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-chart-line"></i>
+    </span>
+
+    <span>Analytics</span>
+
 </a>
 
 {% endblock %}
@@ -65,58 +148,65 @@ Super Admin
 
 {% block dashboard_content %}
 
-<section class="dashboard-welcome">
-
-    <h2>
-        Platform Overview
-    </h2>
-
-    <p>
-        Manage and monitor the entire Abia Transit platform.
-    </p>
-
-</section>
-
 
 <section class="dashboard-section">
 
-    <h2>Platform Statistics</h2>
+    <h2>
+        Platform Statistics
+    </h2>
+
 
     <div class="statistics">
 
         <div>
-            <h3>{{ total_users|default:"0" }}</h3>
-            <p>Total Users</p>
+
+            <h3>
+                {{ total_users|default:"0" }}
+            </h3>
+
+            <p>
+                Total Users
+            </p>
+
         </div>
 
-        <div>
-            <h3>{{ total_passengers|default:"0" }}</h3>
-            <p>Passengers</p>
-        </div>
 
         <div>
-            <h3>{{ total_operators|default:"0" }}</h3>
-            <p>Operators</p>
+
+            <h3>
+                {{ total_passengers|default:"0" }}
+            </h3>
+
+            <p>
+                Passengers
+            </p>
+
         </div>
 
-        <div>
-            <h3>{{ total_drivers|default:"0" }}</h3>
-            <p>Drivers</p>
-        </div>
 
         <div>
-            <h3>{{ total_vehicles|default:"0" }}</h3>
-            <p>Vehicles</p>
+
+            <h3>
+                {{ total_operators|default:"0" }}
+            </h3>
+
+            <p>
+                Operators
+            </p>
+
         </div>
 
-        <div>
-            <h3>{{ total_trips|default:"0" }}</h3>
-            <p>Trips</p>
-        </div>
 
         <div>
-            <h3>{{ total_bookings|default:"0" }}</h3>
-            <p>Bookings</p>
+
+            <h3>
+                {{ total_drivers|default:"0" }}
+            </h3>
+
+            <p>
+                Drivers
+            </p>
+
         </div>
 
     </div>
@@ -124,9 +214,58 @@ Super Admin
 </section>
 
 
+
 <section class="dashboard-section">
 
-    <h2>Pending Actions</h2>
+    <h2>
+        Platform Management
+    </h2>
+
+
+    <div class="quick-actions">
+
+        <a href="#">
+            <i class="fa-solid fa-users"></i>&nbsp;
+            Manage Users
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-user-shield"></i>&nbsp;
+            Government Admins
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-building"></i>&nbsp;
+            Organizations
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-bus"></i>&nbsp;
+            Operators
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-route"></i>&nbsp;
+            Routes
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-location-dot"></i>&nbsp;
+            Bus Stops
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<section class="dashboard-section">
+
+    <h2>
+        Pending Actions
+    </h2>
+
 
     {% if pending_actions %}
 
@@ -152,53 +291,26 @@ Super Admin
 
     {% else %}
 
-        <p>
-            No pending actions.
-        </p>
+        <div class="dashboard-empty">
+
+            <p>
+                No pending actions.
+            </p>
+
+        </div>
 
     {% endif %}
 
 </section>
 
 
-<section class="dashboard-section">
-
-    <h2>Platform Management</h2>
-
-    <div class="quick-actions">
-
-        <a href="#">
-            Manage Users
-        </a>
-
-        <a href="#">
-            Manage Government Admins
-        </a>
-
-        <a href="#">
-            Manage Organizations
-        </a>
-
-        <a href="#">
-            Manage Operators
-        </a>
-
-        <a href="#">
-            Manage Routes
-        </a>
-
-        <a href="#">
-            Manage Bus Stops
-        </a>
-
-    </div>
-
-</section>
-
 
 <section class="dashboard-section">
 
-    <h2>Recent Activity</h2>
+    <h2>
+        Recent Activity
+    </h2>
+
 
     {% if recent_activity %}
 
@@ -212,9 +324,13 @@ Super Admin
 
     {% else %}
 
-        <p>
-            No recent platform activity.
-        </p>
+        <div class="dashboard-empty">
+
+            <p>
+                No recent platform activity.
+            </p>
+
+        </div>
 
     {% endif %}
 

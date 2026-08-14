@@ -1,42 +1,82 @@
+```html
 {% extends "dashboards/dashboard_base.html" %}
+
 
 {% block dashboard_title %}
 Passenger Dashboard
 {% endblock %}
+
+
+{% block dashboard_heading %}
+Passenger Dashboard
+{% endblock %}
+
 
 {% block role_name %}
 Passenger
 {% endblock %}
 
 
+{% block dashboard_description %}
+Plan your journey, manage your bookings and stay updated throughout your trip.
+{% endblock %}
+
+
 {% block dashboard_navigation %}
 
-<a href="{% url 'accounts:dashboard' %}">
-    Dashboard
+<a href="{% url 'accounts:dashboard' %}" class="active">
+    <span class="nav-icon">
+        <i class="fa-solid fa-house"></i>
+    </span>
+    <span>Dashboard</span>
 </a>
+
 
 <a href="{% url 'transport:home' %}">
-    Book a Trip
+    <span class="nav-icon">
+        <i class="fa-solid fa-ticket"></i>
+    </span>
+    <span>Book a Trip</span>
 </a>
+
 
 <a href="{% url 'bookings:my_bookings' %}">
-    My Bookings
+    <span class="nav-icon">
+        <i class="fa-solid fa-calendar-check"></i>
+    </span>
+    <span>My Bookings</span>
 </a>
+
 
 <a href="{% url 'tracking:list' %}">
-    Track Trip
+    <span class="nav-icon">
+        <i class="fa-solid fa-location-dot"></i>
+    </span>
+    <span>Track Trip</span>
 </a>
+
 
 <a href="{% url 'transport:routes' %}">
-    Routes
+    <span class="nav-icon">
+        <i class="fa-solid fa-route"></i>
+    </span>
+    <span>Routes</span>
 </a>
+
 
 <a href="{% url 'notifications:list' %}">
-    Notifications
+    <span class="nav-icon">
+        <i class="fa-regular fa-bell"></i>
+    </span>
+    <span>Notifications</span>
 </a>
 
+
 <a href="{% url 'complaints:list' %}">
-    Complaints
+    <span class="nav-icon">
+        <i class="fa-solid fa-circle-exclamation"></i>
+    </span>
+    <span>Complaints</span>
 </a>
 
 {% endblock %}
@@ -44,101 +84,158 @@ Passenger
 
 {% block dashboard_content %}
 
-<section class="dashboard-welcome">
+<!-- =========================================
+     WELCOME
+========================================= -->
+
+<section class="dashboard-section">
 
     <h2>
-        Welcome to Abia Transit
+        Welcome, {{ request.user.first_name|default:request.user.username }} 👋
     </h2>
 
     <p>
-        Plan your journey, book your seat and keep track of your trips.
+        Here's what's happening with your trips and bookings.
     </p>
 
 </section>
 
 
-<section class="dashboard-section">
-
-    <h2>Book a Trip</h2>
-
-    <p>
-        Search for your destination and find available trips.
-    </p>
-
-    <a href="{% url 'transport:home' %}">
-        Search Trips
-    </a>
-
-</section>
-
+<!-- =========================================
+     UPCOMING TRIP
+========================================= -->
 
 <section class="dashboard-section">
 
-    <h2>Upcoming Trip</h2>
+    <h2>
+        Upcoming Trip
+    </h2>
+
 
     {% if upcoming_trip %}
 
         <div class="trip-card">
 
+            <div class="trip-card-header">
+
+                <span class="status-badge">
+                    Confirmed
+                </span>
+
+            </div>
+
+
             <h3>
-                {{ upcoming_trip.route }}
+                {{ upcoming_trip.trip }}
             </h3>
 
-            <p>
-                Date:
-                {{ upcoming_trip.date }}
-            </p>
 
-            <p>
-                Time:
-                {{ upcoming_trip.time }}
-            </p>
+            {% if upcoming_trip.trip.route %}
 
-            <a href="{% url 'bookings:my_bookings' %}">
-                View Booking
-            </a>
+                <p>
+                    <strong>Route:</strong>
+                    {{ upcoming_trip.trip.route }}
+                </p>
 
-            <a href="{% url 'tracking:list' %}">
-                Track Trip
-            </a>
+            {% endif %}
+
+
+            {% if upcoming_trip.trip.date %}
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ upcoming_trip.trip.date }}
+                </p>
+
+            {% endif %}
+
+
+            {% if upcoming_trip.trip.time %}
+
+                <p>
+                    <strong>Time:</strong>
+                    {{ upcoming_trip.trip.time }}
+                </p>
+
+            {% endif %}
+
+
+            <div class="trip-actions">
+
+                <a href="{% url 'bookings:my_bookings' %}">
+                    View Booking
+                </a>
+
+
+                <a href="{% url 'tracking:list' %}">
+                    Track Trip
+                </a>
+
+            </div>
 
         </div>
 
+
     {% else %}
 
-        <p>
-            You don't have any upcoming trips.
-        </p>
+        <div class="dashboard-empty">
 
-        <a href="{% url 'transport:home' %}">
-            Book Your First Trip
-        </a>
+            <i class="fa-solid fa-ticket"></i>
+
+            <h3>
+                No Upcoming Trips
+            </h3>
+
+            <p>
+                You don't have any confirmed trips yet.
+            </p>
+
+
+            <a href="{% url 'transport:home' %}">
+                Book Your First Trip
+            </a>
+
+        </div>
 
     {% endif %}
 
 </section>
 
 
+<!-- =========================================
+     QUICK ACTIONS
+========================================= -->
+
 <section class="dashboard-section">
 
-    <h2>Quick Actions</h2>
+    <h2>
+        Quick Actions
+    </h2>
+
 
     <div class="quick-actions">
 
         <a href="{% url 'transport:home' %}">
-            Book a Trip
+            <i class="fa-solid fa-ticket"></i>
+            <span>Book a Trip</span>
         </a>
+
 
         <a href="{% url 'bookings:my_bookings' %}">
-            My Bookings
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>My Bookings</span>
         </a>
+
 
         <a href="{% url 'tracking:list' %}">
-            Track a Trip
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Track a Trip</span>
         </a>
 
+
         <a href="{% url 'transport:routes' %}">
-            View Routes
+            <i class="fa-solid fa-route"></i>
+            <span>View Routes</span>
         </a>
 
     </div>
@@ -146,60 +243,115 @@ Passenger
 </section>
 
 
+<!-- =========================================
+     RECENT BOOKINGS
+========================================= -->
+
 <section class="dashboard-section">
 
-    <h2>Recent Bookings</h2>
+    <div class="section-heading">
+
+        <h2>
+            Recent Bookings
+        </h2>
+
+        <a href="{% url 'bookings:my_bookings' %}">
+            View All
+        </a>
+
+    </div>
+
 
     {% if recent_bookings %}
 
-        {% for booking in recent_bookings %}
+        <div class="bookings-list">
 
-            <div class="booking-item">
+            {% for booking in recent_bookings %}
 
-                <h3>
-                    {{ booking.trip }}
-                </h3>
+                <div class="booking-item">
 
-                <p>
-                    {{ booking.created_at }}
-                </p>
+                    <div class="booking-icon">
+                        <i class="fa-solid fa-ticket"></i>
+                    </div>
 
-                <p>
-                    Status: {{ booking.status }}
-                </p>
 
-                <a href="{% url 'bookings:my_bookings' %}">
-                    View Booking
-                </a>
+                    <div class="booking-details">
 
-            </div>
+                        <h3>
+                            {{ booking.trip }}
+                        </h3>
 
-        {% endfor %}
+
+                        <p>
+                            Booked {{ booking.created_at|date:"M d, Y" }}
+                        </p>
+
+
+                        <span class="booking-status">
+                            {{ booking.status }}
+                        </span>
+
+                    </div>
+
+
+                    <a href="{% url 'bookings:my_bookings' %}">
+                        View
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
 
     {% else %}
 
-        <p>
-            You don't have any bookings yet.
-        </p>
+        <div class="dashboard-empty">
+
+            <i class="fa-solid fa-calendar-xmark"></i>
+
+            <p>
+                You don't have any bookings yet.
+            </p>
+
+
+            <a href="{% url 'transport:home' %}">
+                Book a Trip
+            </a>
+
+        </div>
 
     {% endif %}
 
 </section>
 
 
-<section class="dashboard-section">
+<!-- =========================================
+     HELP
+========================================= -->
 
-    <h2>Need Help?</h2>
+<section class="dashboard-section help-section">
 
-    <p>
-        Have an issue with a trip or booking?
-    </p>
+    <div>
 
-    <!-- templates/dashboards/passenger.html -->
+        <h2>
+            Need Help?
+        </h2>
+
+        <p>
+            Have an issue with a trip or booking?
+        </p>
+
+    </div>
+
+
     <a href="{% url 'complaints:create' %}">
+        <i class="fa-solid fa-circle-exclamation"></i>
         Submit a Complaint
     </a>
 
 </section>
 
 {% endblock %}
+```
