@@ -4,29 +4,23 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import PassengerRegistrationForm
 from .services import verify_identity_numbers
+from .forms import IdentityVerificationForm
+from .services import verify_identity_numbers
 
+from django.contrib.auth import authenticate, login, logout
 
 def register(request):
     if request.method == 'POST':
         form = PassengerRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-
-            success, message = verify_identity_numbers(
-                nin=user.nin,
-                abssin=user.abssin,
-                first_name=user.first_name,
-                last_name=user.last_name
+            user = form.save()
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            messages.success(
+                request,
+                "Account created successfully! You can verify your NIN and "
+                "ABSSIN anytime from your profile."
             )
-
-            if success:
-                user.is_verified = True
-                user.save()
-                messages.success(request, "Account created and verified successfully!")
-                return redirect('login')
-            else:
-                messages.error(request, f"Verification failed: {message}")
+            return redirect('accounts:profile')
     else:
         form = PassengerRegistrationForm()
 
@@ -73,3 +67,37 @@ def user_logout(request):
     return redirect("accounts:login")
 
 
+
+
+@login_required
+def verify_identity(request):
+    if request.user.is_verified:
+        messages.info(request, "Your account is already verified.")
+        return redirect("accounts:profile")
+
+    if request.method == "POST":
+        form = IdentityVerificationForm(request.POST)
+        if form.is_valid():
+            nin = form.cleaned_data["nin"]
+            abssin = form.cleaned_data["abssin"]
+
+            success, message = verify_identity_numbers(
+                nin=nin,
+                abssin=abssin,
+                first_name=request.user.first_name,
+                last_name=request.user.last_name,
+            )
+
+            if success:
+                request.user.nin = nin
+                request.user.abssin = abssin
+                request.user.is_verified = True
+                request.user.save()
+                messages.success(request, "Identity verified successfully.")
+                return redirect("accounts:profile")
+
+            messages.error(request, f"Verification failed: {message}")
+    else:
+        form = IdentityVerificationForm()
+
+    return render(request, "accounts/verify_identity.html", {"form": form})

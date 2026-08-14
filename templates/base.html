@@ -1,0 +1,132 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}Abia Transit{% endblock %}
+    </title>
+
+    <!-- Base stylesheet -->
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+    <!-- Landing page stylesheet -->
+    <link
+        rel="stylesheet"
+        href="{% static 'css/landing.css' %}"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+
+        <a
+            href="{% url 'transport:home' %}"
+            class="logo"
+        >
+            Abia Transit
+        </a>
+
+        <div class="nav-links">
+
+            <a href="{% url 'transport:home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'transport:home' %}#routes">
+                Routes
+            </a>
+
+            <a href="{% url 'tracking:list' %}">
+                Track
+            </a>
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'bookings:my_bookings' %}">
+                    My Bookings
+                </a>
+
+                <a href="{% url 'accounts:profile' %}" class="nav-button">
+                    Account
+                </a>
+
+                {% else %}
+
+                    <a href="{% url 'accounts:login' %}" class="nav-link">
+                        Login
+                    </a>
+
+                    <a href="{% url 'accounts:register' %}" class="nav-button">
+                        Get Started
+                    </a>
+
+                {% endif %}
+
+                        </div>
+
+    </nav>
+
+
+    <!-- Page content -->
+
+    <main>
+
+        {% if messages %}
+            <div class="site-messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+            © 2026 Abia Transit.
+            Connecting Abia, one journey at a time.
+        </p>
+
+    </footer>
+
+
+    <!-- Login dropdown JavaScript -->
+
+
+
+</body>
+
+</html>

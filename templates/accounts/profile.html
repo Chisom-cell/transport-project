@@ -1,117 +1,72 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}My Account | Abia Transit{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts.css' %}">{% endblock %}
 
-    <title>My Account | Abia Transit</title>
+{% block content %}
+<main class="profile-page">
 
-    <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+    <section class="profile-card">
 
-    <!-- Font Awesome -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
-</head>
-
-<body>
-
-    <main class="profile-page">
-
-        <section class="profile-card">
-
-            <!-- Header -->
-            <div class="profile-header">
-
-                <div class="profile-avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-
-                <div>
-                    <h1>My Account</h1>
-                    <p>Manage your Abia Transit account</p>
-                </div>
-
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fa-solid fa-user"></i>
             </div>
-
-
-            <!-- Account Information -->
-            <div class="profile-section">
-
-                <h2>
-                    <i class="fa-solid fa-circle-user"></i>
-                    Account Information
-                </h2>
-
-                <div class="profile-grid">
-
-                    <div class="profile-item">
-                        <span class="profile-label">Username</span>
-                        <span class="profile-value">
-                            {{ user.username }}
-                        </span>
-                    </div>
-
-                    <div class="profile-item">
-                        <span class="profile-label">Email</span>
-                        <span class="profile-value">
-                            {{ user.email|default:"Not provided" }}
-                        </span>
-                    </div>
-
-                    <div class="profile-item">
-                        <span class="profile-label">Account Type</span>
-                        <span class="account-badge">
-                            {{ user.get_role_display }}
-                        </span>
-                    </div>
-
-                    <div class="profile-item">
-                        <span class="profile-label">Member Since</span>
-                        <span class="profile-value">
-                            {{ user.date_joined|date:"F j, Y" }}
-                        </span>
-                    </div>
-
+            {% if not user.is_verified %}
+                <div class="profile-section verify-banner">
+                    <p>Your account isn't verified yet.</p>
+                    <a href="{% url 'accounts:verify_identity' %}" class="profile-button">
+                        <i class="fa-solid fa-id-card"></i> Verify NIN & ABSSIN
+                    </a>
                 </div>
-
+            {% endif %}
+            <div>
+                <h1>My Account</h1>
+                <p>Manage your Abia Transit account</p>
             </div>
+        </div>
 
+        <div class="profile-section">
+            <h2><i class="fa-solid fa-circle-user"></i> Account Information</h2>
 
-            <!-- Account Actions -->
-            <div class="profile-section">
-
-                <h2>
-                    <i class="fa-solid fa-gear"></i>
-                    Account Actions
-                </h2>
-
-                <div class="profile-actions">
-
-                    <a href="{% url 'transport:home' %}" class="profile-button secondary">
-                        <i class="fa-solid fa-house"></i>
-                        Back to Home
-                    </a>
-
-                    <a href="{% url 'accounts:logout' %}" class="profile-button danger">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        Log Out
-                    </a>
-
-                    <a href="{% url 'accounts:password_change' %}">
-                        Change Password
-                    </a>
-
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <span class="profile-label">Username</span>
+                    <span class="profile-value">{{ user.username }}</span>
                 </div>
-
+                <div class="profile-item">
+                    <span class="profile-label">Email</span>
+                    <span class="profile-value">{{ user.email|default:"Not provided" }}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Account Type</span>
+                    <span class="account-badge">{{ user.get_role_display }}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Member Since</span>
+                    <span class="profile-value">{{ user.date_joined|date:"F j, Y" }}</span>
+                </div>
             </div>
+        </div>
 
-        </section>
+        <div class="profile-section">
+            <h2><i class="fa-solid fa-gear"></i> Account Actions</h2>
 
-    </main>
+            <div class="profile-actions">
+                <a href="{% url 'transport:home' %}" class="profile-button secondary">
+                    <i class="fa-solid fa-house"></i> Back to Home
+                </a>
+                <a href="{% url 'accounts:logout' %}" class="profile-button danger">
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                </a>
+                <a href="{% url 'accounts:password_change' %}" class="profile-button">
+                    <i class="fa-solid fa-key"></i> Change Password
+                </a>
+            </div>
+        </div>
 
-</body>
-</html>
+    </section>
+
+</main>
+{% endblock %}

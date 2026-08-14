@@ -31,10 +31,6 @@ body {
 }
 
 /* Prevent page content from hiding underneath navbar */
-body {
-    padding-top: 70px;
-}
-
 
 .navbar {
     background: #c8102e;
@@ -42,6 +38,17 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
 }
 
 .logo {
@@ -168,4 +175,35 @@ footer p {
         justify-content: center;
         gap: 15px;
     }
+}
+
+.site-messages {
+    max-width: 1200px;
+    margin: 18px auto;
+    padding: 0 2rem;
+}
+
+.alert {
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #064e3b;
+}
+
+.alert-error {
+    background: #ffe5e5;
+    border: 1px solid #f5c2c2;
+    color: #a00000;
+}
+
+.alert-info {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e3a8a;
 }

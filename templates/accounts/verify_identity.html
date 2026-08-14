@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Verify Identity | Abia Transit{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts.css' %}">{% endblock %}
+
+{% block content %}
+<main class="auth-page">
+    <section class="auth-card">
+
+        <div class="auth-header">
+            <h1>Verify your identity</h1>
+            <p>Enter your NIN and ABSSIN to complete verification.</p>
+        </div>
+
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                {{ form.nin.label_tag }}
+                {{ form.nin }}
+                {% for error in form.nin.errors %}
+                    <p class="form-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.abssin.label_tag }}
+                {{ form.abssin }}
+                {% for error in form.abssin.errors %}
+                    <p class="form-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="auth-button">Verify</button>
+        </form>
+
+        <p class="auth-footer">
+            <a href="{% url 'accounts:profile' %}">Skip for now</a>
+        </p>
+
+    </section>
+</main>
+{% endblock %}

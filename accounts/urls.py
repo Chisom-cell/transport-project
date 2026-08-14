@@ -11,6 +11,7 @@ urlpatterns = [
     path("login/", views.user_login, name="login"),
     path("logout/", views.user_logout, name="logout"),
     path("profile/", views.profile, name="profile"),
+    path("verify-identity/", views.verify_identity, name="verify_identity"),
 
     # Password reset
     path(
