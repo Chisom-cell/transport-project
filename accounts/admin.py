@@ -11,8 +11,16 @@ User = get_user_model()
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("username", "email", "phone", "role", "nin", "abssin")
-
+        fields = (
+            "username",
+            "email",
+            "phone",
+            "role",
+            "nin",
+            "abssin",
+            "password1",
+            "password2",
+        )
 
 # 2. Single Admin Registration for User
 @admin.register(User)
@@ -61,13 +69,22 @@ class CustomUserAdmin(UserAdmin):
         ),
     )
 
-    # Adding new user form layout
-    add_fieldsets = UserAdmin.add_fieldsets + (
+    # Adding new user form layout - Define explicitly without using UserAdmin.add_fieldsets
+    add_fieldsets = (
         (
-            "Extra Details",
+            None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "phone", "role", "nin", "abssin"),
+                "fields": (
+                    "username",
+                    "email",
+                    "password1",
+                    "password2",
+                    "phone",
+                    "role",
+                    "nin",
+                    "abssin",
+                ),
             },
         ),
     )

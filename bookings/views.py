@@ -62,8 +62,8 @@ def confirm_booking(request, trip_id):
             )
 
             return redirect(
-                "booking_detail",
-                booking.id,
+                "bookings:booking_detail",
+                booking_id=booking.id,
             )
 
         except ValidationError as e:
@@ -133,3 +133,5 @@ def cancel_booking(request, booking_id):
         booking.save()
 
     return redirect("my_bookings")
+
+

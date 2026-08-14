@@ -20,6 +20,22 @@ body {
    NAVBAR
 ========================= */
 
+/* ================= STATIC NAVBAR ================= */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Prevent page content from hiding underneath navbar */
+body {
+    padding-top: 70px;
+}
+
+
 .navbar {
     background: #c8102e;
     padding: 18px 7%;
