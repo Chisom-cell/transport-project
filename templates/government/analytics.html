@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,305 +12,12 @@
 
     <title>Abia Transit Analytics</title>
 
+    <!-- Analytics CSS -->
+    <link rel="stylesheet"
+          href="{% static 'css/analytics.css' %}">
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-    <style>
-
-        /* =========================
-           GENERAL PAGE
-        ========================== */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-
-            font-family: Arial, Helvetica, sans-serif;
-
-            background-color: #f4f6f8;
-
-            color: #222;
-        }
-
-
-        /* =========================
-           HEADER
-        ========================== */
-
-        .header {
-            background-color: #ffffff;
-
-            padding: 25px 35px;
-
-            border-bottom: 1px solid #ddd;
-
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            margin: 0;
-
-            font-size: 30px;
-        }
-
-        .header p {
-            margin-top: 8px;
-
-            color: #666;
-
-            font-size: 15px;
-        }
-
-
-        /* =========================
-           MAIN CONTAINER
-        ========================== */
-
-        .container {
-            width: 92%;
-
-            max-width: 1400px;
-
-            margin: auto;
-
-            padding-bottom: 50px;
-        }
-
-
-        /* =========================
-           SUMMARY CARDS
-        ========================== */
-
-        .cards {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 20px;
-
-            margin-bottom: 30px;
-        }
-
-
-        .card {
-
-            background-color: #ffffff;
-
-            padding: 25px;
-
-            border-radius: 10px;
-
-            border: 1px solid #e5e5e5;
-
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-
-        .card h3 {
-
-            margin: 0 0 12px 0;
-
-            font-size: 15px;
-
-            color: #666;
-
-            font-weight: normal;
-        }
-
-
-        .number {
-
-            font-size: 32px;
-
-            font-weight: bold;
-
-            color: #222;
-        }
-
-
-        /* =========================
-           SECTIONS
-        ========================== */
-
-        .section {
-
-            background-color: #ffffff;
-
-            padding: 25px;
-
-            margin-bottom: 25px;
-
-            border-radius: 10px;
-
-            border: 1px solid #e5e5e5;
-
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-
-        .section h2 {
-
-            margin-top: 0;
-
-            margin-bottom: 20px;
-
-            font-size: 21px;
-        }
-
-
-        /* =========================
-           CHART CONTAINER
-        ========================== */
-
-        .chart-container {
-
-            position: relative;
-
-            width: 100%;
-
-            min-height: 350px;
-        }
-
-
-        .small-chart {
-
-            max-width: 550px;
-
-            margin: auto;
-        }
-
-
-        /* =========================
-           TABLE
-        ========================== */
-
-        table {
-
-            width: 100%;
-
-            border-collapse: collapse;
-        }
-
-
-        th,
-        td {
-
-            padding: 13px;
-
-            text-align: left;
-
-            border-bottom:
-                1px solid #e5e5e5;
-        }
-
-
-        th {
-
-            background-color: #f5f5f5;
-
-            font-weight: bold;
-        }
-
-
-        tr:last-child td {
-
-            border-bottom: none;
-        }
-
-
-        /* =========================
-           EMPTY MESSAGE
-        ========================== */
-
-        .empty {
-
-            text-align: center;
-
-            padding: 20px;
-
-            color: #777;
-        }
-
-
-        /* =========================
-           RESPONSIVE DESIGN
-        ========================== */
-
-        @media (max-width: 1000px) {
-
-            .cards {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-        }
-
-
-        @media (max-width: 600px) {
-
-            .container {
-
-                width: 95%;
-            }
-
-
-            .cards {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .header {
-
-                padding: 20px;
-            }
-
-
-            .header h1 {
-
-                font-size: 24px;
-            }
-
-
-            .section {
-
-                padding: 18px;
-            }
-        }
-
-
-        .filter-form {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .filter-form select,
-        .filter-form button {
-            padding: 10px 15px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-
-        .filter-form button {
-            cursor: pointer;
-            border: none;
-            background-color: #333;
-            color: white;
-        }
-
-    </style>
 
 </head>
 
@@ -316,33 +25,37 @@
 <body>
 
 
-    <!-- =========================
-         PAGE HEADER
-    ========================== -->
+<!-- =====================================================
+     PAGE HEADER
+====================================================== -->
 
-    <div class="header">
-
-        <div class="container">
-
-            <h1>
-                Abia Transit Analytics
-            </h1>
-
-            <p>
-                Transport system performance overview
-            </p>
-
-        </div>
-
-    </div>
-
+<div class="header">
 
     <div class="container">
 
+        <h1>
+            Abia Transit Analytics
+        </h1>
 
-    <!-- =========================
-        DATE FILTER
-    ========================== -->
+        <p>
+            Transport system performance overview
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN CONTAINER
+====================================================== -->
+
+<div class="container">
+
+
+    <!-- =================================================
+         DATE FILTER
+    ================================================== -->
 
     <div class="section">
 
@@ -350,11 +63,14 @@
             Trip Analysis Period
         </h2>
 
-        <form method="get">
+
+        <form method="get"
+              class="filter-form">
 
             <label for="period">
                 Select period:
             </label>
+
 
             <select
                 name="period"
@@ -370,6 +86,7 @@
                     Today
                 </option>
 
+
                 <option
                     value="week"
                     {% if selected_period == "week" %}
@@ -378,6 +95,7 @@
                 >
                     This Week
                 </option>
+
 
                 <option
                     value="month"
@@ -390,632 +108,641 @@
 
             </select>
 
+
             <button type="submit">
                 Apply Filter
             </button>
 
         </form>
 
+
         <p>
+
             Showing trips from
-            <strong>{{ start_date }}</strong>
+
+            <strong>
+                {{ start_date }}
+            </strong>
+
             to
-            <strong>{{ end_date }}</strong>.
+
+            <strong>
+                {{ end_date }}
+            </strong>.
+
         </p>
 
     </div>
 
-        <!-- =========================
-             SUMMARY CARDS
-        ========================== -->
 
-        <div class="cards">
+    <!-- =================================================
+         SUMMARY CARDS - FIRST ROW
+    ================================================== -->
 
-
-            <!-- Routes -->
-
-            <div class="card">
-
-                <h3>
-                    Total Routes
-                </h3>
-
-                <div class="number">
-                    {{ total_routes }}
-                </div>
-
-            </div>
+    <div class="cards">
 
 
-            <!-- Bus Stops -->
+        <!-- TOTAL ROUTES -->
 
-            <div class="card">
+        <div class="card">
 
-                <h3>
-                    Total Bus Stops
-                </h3>
+            <h3>
+                Total Routes
+            </h3>
 
-                <div class="number">
-                    {{ total_bus_stops }}
-                </div>
-
-            </div>
-
-
-            <!-- Vehicles -->
-
-            <div class="card">
-
-                <h3>
-                    Total Vehicles
-                </h3>
-
-                <div class="number">
-                    {{ total_vehicles }}
-                </div>
-
-            </div>
-
-
-            <!-- Trips -->
-
-            <div class="card">
-
-                <h3>
-                    Total Trips
-                </h3>
-
-                <div class="number">
-                    {{ total_trips }}
-                </div>
-
+            <div class="number">
+                {{ total_routes }}
             </div>
 
         </div>
 
 
+        <!-- TOTAL BUS STOPS -->
 
-        <!-- =========================
-             SECOND ROW OF CARDS
-        ========================== -->
+        <div class="card">
 
-        <div class="cards">
+            <h3>
+                Total Bus Stops
+            </h3>
 
-
-            <!-- Active Routes -->
-
-            <div class="card">
-
-                <h3>
-                    Active Routes
-                </h3>
-
-                <div class="number">
-                    {{ active_routes }}
-                </div>
-
-            </div>
-
-
-            <!-- Active Bus Stops -->
-
-            <div class="card">
-
-                <h3>
-                    Active Bus Stops
-                </h3>
-
-                <div class="number">
-                    {{ active_bus_stops }}
-                </div>
-
-            </div>
-
-
-            <!-- Active Vehicles -->
-
-            <div class="card">
-
-                <h3>
-                    Active Vehicles
-                </h3>
-
-                <div class="number">
-                    {{ active_vehicles }}
-                </div>
-
-            </div>
-
-
-            <!-- Maintenance -->
-
-            <div class="card">
-
-                <h3>
-                    Vehicles in Maintenance
-                </h3>
-
-                <div class="number">
-                    {{ maintenance_vehicles }}
-                </div>
-
+            <div class="number">
+                {{ total_bus_stops }}
             </div>
 
         </div>
 
 
+        <!-- TOTAL VEHICLES -->
 
-        <!-- =========================
-             TRIPS BY STATUS
-        ========================== -->
+        <div class="card">
 
-        <div class="section">
+            <h3>
+                Total Vehicles
+            </h3>
 
-            <h2>
-                Trips by Status
-            </h2>
-
-
-            <div class="chart-container small-chart">
-
-                <canvas id="tripsStatusChart"></canvas>
-
+            <div class="number">
+                {{ total_vehicles }}
             </div>
 
         </div>
 
 
+        <!-- TOTAL TRIPS -->
 
-        <!-- =========================
-             TRIPS BY ROUTE
-        ========================== -->
+        <div class="card">
 
-        <div class="section">
+            <h3>
+                Total Trips
+            </h3>
 
-            <h2>
-                Trips by Route
-            </h2>
-
-
-            <div class="chart-container">
-
-                <canvas id="tripsRouteChart"></canvas>
-
+            <div class="number">
+                {{ total_trips }}
             </div>
 
         </div>
-
-
-
-        <!-- =========================
-             TRIPS BY ORGANIZATION
-        ========================== -->
-
-        <div class="section">
-
-            <h2>
-                Trips by Organization
-            </h2>
-
-
-            <div class="chart-container">
-
-                <canvas id="tripsOrganizationChart"></canvas>
-
-            </div>
-
-        </div>
-
-        <div class="section">
-
-    <h2>
-        Trips by Date
-    </h2>
-
-    <div class="chart-container">
-
-        <canvas id="tripsDateChart"></canvas>
 
     </div>
+
+
+    <!-- =================================================
+         SUMMARY CARDS - SECOND ROW
+    ================================================== -->
+
+    <div class="cards">
+
+
+        <!-- ACTIVE ROUTES -->
+
+        <div class="card">
+
+            <h3>
+                Active Routes
+            </h3>
+
+            <div class="number">
+                {{ active_routes }}
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVE BUS STOPS -->
+
+        <div class="card">
+
+            <h3>
+                Active Bus Stops
+            </h3>
+
+            <div class="number">
+                {{ active_bus_stops }}
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVE VEHICLES -->
+
+        <div class="card">
+
+            <h3>
+                Active Vehicles
+            </h3>
+
+            <div class="number">
+                {{ active_vehicles }}
+            </div>
+
+        </div>
+
+
+        <!-- MAINTENANCE VEHICLES -->
+
+        <div class="card">
+
+            <h3>
+                Vehicles in Maintenance
+            </h3>
+
+            <div class="number">
+                {{ maintenance_vehicles }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TRIPS BY STATUS
+    ================================================== -->
+
+    <div class="section">
+
+        <h2>
+            Trips by Status
+        </h2>
+
+
+        <div class="chart-container small-chart">
+
+            <canvas id="tripsStatusChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TRIPS BY ROUTE
+    ================================================== -->
+
+    <div class="section">
+
+        <h2>
+            Trips by Route
+        </h2>
+
+
+        <div class="chart-container">
+
+            <canvas id="tripsRouteChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TRIPS BY ORGANIZATION
+    ================================================== -->
+
+    <div class="section">
+
+        <h2>
+            Trips by Organization
+        </h2>
+
+
+        <div class="chart-container">
+
+            <canvas id="tripsOrganizationChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TRIPS BY DATE
+    ================================================== -->
+
+    <div class="section">
+
+        <h2>
+            Trips by Date
+        </h2>
+
+
+        <div class="chart-container">
+
+            <canvas id="tripsDateChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TRIPS BY STATUS TABLE
+    ================================================== -->
+
+    <div class="section">
+
+        <h2>
+            Trip Status Details
+        </h2>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Number of Trips
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in trips_by_status %}
+
+                <tr>
+
+                    <td>
+                        {{ item.status }}
+                    </td>
+
+                    <td>
+                        {{ item.total }}
+                    </td>
+
+                </tr>
+
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="2"
+                        class="empty"
+                    >
+                        No trip data available.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =================================================
+         TRIPS BY ROUTE TABLE
+    ================================================== -->
+
+    <div class="section">
+
+        <h2>
+            Trip Details by Route
+        </h2>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Route
+                    </th>
+
+                    <th>
+                        Origin
+                    </th>
+
+                    <th>
+                        Destination
+                    </th>
+
+                    <th>
+                        Number of Trips
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in trips_by_route %}
+
+                <tr>
+
+                    <td>
+                        {{ item.route__name }}
+                    </td>
+
+                    <td>
+                        {{ item.route__origin }}
+                    </td>
+
+                    <td>
+                        {{ item.route__destination }}
+                    </td>
+
+                    <td>
+                        {{ item.total }}
+                    </td>
+
+                </tr>
+
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="4"
+                        class="empty"
+                    >
+                        No route data available.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =================================================
+         TRIPS BY ORGANIZATION TABLE
+    ================================================== -->
+
+    <div class="section">
+
+        <h2>
+            Trip Details by Organization
+        </h2>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Organization
+                    </th>
+
+                    <th>
+                        Number of Trips
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in trips_by_organization %}
+
+                <tr>
+
+                    <td>
+                        {{ item.organization__name }}
+                    </td>
+
+                    <td>
+                        {{ item.total }}
+                    </td>
+
+                </tr>
+
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="2"
+                        class="empty"
+                    >
+                        No organization data available.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 
 </div>
 
 
+<!-- =====================================================
+     DJANGO DATA FOR CHARTS
+====================================================== -->
 
-        <!-- =========================
-             TRIPS BY STATUS TABLE
-        ========================== -->
+{{ trips_by_status|json_script:"trips-by-status-data" }}
 
-        <div class="section">
+{{ trips_by_route|json_script:"trips-by-route-data" }}
 
-            <h2>
-                Trip Status Details
-            </h2>
+{{ trips_by_organization|json_script:"trips-by-organization-data" }}
 
+{{ trips_by_date|json_script:"trips-by-date-data" }}
 
-            <table>
 
-                <thead>
+<!-- =====================================================
+     CHART JAVASCRIPT
+====================================================== -->
 
-                    <tr>
+<script>
 
-                        <th>
-                            Status
-                        </th>
 
-                        <th>
-                            Number of Trips
-                        </th>
+/* =====================================================
+   GET DATA FROM DJANGO
+====================================================== */
 
-                    </tr>
+const tripsByStatus = JSON.parse(
+    document.getElementById(
+        "trips-by-status-data"
+    ).textContent
+);
 
-                </thead>
 
+const tripsByRoute = JSON.parse(
+    document.getElementById(
+        "trips-by-route-data"
+    ).textContent
+);
 
-                <tbody>
 
-                    {% for item in trips_by_status %}
+const tripsByOrganization = JSON.parse(
+    document.getElementById(
+        "trips-by-organization-data"
+    ).textContent
+);
 
-                    <tr>
 
-                        <td>
-                            {{ item.status }}
-                        </td>
+const tripsByDate = JSON.parse(
+    document.getElementById(
+        "trips-by-date-data"
+    ).textContent
+);
 
-                        <td>
-                            {{ item.total }}
-                        </td>
 
-                    </tr>
 
-                    {% empty %}
+/* =====================================================
+   TRIPS BY STATUS
+====================================================== */
 
-                    <tr>
+new Chart(
 
-                        <td
-                            colspan="2"
-                            class="empty"
-                        >
-                            No trip data available.
-                        </td>
+    document.getElementById(
+        "tripsStatusChart"
+    ),
 
-                    </tr>
+    {
 
-                    {% endfor %}
+        type: "doughnut",
 
-                </tbody>
+        data: {
 
-            </table>
-
-        </div>
-
-
-
-        <!-- =========================
-             TRIPS BY ROUTE TABLE
-        ========================== -->
-
-        <div class="section">
-
-            <h2>
-                Trip Details by Route
-            </h2>
-
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Route
-                        </th>
-
-                        <th>
-                            Origin
-                        </th>
-
-                        <th>
-                            Destination
-                        </th>
-
-                        <th>
-                            Number of Trips
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-                    {% for item in trips_by_route %}
-
-                    <tr>
-
-                        <td>
-                            {{ item.route__name }}
-                        </td>
-
-                        <td>
-                            {{ item.route__origin }}
-                        </td>
-
-                        <td>
-                            {{ item.route__destination }}
-                        </td>
-
-                        <td>
-                            {{ item.total }}
-                        </td>
-
-                    </tr>
-
-                    {% empty %}
-
-                    <tr>
-
-                        <td
-                            colspan="4"
-                            class="empty"
-                        >
-                            No route data available.
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-
-
-        <!-- =========================
-             TRIPS BY ORGANIZATION
-        ========================== -->
-
-        <div class="section">
-
-            <h2>
-                Trip Details by Organization
-            </h2>
-
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Organization
-                        </th>
-
-                        <th>
-                            Number of Trips
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-                    {% for item in trips_by_organization %}
-
-                    <tr>
-
-                        <td>
-                            {{ item.organization__name }}
-                        </td>
-
-                        <td>
-                            {{ item.total }}
-                        </td>
-
-                    </tr>
-
-                    {% empty %}
-
-                    <tr>
-
-                        <td
-                            colspan="2"
-                            class="empty"
-                        >
-                            No organization data available.
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================
-         DJANGO JSON DATA
-    ========================== -->
-
-    {{ trips_by_status|json_script:"trips-by-status-data" }}
-
-    {{ trips_by_route|json_script:"trips-by-route-data" }}
-
-    {{ trips_by_organization|json_script:"trips-by-organization-data" }}
-
-
-
-    <!-- =========================
-         CHART JAVASCRIPT
-    ========================== -->
-
-    <script>
-
-
-        /*
-        --------------------------------
-        GET DATA FROM DJANGO
-        --------------------------------
-        */
-
-        const tripsByStatus =
-            JSON.parse(
-                document.getElementById(
-                    "trips-by-status-data"
-                ).textContent
-            );
-        
-        const tripsByDate =
-            JSON.parse(
-                document.getElementById(
-                    "trips-by-date-data"
-                ).textContent
-            );
-
-        const tripsByRoute =
-            JSON.parse(
-                document.getElementById(
-                    "trips-by-route-data"
-                ).textContent
-            );
-
-
-        const tripsByOrganization =
-            JSON.parse(
-                document.getElementById(
-                    "trips-by-organization-data"
-                ).textContent
-            );
-
-
-
-        /*
-        --------------------------------
-        TRIPS BY STATUS
-        --------------------------------
-        */
-
-        new Chart(
-
-            document.getElementById(
-                "tripsStatusChart"
+            labels: tripsByStatus.map(
+                item => item.status
             ),
 
-            {
+            datasets: [
 
-                type: "doughnut",
+                {
 
-                data: {
+                    label: "Trips",
 
-                    labels:
-                        tripsByStatus.map(
-                            item => item.status
-                        ),
+                    data: tripsByStatus.map(
+                        item => item.total
+                    )
 
-                    datasets: [
+                }
 
-                        {
+            ]
 
-                            label: "Trips",
+        },
 
-                            data:
-                                tripsByStatus.map(
-                                    item => item.total
-                                )
+        options: {
 
-                        }
+            responsive: true,
 
-                    ]
+            maintainAspectRatio: false,
 
-                },
+            plugins: {
 
-                options: {
+                legend: {
 
-                    responsive: true,
-
-                    maintainAspectRatio: false
+                    position: "bottom"
 
                 }
 
             }
 
-        );
+        }
+
+    }
+
+);
 
 
 
-        /*
-        --------------------------------
-        TRIPS BY ROUTE
-        --------------------------------
-        */
+/* =====================================================
+   TRIPS BY ROUTE
+====================================================== */
 
-        new Chart(
+new Chart(
 
-            document.getElementById(
-                "tripsRouteChart"
+    document.getElementById(
+        "tripsRouteChart"
+    ),
+
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: tripsByRoute.map(
+                item => item.route__name
             ),
 
-            {
+            datasets: [
 
-                type: "bar",
+                {
 
-                data: {
+                    label: "Number of Trips",
 
-                    labels:
-                        tripsByRoute.map(
-                            item => item.route__name
-                        ),
+                    data: tripsByRoute.map(
+                        item => item.total
+                    )
 
-                    datasets: [
+                }
 
-                        {
+            ]
 
-                            label: "Number of Trips",
+        },
 
-                            data:
-                                tripsByRoute.map(
-                                    item => item.total
-                                )
+        options: {
 
-                        }
+            responsive: true,
 
-                    ]
+            maintainAspectRatio: false,
 
-                },
+            scales: {
 
-                options: {
+                y: {
 
-                    responsive: true,
+                    beginAtZero: true,
 
-                    maintainAspectRatio: false,
+                    ticks: {
 
-                    scales: {
-
-                        y: {
-
-                            beginAtZero: true,
-
-                            ticks: {
-
-                                precision: 0
-
-                            }
-
-                        }
+                        precision: 0
 
                     }
 
@@ -1023,70 +750,65 @@
 
             }
 
-        );
+        }
+
+    }
+
+);
 
 
 
-        /*
-        --------------------------------
-        TRIPS BY ORGANIZATION
-        --------------------------------
-        */
+/* =====================================================
+   TRIPS BY ORGANIZATION
+====================================================== */
 
-        new Chart(
+new Chart(
 
-            document.getElementById(
-                "tripsOrganizationChart"
+    document.getElementById(
+        "tripsOrganizationChart"
+    ),
+
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: tripsByOrganization.map(
+                item => item.organization__name
             ),
 
-            {
+            datasets: [
 
-                type: "bar",
+                {
 
-                data: {
+                    label: "Number of Trips",
 
-                    labels:
-                        tripsByOrganization.map(
-                            item =>
-                                item.organization__name
-                        ),
+                    data: tripsByOrganization.map(
+                        item => item.total
+                    )
 
-                    datasets: [
+                }
 
-                        {
+            ]
 
-                            label: "Number of Trips",
+        },
 
-                            data:
-                                tripsByOrganization.map(
-                                    item => item.total
-                                )
+        options: {
 
-                        }
+            responsive: true,
 
-                    ]
+            maintainAspectRatio: false,
 
-                },
+            scales: {
 
-                options: {
+                y: {
 
-                    responsive: true,
+                    beginAtZero: true,
 
-                    maintainAspectRatio: false,
+                    ticks: {
 
-                    scales: {
-
-                        y: {
-
-                            beginAtZero: true,
-
-                            ticks: {
-
-                                precision: 0
-
-                            }
-
-                        }
+                        precision: 0
 
                     }
 
@@ -1094,20 +816,17 @@
 
             }
 
-        );
+        }
 
-    </script>
+    }
+
+);
 
 
-</body>
 
-</html>
-
-/*
---------------------------------
-TRIPS BY DATE
---------------------------------
-*/
+/* =====================================================
+   TRIPS BY DATE
+====================================================== */
 
 new Chart(
 
@@ -1121,10 +840,9 @@ new Chart(
 
         data: {
 
-            labels:
-                tripsByDate.map(
-                    item => item.trip_date
-                ),
+            labels: tripsByDate.map(
+                item => item.trip_date
+            ),
 
             datasets: [
 
@@ -1132,10 +850,9 @@ new Chart(
 
                     label: "Number of Trips",
 
-                    data:
-                        tripsByDate.map(
-                            item => item.total
-                        ),
+                    data: tripsByDate.map(
+                        item => item.total
+                    ),
 
                     tension: 0.3
 
@@ -1172,3 +889,11 @@ new Chart(
     }
 
 );
+
+
+</script>
+
+
+</body>
+
+</html>

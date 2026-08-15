@@ -1,0 +1,258 @@
+/* =========================================
+   ABIA TRANSIT - ANALYTICS DASHBOARD
+========================================= */
+
+.analytics-page {
+    padding: 30px;
+    background: #f5f7fb;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.analytics-title h1 {
+    margin: 0;
+    color: #172033;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.analytics-title p {
+    margin: 8px 0 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   PERIOD FILTER
+========================================= */
+
+.period-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.period-filter label {
+    color: #4a5568;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.period-filter select {
+    padding: 10px 14px;
+    border: 1px solid #d9dee8;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #172033;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.period-filter select:focus {
+    border-color: #c62828;
+}
+
+
+/* =========================================
+   ANALYTICS CARDS
+========================================= */
+
+.analytics-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.analytics-card {
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e5e9f2;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+.analytics-card-title {
+    margin-bottom: 10px;
+    color: #718096;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.analytics-card-value {
+    color: #172033;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.analytics-card-subtitle {
+    margin-top: 8px;
+    color: #8a94a6;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   CHART GRID
+========================================= */
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.analytics-chart-card {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e9f2;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+.analytics-chart-card.full-width {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================
+   CHART TITLES
+========================================= */
+
+.chart-title {
+    margin: 0 0 20px;
+    color: #172033;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   CHART CONTAINER
+========================================= */
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 320px;
+}
+
+
+/* =========================================
+   EMPTY DATA
+========================================= */
+
+.empty-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 320px;
+    color: #8a94a6;
+    text-align: center;
+}
+
+
+/* =========================================
+   HOVER EFFECT
+========================================= */
+
+.analytics-card,
+.analytics-chart-card {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.analytics-card:hover,
+.analytics-chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .analytics-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .analytics-chart-card.full-width {
+        grid-column: auto;
+    }
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+
+    .analytics-page {
+        padding: 18px;
+    }
+
+    .analytics-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .analytics-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .analytics-title h1 {
+        font-size: 24px;
+    }
+
+    .period-filter {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .period-filter select {
+        flex: 1;
+    }
+
+    .analytics-card {
+        padding: 18px;
+    }
+
+    .analytics-card-value {
+        font-size: 26px;
+    }
+
+    .analytics-chart-card {
+        padding: 18px;
+    }
+
+    .chart-container {
+        height: 280px;
+    }
+}

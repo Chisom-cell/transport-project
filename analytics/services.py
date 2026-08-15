@@ -12,8 +12,12 @@ from transport.models import (
 )
 
 
+# =========================================================
+# ROUTE ANALYTICS
+# =========================================================
+
 def get_total_routes():
-    """Return the total number of routes in the system."""
+    """Return the total number of routes."""
     return Route.objects.count()
 
 
@@ -24,8 +28,12 @@ def get_active_routes():
     ).count()
 
 
+# =========================================================
+# BUS STOP ANALYTICS
+# =========================================================
+
 def get_total_bus_stops():
-    """Return the total number of bus stops in the system."""
+    """Return the total number of bus stops."""
     return BusStop.objects.count()
 
 
@@ -36,8 +44,12 @@ def get_active_bus_stops():
     ).count()
 
 
+# =========================================================
+# VEHICLE ANALYTICS
+# =========================================================
+
 def get_total_vehicles():
-    """Return the total number of vehicles in the system."""
+    """Return the total number of vehicles."""
     return Vehicle.objects.count()
 
 
@@ -55,13 +67,17 @@ def get_maintenance_vehicles():
     ).count()
 
 
+# =========================================================
+# TRIP ANALYTICS
+# =========================================================
+
 def get_total_trips():
-    """Return the total number of trips in the system."""
+    """Return the total number of trips."""
     return Trip.objects.count()
 
 
 def get_trips_by_status():
-    """Return the number of trips grouped by status."""
+    """Return trips grouped by status."""
     return (
         Trip.objects
         .values("status")
@@ -71,7 +87,7 @@ def get_trips_by_status():
 
 
 def get_trips_by_route():
-    """Return the number of trips grouped by route."""
+    """Return trips grouped by route."""
     return (
         Trip.objects
         .values(
@@ -85,7 +101,7 @@ def get_trips_by_route():
 
 
 def get_trips_by_organization():
-    """Return the number of trips grouped by organization."""
+    """Return trips grouped by organization."""
     return (
         Trip.objects
         .values("organization__name")
@@ -95,32 +111,43 @@ def get_trips_by_organization():
 
 
 def get_trips_by_date():
-    """Return the number of trips grouped by date."""
+    """Return trips grouped by date."""
     return (
         Trip.objects
         .annotate(
-            trip_date=TruncDate("departure_time")
+            trip_date=TruncDate(
+                "departure_time"
+            )
         )
         .values("trip_date")
-        .annotate(total=Count("id"))
+        .annotate(
+            total=Count("id")
+        )
         .order_by("trip_date")
     )
 
 
-def get_trips_by_date_range(start_date=None, end_date=None):
+# =========================================================
+# DATE RANGE
+# =========================================================
+
+def get_trips_queryset_by_date_range(
+    start_date=None,
+    end_date=None,
+):
     """
-    Return trips grouped by date within
-    a selected date range.
+    Return a Trip queryset filtered by
+    the selected date range.
     """
 
     queryset = Trip.objects.all()
 
-    # Start date
     if start_date:
+
         start_datetime = timezone.make_aware(
             datetime.combine(
                 start_date,
-                time.min
+                time.min,
             )
         )
 
@@ -128,12 +155,12 @@ def get_trips_by_date_range(start_date=None, end_date=None):
             departure_time__gte=start_datetime
         )
 
-    # End date
     if end_date:
+
         end_datetime = timezone.make_aware(
             datetime.combine(
                 end_date,
-                time.max
+                time.max,
             )
         )
 
@@ -141,12 +168,95 @@ def get_trips_by_date_range(start_date=None, end_date=None):
             departure_time__lte=end_datetime
         )
 
+    return queryset
+
+
+# =========================================================
+# FILTERED TRIP ANALYTICS
+# =========================================================
+
+def get_trips_by_status_range(
+    start_date=None,
+    end_date=None,
+):
+    """Return trips by status within a date range."""
+
+    queryset = get_trips_queryset_by_date_range(
+        start_date,
+        end_date,
+    )
+
+    return (
+        queryset
+        .values("status")
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )
+
+
+def get_trips_by_route_range(
+    start_date=None,
+    end_date=None,
+):
+    """Return trips by route within a date range."""
+
+    queryset = get_trips_queryset_by_date_range(
+        start_date,
+        end_date,
+    )
+
+    return (
+        queryset
+        .values(
+            "route__name",
+            "route__origin",
+            "route__destination",
+        )
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )
+
+
+def get_trips_by_organization_range(
+    start_date=None,
+    end_date=None,
+):
+    """Return trips by organization within a date range."""
+
+    queryset = get_trips_queryset_by_date_range(
+        start_date,
+        end_date,
+    )
+
+    return (
+        queryset
+        .values("organization__name")
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )
+
+
+def get_trips_by_date_range(
+    start_date=None,
+    end_date=None,
+):
+    """Return trips grouped by date within a date range."""
+
+    queryset = get_trips_queryset_by_date_range(
+        start_date,
+        end_date,
+    )
+
     return (
         queryset
         .annotate(
-            trip_date=TruncDate("departure_time")
+            trip_date=TruncDate(
+                "departure_time"
+            )
         )
         .values("trip_date")
-        .annotate(total=Count("id"))
+        .annotate(
+            total=Count("id")
+        )
         .order_by("trip_date")
     )
