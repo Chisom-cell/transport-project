@@ -1,10 +1,5 @@
-from django.db import models
-
-# Create your models here.
-
-from django.db import models
-
 from django.conf import settings
+from django.db import models
 
 
 class Organization(models.Model):
@@ -132,6 +127,10 @@ class Vehicle(models.Model):
         choices=Status.choices,
         default=Status.ACTIVE,
     )
+    
+    maintenance_note = models.TextField(
+        blank=True,
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -258,6 +257,36 @@ class Trip(models.Model):
     def __str__(self):
         return f"{self.route.name} - {self.departure_time:%Y-%m-%d %H:%M}"
     
+class FareBand(models.Model):
+    min_distance_km = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+    )
     
-    
+    max_distance_km = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+    )
 
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+    )
+    
+    created_at = models.DateTimeField(
+      auto_now_add=True,  
+    )
+    
+    class Meta:
+        ordering = ["min_distance_km"]
+        
+    def __str__ (self):
+        return(
+            f"{self.min_distance_km} - "
+            f"{self.max_distance_km} - "
+            f"₦{self.amount}"
+        )

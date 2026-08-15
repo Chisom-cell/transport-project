@@ -1,55 +1,42 @@
-from django.db import transaction
 from django.core.exceptions import ValidationError
 
-from bookings.models import Booking
-
-
-@transaction.atomic
-def create_booking(
-    passenger,
+def validate_trip_stops(
     trip,
     boarding_stop,
     destination_stop,
-    fare,
-    booking_reference,
 ):
-    if trip.available_capacity <= 0:
-        raise ValidationError("This trip is full.")
-
-    if trip.status in ["CANCELLED", "ARRIVED"]:
-        raise ValidationError(
-            "This trip is no longer available for booking."
-        )
-
-    route_stops = trip.route.route_stops.all()
-
-    valid_stop_ids = route_stops.values_list(
-        "bus_stop_id",
-        flat=True,
+    
+    """ 
+    Validate that both stops belong to the trip's route and that the destination comes after the boarding stop.
+    """
+    
+    boarding_route_stop = (
+        trip.route.route_stops.filter(bus_stop=boarding_stop).first()
     )
-
-    if boarding_stop.id not in valid_stop_ids:
+    
+    destination_route_stop = (
+        trip.route.route_stops.filter(bus_stop=destination_stop).first()
+    )
+    
+    if boarding_route_stop is None:
         raise ValidationError(
             "The boarding stop is not part of this route."
         )
-
-    if destination_stop.id not in valid_stop_ids:
+        
+    if destination_route_stop is None:
         raise ValidationError(
             "The destination stop is not part of this route."
         )
-
-    if boarding_stop.id == destination_stop.id:
+        
+    if (
+        boarding_route_stop.stop_order >= destination_route_stop.stop_order
+    ):
         raise ValidationError(
-            "Boarding and destination stops cannot be the same."
+            "The destination stop must come after the boarding stop."
         )
-
-    booking = Booking.objects.create(
-        passenger=passenger,
-        trip=trip,
-        boarding_stop=boarding_stop,
-        destination_stop=destination_stop,
-        fare=fare,
-        booking_reference=booking_reference,
-    )
-
-    return booking
+        
+    return True 
+    
+    
+    
+    

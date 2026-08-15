@@ -20,7 +20,6 @@ Book Trip | Abia Transit
                         Book Trip
                     </h2>
 
-
                     <!-- Trip Information -->
 
                     <h4>
@@ -39,11 +38,10 @@ Book Trip | Abia Transit
 
                     <p>
                         <strong>Departure:</strong>
-                        {{ trip.departure_time }}
+                        {{ trip.departure_time|date:"M d, Y - h:i A" }}
                     </p>
 
                     <hr>
-
 
                     <!-- Vehicle Information -->
 
@@ -82,13 +80,12 @@ Book Trip | Abia Transit
 
                     <hr>
 
-
-                    <!-- Error Message -->
-
-                    {% if error %}
+                    {% if form.non_field_errors %}
 
                         <div class="alert alert-danger">
-                            {{ error }}
+
+                            {{ form.non_field_errors }}
+
                         </div>
 
                     {% endif %}
@@ -97,9 +94,8 @@ Book Trip | Abia Transit
                     {% if available_capacity > 0 %}
 
                         <h5 class="mb-3">
-                            Select Your Stops
+                            Select Your Journey
                         </h5>
-
 
                         <form
                             method="POST"
@@ -114,34 +110,21 @@ Book Trip | Abia Transit
                             <div class="mb-3">
 
                                 <label
-                                    for="boarding_stop_id"
+                                    for="{{ form.boarding_stop.id_for_label }}"
                                     class="form-label"
                                 >
                                     Boarding Stop
                                 </label>
 
-                                <select
-                                    name="boarding_stop_id"
-                                    id="boarding_stop_id"
-                                    class="form-select"
-                                    required
-                                >
+                                {{ form.boarding_stop }}
 
-                                    <option value="">
-                                        Select boarding stop
-                                    </option>
+                                {% if form.boarding_stop.errors %}
 
-                                    {% for route_stop in route_stops %}
+                                    <div class="text-danger mt-1">
+                                        {{ form.boarding_stop.errors }}
+                                    </div>
 
-                                        <option
-                                            value="{{ route_stop.bus_stop.id }}"
-                                        >
-                                            {{ route_stop.bus_stop.name }}
-                                        </option>
-
-                                    {% endfor %}
-
-                                </select>
+                                {% endif %}
 
                             </div>
 
@@ -151,34 +134,63 @@ Book Trip | Abia Transit
                             <div class="mb-3">
 
                                 <label
-                                    for="destination_stop_id"
+                                    for="{{ form.destination_stop.id_for_label }}"
                                     class="form-label"
                                 >
                                     Destination Stop
                                 </label>
 
-                                <select
-                                    name="destination_stop_id"
-                                    id="destination_stop_id"
-                                    class="form-select"
-                                    required
+                                {{ form.destination_stop }}
+
+                                {% if form.destination_stop.errors %}
+
+                                    <div class="text-danger mt-1">
+                                        {{ form.destination_stop.errors }}
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- Seat -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    for="{{ form.seat.id_for_label }}"
+                                    class="form-label"
                                 >
+                                    Select Seat
+                                </label>
 
-                                    <option value="">
-                                        Select destination stop
-                                    </option>
+                                {{ form.seat }}
 
-                                    {% for route_stop in route_stops %}
+                                {% if form.seat.errors %}
 
-                                        <option
-                                            value="{{ route_stop.bus_stop.id }}"
-                                        >
-                                            {{ route_stop.bus_stop.name }}
-                                        </option>
+                                    <div class="text-danger mt-1">
+                                        {{ form.seat.errors }}
+                                    </div>
 
-                                    {% endfor %}
+                                {% endif %}
 
-                                </select>
+                                <small class="text-muted">
+                                    Only available seats for this vehicle
+                                    are shown.
+                                </small>
+
+                            </div>
+
+
+                            <!-- Fare Information -->
+
+                            <div class="alert alert-info">
+
+                                <strong>Fare:</strong>
+
+                                The fare will be calculated automatically
+                                based on the distance between your boarding
+                                and destination stops.
 
                             </div>
 
@@ -186,6 +198,9 @@ Book Trip | Abia Transit
                             <button
                                 type="submit"
                                 class="btn btn-primary"
+                                {% if available_capacity <= 0 %}
+                                    disabled
+                                {% endif %}
                             >
                                 Confirm Booking
                             </button>

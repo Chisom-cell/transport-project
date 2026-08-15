@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ValidationError
-
+from .forms import BookingForm
 from transport.models import Trip, BusStop
 from .models import Booking
 from .services import get_available_capacity, create_booking
@@ -16,49 +16,61 @@ def seat_selection(request, trip_id):
     have to change the existing URL configuration.
     There are no numbered seats.
     """
-
-    trip = get_object_or_404(Trip, id=trip_id)
-
-    available_capacity = get_available_capacity(trip)
-
-    # Get the stops belonging to this trip's route
-    route_stops = trip.route.route_stops.select_related(
-        "bus_stop"
-    ).order_by("stop_order")
+    trip = get_object_or_404(
+        Trip.objects.select_related(
+            "route",
+            "vehicle",
+        ),
+        id=trip_id,
+    )
+    
+    form = BookingForm(trip=trip)
 
     return render(
         request,
         "bookings/seat_selection.html",
         {
             "trip": trip,
-            "available_capacity": available_capacity,
-            "route_stops": route_stops,
+            "form": form,
+            "available_capacity": get_available_capacity(trip),
         },
     )
 
-
 @login_required
 def confirm_booking(request, trip_id):
-    trip = get_object_or_404(Trip, id=trip_id)
 
-    if request.method == "POST":
+    trip = get_object_or_404(
+        Trip.objects.select_related(
+            "route",
+            "vehicle",
+        ),
+        id=trip_id,
+    )
 
-        boarding_stop = get_object_or_404(
-            BusStop,
-            id=request.POST.get("boarding_stop_id"),
+    if request.method != "POST":
+        return redirect(
+            "bookings:seat_selection",
+            trip_id=trip.id,
         )
 
-        destination_stop = get_object_or_404(
-            BusStop,
-            id=request.POST.get("destination_stop_id"),
-        )
+    form = BookingForm(
+        request.POST,
+        trip=trip,
+    )
+
+    if form.is_valid():
 
         try:
             booking = create_booking(
                 passenger=request.user,
                 trip=trip,
-                boarding_stop=boarding_stop,
-                destination_stop=destination_stop,
+                boarding_stop=form.cleaned_data[
+                    "boarding_stop"
+                ],
+                destination_stop=form.cleaned_data[
+                    "destination_stop"
+                ],
+                seat=form.cleaned_data["seat"],
             )
 
             return redirect(
@@ -67,22 +79,21 @@ def confirm_booking(request, trip_id):
             )
 
         except ValidationError as e:
-            route_stops = trip.route.route_stops.select_related(
-                "bus_stop"
-            ).order_by("stop_order")
 
-            return render(
-                request,
-                "bookings/seat_selection.html",
-                {
-                    "trip": trip,
-                    "available_capacity": get_available_capacity(trip),
-                    "route_stops": route_stops,
-                    "error": str(e),
-                },
+            form.add_error(
+                None,
+                str(e),
             )
 
-    return redirect("seat_selection", trip_id=trip.id)
+    return render(
+        request,
+        "bookings/seat_selection.html",
+        {
+            "trip": trip,
+            "form": form,
+            "available_capacity": get_available_capacity(trip),
+        },
+    )
 
 
 @login_required

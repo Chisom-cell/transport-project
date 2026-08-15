@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from transport.models import Organization
 
 
 class User(AbstractUser):
@@ -18,6 +19,15 @@ class User(AbstractUser):
         max_length=30,
         choices=Role.choices,
         default=Role.PASSENGER,
+    )
+    
+    #organinsation the user belongs to.
+    organisation = models.ForeignKey(
+        Organization,
+        on_delete=models.PROTECT,
+        related_name="users",
+        null=True,
+        blank=True,
     )
 
     # Verification Identification Fields
