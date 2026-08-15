@@ -1,6 +1,9 @@
 from datetime import timedelta
 
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import (
+    login_required,
+    user_passes_test,
+)
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -13,18 +16,21 @@ from .services import (
     get_active_vehicles,
     get_maintenance_vehicles,
     get_total_trips,
-    get_trips_by_status,
-    get_trips_by_route,
-    get_trips_by_organization,
-    get_trips_by_date,
+    get_trips_by_status_range,
+    get_trips_by_route_range,
+    get_trips_by_organization_range,
     get_trips_by_date_range,
 )
 
 
+# =========================================================
+# ANALYTICS ACCESS
+# =========================================================
+
 def is_analytics_user(user):
     """
-    Allow only users with administrative
-    analytics roles to access Analytics.
+    Allow only Super Admin and Government Admin
+    users to access Analytics.
     """
 
     return (
@@ -36,47 +42,52 @@ def is_analytics_user(user):
     )
 
 
-
+# =========================================================
+# ANALYTICS DASHBOARD
+# =========================================================
 
 @login_required
 @user_passes_test(is_analytics_user)
 def analytics_dashboard(request):
-    """
-    Render the analytics dashboard with
-    transport statistics and date filtering.
-    """
-
-    # --------------------------------
-    # CURRENT DATE
-    # --------------------------------
 
     today = timezone.localdate()
 
-    # --------------------------------
-    # SELECTED PERIOD
-    # --------------------------------
+    # -----------------------------------------------------
+    # SELECT PERIOD
+    # -----------------------------------------------------
 
     selected_period = request.GET.get(
         "period",
         "month"
     )
 
-    # --------------------------------
-    # DETERMINE DATE RANGE
-    # --------------------------------
+    # -----------------------------------------------------
+    # TODAY
+    # -----------------------------------------------------
 
     if selected_period == "today":
 
         start_date = today
         end_date = today
 
+    # -----------------------------------------------------
+    # THIS WEEK
+    # -----------------------------------------------------
+
     elif selected_period == "week":
 
-        start_date = today - timedelta(
-            days=today.weekday()
+        start_date = (
+            today
+            - timedelta(
+                days=today.weekday()
+            )
         )
 
         end_date = today
+
+    # -----------------------------------------------------
+    # THIS MONTH
+    # -----------------------------------------------------
 
     else:
 
@@ -88,40 +99,41 @@ def analytics_dashboard(request):
 
         end_date = today
 
-    # --------------------------------
-    # GET FILTERED TRIP DATA
-    # --------------------------------
+    # -----------------------------------------------------
+    # FILTERED ANALYTICS
+    # -----------------------------------------------------
 
-    filtered_trips_by_date = list(
+    trips_by_status = list(
+        get_trips_by_status_range(
+            start_date=start_date,
+            end_date=end_date,
+        )
+    )
+
+    trips_by_route = list(
+        get_trips_by_route_range(
+            start_date=start_date,
+            end_date=end_date,
+        )
+    )
+
+    trips_by_organization = list(
+        get_trips_by_organization_range(
+            start_date=start_date,
+            end_date=end_date,
+        )
+    )
+
+    trips_by_date = list(
         get_trips_by_date_range(
             start_date=start_date,
             end_date=end_date,
         )
     )
 
-    # --------------------------------
-    # GET ANALYTICS DATA
-    # --------------------------------
-
-    trips_by_status = list(
-        get_trips_by_status()
-    )
-
-    trips_by_route = list(
-        get_trips_by_route()
-    )
-
-    trips_by_organization = list(
-        get_trips_by_organization()
-    )
-
-    trips_by_date = list(
-        get_trips_by_date()
-    )
-
-    # --------------------------------
+    # -----------------------------------------------------
     # DASHBOARD CONTEXT
-    # --------------------------------
+    # -----------------------------------------------------
 
     context = {
 
@@ -140,10 +152,13 @@ def analytics_dashboard(request):
             get_maintenance_vehicles()
         ),
 
-        # Trips
-        "total_trips": get_total_trips(),
+        # Total trips for selected period
+        "total_trips": sum(
+            item["total"]
+            for item in trips_by_date
+        ),
 
-        # Analytics
+        # Filtered analytics
         "trips_by_status": trips_by_status,
         "trips_by_route": trips_by_route,
         "trips_by_organization": (
@@ -151,20 +166,11 @@ def analytics_dashboard(request):
         ),
         "trips_by_date": trips_by_date,
 
-        # Filtered date data
-        "filtered_trips_by_date": (
-            filtered_trips_by_date
-        ),
-
         # Filter information
         "selected_period": selected_period,
         "start_date": start_date,
         "end_date": end_date,
     }
-
-    # --------------------------------
-    # RENDER PAGE
-    # --------------------------------
 
     return render(
         request,
