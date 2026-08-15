@@ -149,3 +149,4 @@ MAILERS = {
 }
 
 
+LOGIN_URL = "accounts:login"

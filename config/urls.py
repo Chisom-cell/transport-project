@@ -22,5 +22,8 @@ urlpatterns = [
 
     # Complaints
     path("complaints/", include("complaints.urls")),
+    
+    # Analytics
+    path("analytics/", include("analytics.urls")),
 ]
 

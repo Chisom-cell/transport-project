@@ -31,28 +31,63 @@ def register(request):
 
 
 def user_login(request):
-    """Logs in an existing user and redirects them to their profile."""
+    """Log in a user and redirect according to their role."""
+
     if request.user.is_authenticated:
+
+        if request.user.role in [
+            request.user.Role.SUPER_ADMIN,
+            request.user.Role.GOVERNMENT_ADMIN,
+        ]:
+            return redirect("analytics:dashboard")
+
         return redirect("accounts:dashboard")
 
     if request.method == "POST":
+
         username = request.POST.get("username")
         password = request.POST.get("password")
 
         user = authenticate(
             request,
             username=username,
-            password=password
+            password=password,
         )
 
         if user is not None:
+
             login(request, user)
-            messages.success(request, "Login successful.")
-            return redirect("accounts:dashboard")
 
-        messages.error(request, "Invalid username or password.")
+            messages.success(
+                request,
+                "Login successful."
+            )
 
-    return render(request, "accounts/login.html")
+            # -----------------------------
+            # ROLE-BASED REDIRECT
+            # -----------------------------
+
+            if user.role in [
+                user.Role.SUPER_ADMIN,
+                user.Role.GOVERNMENT_ADMIN,
+            ]:
+                return redirect(
+                    "analytics:dashboard"
+                )
+
+            return redirect(
+                "accounts:dashboard"
+            )
+
+        messages.error(
+            request,
+            "Invalid username or password."
+        )
+
+    return render(
+        request,
+        "accounts/login.html"
+    )
 
 
 @login_required
