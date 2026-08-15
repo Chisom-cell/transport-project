@@ -99,7 +99,7 @@
 
     <div class="steps">
 
-        <div class="step-card">
+        <a href="{% url 'transport:routes' %}" class="step-card">
 
             <div class="step-number">01</div>
 
@@ -110,10 +110,10 @@
                 for your journey.
             </p>
 
-        </div>
+        </a>
 
 
-        <div class="step-card">
+        <a href="{% url 'transport:routes' %}" class="step-card">
 
             <div class="step-number">02</div>
 
@@ -124,10 +124,10 @@
                 secure your booking.
             </p>
 
-        </div>
+        </a>
 
 
-        <div class="step-card">
+        <a href="{% url 'tracking:list' %}" class="step-card" aria-label="Track your journey" title="Track your journey">
 
             <div class="step-number">03</div>
 
@@ -138,7 +138,7 @@
                 follow your journey.
             </p>
 
-        </div>
+        </a>
 
     </div>
 

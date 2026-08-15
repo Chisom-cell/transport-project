@@ -1,4 +1,4 @@
-{% extends "transport/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
 Routes | Abia Transit
@@ -62,7 +62,7 @@ Routes | Abia Transit
                         </p>
 
                         <a
-                            href="{% url 'transport:trips' route.id %}"
+                            href="{% url 'transport:route_detail' route.id %}"
                             style="
                                 display: inline-block;
                                 margin-top: 20px;
@@ -73,7 +73,7 @@ Routes | Abia Transit
                                 text-decoration: none;
                             "
                         >
-                            View Trips
+                            View Route
                         </a>
 
                     </div>

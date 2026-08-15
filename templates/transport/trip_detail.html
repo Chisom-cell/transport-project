@@ -1,4 +1,4 @@
-{% extends "transport/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
     Trip Details | Abia Transit
@@ -140,23 +140,22 @@
             Reserve your place on this trip.
         </p>
 
+    {% if trip.status == "SCHEDULED" or trip.status == "BOARDING" %}
 
-        {% if trip.available_capacity > 0 %}
+    <a
+        href="{% url 'transport:book_trip' trip.id %}"
+        class="book-button"
+    >
+        Book This Trip
+    </a>
 
-            <a
-                href="{% url 'transport:book_trip' trip.id %}"
-                class="book-button"
-            >
-                Book This Trip
-            </a>
+    {% else %}
 
-        {% else %}
+    <div class="full">
+        Booking unavailable
+    </div>
 
-            <div class="full">
-                This trip is full
-            </div>
-
-        {% endif %}
+{% endif %}
 
     </aside>
 
