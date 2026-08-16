@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from datetime import date
-from .forms import BookingForm
+
 from .models import Trip, Route
 from bookings.models import Booking
 from accounts.forms import PassengerRegistrationForm

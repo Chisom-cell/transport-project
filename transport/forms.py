@@ -1,50 +1,115 @@
 from django import forms
 
-from bookings.models import Booking
-from transport.models import BusStop
-BusStop
+from .models import (
+    Organization,
+    BusStop,
+    Route,
+    RouteStop,
+    Vehicle,
+    DriverProfile,
+    Trip,
+    FareBand,
+)
 
 
-class BookingForm(forms.ModelForm):
+class OrganizationForm(forms.ModelForm):
     class Meta:
-        model = Booking
+        model = Organization
         fields = [
-            "boarding_stop",
-            "destination_stop",
+            "name",
+            "organization_type",
+            "is_active",
+        ]
+
+
+class BusStopForm(forms.ModelForm):
+    class Meta:
+        model = BusStop
+        fields = [
+            "name",
+            "description",
+            "latitude",
+            "longitude",
+            "is_active",
+        ]
+
+
+class RouteForm(forms.ModelForm):
+    class Meta:
+        model = Route
+        fields = [
+            "name",
+            "origin",
+            "destination",
+            "is_active",
+        ]
+
+
+class RouteStopForm(forms.ModelForm):
+    class Meta:
+        model = RouteStop
+        fields = [
+            "route",
+            "bus_stop",
+            "stop_order",
+            "distance_from_origin_km",
+        ]
+
+
+class VehicleForm(forms.ModelForm):
+    class Meta:
+        model = Vehicle
+        fields = [
+            "organization",
+            "vehicle_code",
+            "registration_number",
+            "vehicle_type",
+            "capacity",
+            "status",
+            "maintenance_note",
+        ]
+
+
+class DriverProfileForm(forms.ModelForm):
+    class Meta:
+        model = DriverProfile
+        fields = [
+            "user",
+            "organization",
+            "license_number",
+            "is_active",
+        ]
+
+
+class TripForm(forms.ModelForm):
+    class Meta:
+        model = Trip
+        fields = [
+            "organization",
+            "route",
+            "vehicle",
+            "driver",
+            "departure_time",
+            "status",
+            "current_stop",
         ]
 
         widgets = {
-            "boarding_stop": forms.Select(
+            "departure_time": forms.DateTimeInput(
                 attrs={
-                    "class": "form-control",
-                }
-            ),
-            "destination_stop": forms.Select(
-                attrs={
+                    "type": "datetime-local",
                     "class": "form-control",
                 }
             ),
         }
 
-    def __init__(self, *args, trip=None, **kwargs):
-        super().__init__(*args, **kwargs)
 
-        self.trip = trip
-
-        if trip:
-            route_stops = trip.route.route_stops.select_related(
-                "bus_stop"
-            )
-
-            stops = [
-                (route_stop.bus_stop.id, route_stop.bus_stop.name)
-                for route_stop in route_stops
-            ]
-
-            self.fields["boarding_stop"].choices = [
-                ("", "Select boarding stop")
-            ] + stops
-
-            self.fields["destination_stop"].choices = [
-                ("", "Select destination stop")
-            ] + stops
+class FareBandForm(forms.ModelForm):
+    class Meta:
+        model = FareBand
+        fields = [
+            "min_distance_km",
+            "max_distance_km",
+            "amount",
+            "is_active",
+        ]

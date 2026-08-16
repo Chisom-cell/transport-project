@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'complaints',
     'notifications',
     'tracking',
-    'transport',
+    'transport.apps.TransportConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,3 +1,4 @@
+from accounts.decorators import role_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ValidationError
@@ -8,6 +9,7 @@ from .services import get_available_capacity, create_booking
 
 
 @login_required
+@role_required("PASSENGER")
 def seat_selection(request, trip_id):
     """
     Display a trip booking page.
@@ -37,6 +39,7 @@ def seat_selection(request, trip_id):
     )
 
 @login_required
+@role_required("PASSENGER")
 def confirm_booking(request, trip_id):
 
     trip = get_object_or_404(
@@ -97,6 +100,7 @@ def confirm_booking(request, trip_id):
 
 
 @login_required
+@role_required("PASSENGER")
 def my_bookings(request):
     bookings = Booking.objects.filter(
         passenger=request.user
@@ -112,6 +116,7 @@ def my_bookings(request):
 
 
 @login_required
+@role_required("PASSENGER")
 def booking_detail(request, booking_id):
     booking = get_object_or_404(
         Booking,
@@ -129,6 +134,7 @@ def booking_detail(request, booking_id):
 
 
 @login_required
+@role_required("PASSENGER")
 def cancel_booking(request, booking_id):
     booking = get_object_or_404(
         Booking,
@@ -143,6 +149,6 @@ def cancel_booking(request, booking_id):
         booking.status = Booking.Status.CANCELLED
         booking.save()
 
-    return redirect("my_bookings")
+    return redirect("bookings:my_bookings")
 
 

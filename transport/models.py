@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class Organization(models.Model):
@@ -184,7 +185,6 @@ class DriverProfile(models.Model):
 
     def __str__(self):
         return self.user.get_full_name() or self.user.username
-    
 class Trip(models.Model):
     class Status(models.TextChoices):
         SCHEDULED = "SCHEDULED", "Scheduled"
@@ -236,11 +236,28 @@ class Trip(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def clean(self):
+        errors = {}
+
+        if self.vehicle_id and self.organization_id:
+            if self.vehicle.organization_id != self.organization_id:
+                errors["vehicle"] = (
+                    "The selected vehicle must belong to the trip organization."
+                )
+
+        if self.driver_id and self.organization_id:
+            if self.driver.organization_id != self.organization_id:
+                errors["driver"] = (
+                    "The selected driver must belong to the trip organization."
+                )
+
+        if errors:
+            raise ValidationError(errors)
 
     @property
     def total_capacity(self):
         return self.vehicle.capacity
-    
+
     @property
     def booked_capacity(self):
         return self.bookings.filter(
@@ -256,6 +273,8 @@ class Trip(models.Model):
 
     def __str__(self):
         return f"{self.route.name} - {self.departure_time:%Y-%m-%d %H:%M}"
+    
+    
     
 class FareBand(models.Model):
     min_distance_km = models.DecimalField(

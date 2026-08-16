@@ -1,22 +1,27 @@
-{% extends "transport/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
-Booking Confirmation | Abia Transit
+Booking Details | Abia Transit
 {% endblock %}
 
 {% block content %}
 
 <div class="container mt-4">
 
-    <div class="row justify-content-center">
+```
+<div class="row justify-content-center">
 
-        <div class="col-md-8">
+    <div class="col-md-8">
 
-            <div class="card shadow-sm">
+        <div class="card shadow-sm">
 
-                <div class="card-body">
+            <div class="card-body">
 
-                    <!-- Success Message -->
+                <!-- ================================
+                     BOOKING STATUS MESSAGE
+                ================================= -->
+
+                {% if booking.status == "CONFIRMED" %}
 
                     <h2 class="text-success mb-3">
                         Booking Confirmed
@@ -26,64 +31,56 @@ Booking Confirmation | Abia Transit
                         Your booking has been successfully created.
                     </p>
 
-                    <hr>
+                {% elif booking.status == "CANCELLED" %}
 
-
-                    <!-- Trip Details -->
-
-                    <h4>
-                        Trip Details
-                    </h4>
+                    <h2 class="text-danger mb-3">
+                        Booking Cancelled
+                    </h2>
 
                     <p>
-                        <strong>Route:</strong>
-                        {{ booking.trip.route.name }}
+                        This booking has been cancelled.
                     </p>
+
+                {% elif booking.status == "PENDING" %}
+
+                    <h2 class="text-warning mb-3">
+                        Booking Pending
+                    </h2>
 
                     <p>
-                        <strong>From:</strong>
-                        {{ booking.boarding_stop.name }}
+                        Your booking is currently pending confirmation.
                     </p>
+
+                {% elif booking.status == "COMPLETED" %}
+
+                    <h2 class="text-secondary mb-3">
+                        Trip Completed
+                    </h2>
 
                     <p>
-                        <strong>To:</strong>
-                        {{ booking.destination_stop.name }}
+                        This trip has been completed.
                     </p>
 
-                    <p>
-                        <strong>Departure:</strong>
-                        {{ booking.trip.departure_time }}
-                    </p>
+                {% endif %}
+
+                <hr>
 
 
-                    <hr>
+                <!-- ================================
+                     BOOKING REFERENCE
+                ================================= -->
 
+                <h4>
+                    Booking Information
+                </h4>
 
-                    <!-- Vehicle Details -->
+                <p>
+                    <strong>Booking Reference:</strong>
+                    {{ booking.booking_reference }}
+                </p>
 
-                    <h4>
-                        Vehicle
-                    </h4>
-
-                    <p>
-                        <strong>Vehicle Code:</strong>
-                        {{ booking.trip.vehicle.vehicle_code }}
-                    </p>
-
-                    <p>
-                        <strong>Vehicle Type:</strong>
-                        {{ booking.trip.vehicle.vehicle_type }}
-                    </p>
-
-
-                    <hr>
-
-
-                    <!-- Booking Status -->
-
-                    <h4>
-                        Booking Status
-                    </h4>
+                <p>
+                    <strong>Booking Status:</strong>
 
                     {% if booking.status == "CONFIRMED" %}
 
@@ -110,53 +107,139 @@ Booking Confirmation | Abia Transit
                         </span>
 
                     {% endif %}
+                </p>
+
+                <hr>
 
 
-                    <hr>
+                <!-- ================================
+                     TRIP DETAILS
+                ================================= -->
+
+                <h4>
+                    Trip Details
+                </h4>
+
+                <p>
+                    <strong>Route:</strong>
+                    {{ booking.trip.route.name }}
+                </p>
+
+                <p>
+                    <strong>From:</strong>
+                    {{ booking.boarding_stop.name }}
+                </p>
+
+                <p>
+                    <strong>To:</strong>
+                    {{ booking.destination_stop.name }}
+                </p>
+
+                <p>
+                    <strong>Departure:</strong>
+                    {{ booking.trip.departure_time|date:"M d, Y - h:i A" }}
+                </p>
+
+                <hr>
 
 
-                    <!-- Booking Date -->
+                <!-- ================================
+                     SEAT & FARE
+                ================================= -->
 
-                    <p>
-                        <strong>Booking Date:</strong>
-                        {{ booking.created_at }}
-                    </p>
+                <h4>
+                    Journey Information
+                </h4>
+
+                <p>
+                    <strong>Seat:</strong>
+
+                    {% if booking.seat %}
+                        Seat {{ booking.seat.seat_number }}
+                    {% else %}
+                        Not assigned
+                    {% endif %}
+                </p>
+
+                <p>
+                    <strong>Fare:</strong>
+
+                    {% if booking.fare %}
+                        ₦{{ booking.fare|floatformat:2 }}
+                    {% else %}
+                        Not calculated
+                    {% endif %}
+                </p>
+
+                <hr>
 
 
-                    <!-- Actions -->
+                <!-- ================================
+                     VEHICLE DETAILS
+                ================================= -->
 
-                    <div class="mt-4">
+                <h4>
+                    Vehicle
+                </h4>
 
-                        <a
-                            href="{% url 'bookings:my_bookings' %}"
-                            class="btn btn-primary"
+                <p>
+                    <strong>Vehicle Code:</strong>
+                    {{ booking.trip.vehicle.vehicle_code }}
+                </p>
+
+                <p>
+                    <strong>Vehicle Type:</strong>
+                    {{ booking.trip.vehicle.vehicle_type }}
+                </p>
+
+                <hr>
+
+
+                <!-- ================================
+                     BOOKING DATE
+                ================================= -->
+
+                <p>
+                    <strong>Booking Date:</strong>
+                    {{ booking.created_at|date:"M d, Y - h:i A" }}
+                </p>
+
+
+                <!-- ================================
+                     ACTIONS
+                ================================= -->
+
+                <div class="mt-4">
+
+                    <a
+                        href="{% url 'bookings:my_bookings' %}"
+                        class="btn btn-primary"
+                    >
+                        My Bookings
+                    </a>
+
+
+                    {% if booking.status == "CONFIRMED" %}
+
+                        <form
+                            method="POST"
+                            action="{% url 'bookings:cancel_booking' booking.id %}"
+                            class="d-inline"
                         >
-                            My Bookings
-                        </a>
 
+                            {% csrf_token %}
 
-                        {% if booking.status == "CONFIRMED" %}
-
-                            <form
-                                method="POST"
-                                action="{% url 'bookings:cancel_booking' booking.id %}"
-                                class="d-inline"
+                            <button
+                                type="submit"
+                                class="btn btn-danger"
+                                onclick="return confirm('Are you sure you want to cancel this booking?');"
                             >
+                                Cancel Booking
+                            </button>
 
-                                {% csrf_token %}
+                        </form>
 
-                                <button
-                                    type="submit"
-                                    class="btn btn-danger"
-                                >
-                                    Cancel Booking
-                                </button>
-
-                            </form>
-
-                        {% endif %}
-
-                    </div>
+                    {% endif %}
 
                 </div>
 
@@ -165,6 +248,9 @@ Booking Confirmation | Abia Transit
         </div>
 
     </div>
+
+</div>
+```
 
 </div>
 

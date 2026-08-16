@@ -1,4 +1,3 @@
-from django import forms
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
@@ -7,7 +6,6 @@ from django.contrib.auth.forms import UserCreationForm
 User = get_user_model()
 
 
-# 1. Custom User Creation Form (For "Add User +" in Admin)
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
@@ -16,41 +14,44 @@ class CustomUserCreationForm(UserCreationForm):
             "email",
             "phone",
             "role",
+            "organization",
             "nin",
             "abssin",
             "password1",
             "password2",
         )
 
-# 2. Single Admin Registration for User
+
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
+
     add_form = CustomUserCreationForm
 
-    # Prevents FieldError on non-editable date fields
-    readonly_fields = ("date_joined", "last_login")
+    readonly_fields = (
+        "date_joined",
+        "last_login",
+    )
 
-    # Table columns in admin panel
     list_display = (
         "username",
         "email",
         "phone",
         "role",
+        "organization",
         "is_verified",
         "is_staff",
         "is_active",
         "date_joined",
     )
 
-    # Sidebar filter options
     list_filter = (
         "role",
+        "organization",
         "is_verified",
         "is_staff",
         "is_active",
     )
 
-    # Search bar fields
     search_fields = (
         "username",
         "email",
@@ -59,17 +60,25 @@ class CustomUserAdmin(UserAdmin):
         "phone",
         "nin",
         "abssin",
+        "organization__name",
     )
 
-    # Editing existing user form layout
     fieldsets = UserAdmin.fieldsets + (
         (
             "Transport & Verification Profile",
-            {"fields": ("phone", "role", "nin", "abssin", "is_verified")},
+            {
+                "fields": (
+                    "phone",
+                    "role",
+                    "organization",
+                    "nin",
+                    "abssin",
+                    "is_verified",
+                )
+            },
         ),
     )
 
-    # Adding new user form layout - Define explicitly without using UserAdmin.add_fieldsets
     add_fieldsets = (
         (
             None,
@@ -82,6 +91,7 @@ class CustomUserAdmin(UserAdmin):
                     "password2",
                     "phone",
                     "role",
+                    "organization",
                     "nin",
                     "abssin",
                 ),
@@ -89,8 +99,11 @@ class CustomUserAdmin(UserAdmin):
         ),
     )
 
-    # Bulk actions for quick verification/role updates
-    actions = ["mark_verified", "make_driver", "make_passenger"]
+    actions = [
+        "mark_verified",
+        "make_driver",
+        "make_passenger",
+    ]
 
     @admin.action(description="Mark selected users as Verified")
     def mark_verified(self, request, queryset):

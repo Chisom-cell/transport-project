@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from django.contrib import admin
+
 
 from .models import (
     Organization,
@@ -10,8 +10,10 @@ from .models import (
     Route,
     RouteStop,
     Vehicle,
+    Seat,
     DriverProfile,
-    Trip,   
+    Trip,  
+    FareBand, 
 )
 
 
@@ -73,6 +75,21 @@ class VehicleAdmin(admin.ModelAdmin):
     )
 
 
+@admin.register(Seat)
+class SeatAdmin(admin.ModelAdmin):
+    list_display = (
+        "vehicle",
+        "seat_number",
+    )
+    list_filter = (
+        "vehicle",
+    )
+    search_fields = (
+        "vehicle__vehicle_code",
+    )
+
+
+
 @admin.register(DriverProfile)
 class DriverProfileAdmin(admin.ModelAdmin):
     list_display = (
@@ -114,3 +131,16 @@ class TripAdmin(admin.ModelAdmin):
     ordering = ("-departure_time",)
 
 
+@admin.register(FareBand)
+class FareBandAdmin(admin.ModelAdmin):
+    list_display = (
+        "min_distance_km",
+        "max_distance_km",
+        "amount",
+        "is_active",
+        "created_at",
+    )
+
+    list_filter = ("is_active",)
+
+    ordering = ("min_distance_km",)

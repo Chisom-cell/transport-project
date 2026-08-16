@@ -74,8 +74,8 @@ class Booking(models.Model):
     class Meta:
         ordering = ["-created_at"]
         
-        def __str__ (self):
-            return (
-                f"{self.booking_reference}"
-                f"{self.passenger.username}"
-            )
+    def __str__ (self):
+        return (
+            f"{self.booking_reference}"
+            f"{self.passenger.username}"
+        )

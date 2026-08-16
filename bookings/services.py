@@ -30,19 +30,29 @@ def calculate_trip_distance(
     destination_stop,
 ):
     """
-    Calculate the distance between the boarding and
-    destination stops using the RouteStop records
-    belonging to the trip's route.
+    Calculate the distance between two stops on the trip's route.
+
+    Travel is allowed in either direction.
+
+    Example:
+        Umuahia → Aba
+        Aba → Umuahia
+
+    Both journeys use the absolute distance between
+    the two stops.
     """
 
-    route_stops = trip.route.route_stops.select_related(
-        "bus_stop"
-    ).all()
+    route_stops = (
+        trip.route.route_stops
+        .select_related("bus_stop")
+        .all()
+    )
 
     boarding_route_stop = None
     destination_route_stop = None
 
     for route_stop in route_stops:
+
         if route_stop.bus_stop_id == boarding_stop.id:
             boarding_route_stop = route_stop
 
@@ -59,12 +69,15 @@ def calculate_trip_distance(
             "The destination stop is not part of this route."
         )
 
-    if boarding_route_stop.stop_order >= destination_route_stop.stop_order:
+    if (
+        boarding_route_stop.bus_stop_id
+        == destination_route_stop.bus_stop_id
+    ):
         raise ValidationError(
-            "The destination stop must come after the boarding stop."
+            "Boarding and destination stops cannot be the same."
         )
 
-    distance = (
+    distance = abs(
         destination_route_stop.distance_from_origin_km
         - boarding_route_stop.distance_from_origin_km
     )
@@ -89,8 +102,8 @@ def calculate_fare(distance):
         >15–20 km
         ...
 
-    Therefore the minimum distance is exclusive and the
-    maximum distance is inclusive.
+    The first band includes its minimum distance.
+    Subsequent bands use a strict minimum.
     """
 
     fare_band = (
@@ -142,17 +155,6 @@ def create_booking(
     Create and confirm a booking safely.
 
     This function is the single source of truth for booking creation.
-
-    It:
-        - locks the trip
-        - validates the trip status
-        - validates the seat
-        - prevents double-booking
-        - validates route stops
-        - calculates journey distance
-        - calculates the fare
-        - generates a booking reference
-        - creates the confirmed booking
     """
 
     # ---------------------------------------------------------
@@ -170,7 +172,7 @@ def create_booking(
     )
 
     # ---------------------------------------------------------
-    # 2. Make sure the trip can still be booked
+    # 2. Check trip status
     # ---------------------------------------------------------
 
     if trip.status not in (
@@ -182,7 +184,7 @@ def create_booking(
         )
 
     # ---------------------------------------------------------
-    # 3. Validate the selected seat
+    # 3. Validate selected seat
     # ---------------------------------------------------------
 
     try:
@@ -202,7 +204,7 @@ def create_booking(
         )
 
     # ---------------------------------------------------------
-    # 4. Check whether this seat is already booked
+    # 4. Prevent double booking
     # ---------------------------------------------------------
 
     seat_already_booked = Booking.objects.filter(
@@ -218,7 +220,7 @@ def create_booking(
         )
 
     # ---------------------------------------------------------
-    # 5. Check overall vehicle capacity
+    # 5. Check vehicle capacity
     # ---------------------------------------------------------
 
     available_capacity = get_available_capacity(trip)
@@ -229,7 +231,7 @@ def create_booking(
         )
 
     # ---------------------------------------------------------
-    # 6. Calculate journey distance
+    # 6. Validate boarding and destination stops
     # ---------------------------------------------------------
 
     distance = calculate_trip_distance(

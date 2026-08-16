@@ -41,6 +41,14 @@ Book Trip | Abia Transit
                         {{ trip.departure_time|date:"M d, Y - h:i A" }}
                     </p>
 
+                    <p>
+                        <strong>Status:</strong>
+
+                        <span class="badge bg-secondary">
+                            {{ trip.get_status_display }}
+                        </span>
+                    </p>
+
                     <hr>
 
                     <!-- Vehicle Information -->

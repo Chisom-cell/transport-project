@@ -1,9 +1,8 @@
+from accounts.decorators import role_required
+
 from datetime import timedelta
 
-from django.contrib.auth.decorators import (
-    login_required,
-    user_passes_test,
-)
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -23,31 +22,17 @@ from .services import (
 )
 
 
-# =========================================================
-# ANALYTICS ACCESS
-# =========================================================
 
-def is_analytics_user(user):
-    """
-    Allow only Super Admin and Government Admin
-    users to access Analytics.
-    """
 
-    return (
-        user.is_authenticated
-        and user.role in [
-            user.Role.SUPER_ADMIN,
-            user.Role.GOVERNMENT_ADMIN,
-        ]
-    )
 
 
 # =========================================================
 # ANALYTICS DASHBOARD
 # =========================================================
-
 @login_required
-@user_passes_test(is_analytics_user)
+@role_required(
+    "GOVERNMENT_ADMIN",
+)
 def analytics_dashboard(request):
 
     today = timezone.localdate()
