@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 
 {% block title %}
-My Complaints
+    My Complaints - Abia Transit
 {% endblock %}
+
 
 {% block content %}
 
-<div class="container mt-4">
+<div class="container mt-5">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h2>My Complaints</h2>
+        <h2>
+            My Complaints
+        </h2>
 
         <a
             href="{% url 'complaints:create' %}"
@@ -22,87 +25,49 @@ My Complaints
     </div>
 
 
-    {% if complaints %}
+    {% for complaint in complaints %}
 
-        {% for complaint in complaints %}
+        <div class="card mb-3">
 
-            <div class="card mb-3">
+            <div class="card-body">
 
-                <div class="card-body">
+                <h5>
+                    Complaint #{{ complaint.id }}
+                </h5>
 
-                    <h5>
-                        Complaint #{{ complaint.id }}
-                    </h5>
+                <p>
+                    <strong>Category:</strong>
+                    {{ complaint.category }}
+                </p>
 
-                    <p>
-                        <strong>Category:</strong>
-                        {{ complaint.category }}
-                    </p>
+                <p>
+                    <strong>Description:</strong>
+                    {{ complaint.description }}
+                </p>
 
-                    <p>
-                        <strong>Trip:</strong>
-                        {{ complaint.trip }}
-                    </p>
+                <p>
+                    <strong>Status:</strong>
+                    {{ complaint.get_status_display }}
+                </p>
 
-                    <p>
-                        <strong>Vehicle:</strong>
-                        {{ complaint.vehicle }}
-                    </p>
-
-                    <p>
-                        <strong>Description:</strong>
-                        {{ complaint.description }}
-                    </p>
-
-                    <p>
-                        <strong>Status:</strong>
-
-                         {% if complaint.status == "OPEN" %}
-
-                             <span class="badge bg-warning text-dark">
-                             Open
-                                 </span>
-
-                         {% elif complaint.status == "INVESTIGATING" %}
-
-                             <span class="badge bg-info text-dark">
-                                    Investigating
-                                    </span>
-
-    {% elif complaint.status == "RESOLVED" %}
-
-        <span class="badge bg-success">
-            Resolved
-        </span>
-
-    {% endif %}
-</p>
-
-                    <small>
-                        Submitted:
-                        {{ complaint.created_at }}
-                    </small>
-
-                </div>
+                <p>
+                    <strong>Submitted:</strong>
+                    {{ complaint.created_at }}
+                </p>
 
             </div>
 
-        {% endfor %}
+        </div>
 
-    {% else %}
+    {% empty %}
 
-        <p>
+        <div class="alert alert-info">
+
             You have not submitted any complaints yet.
-        </p>
 
-        <a
-            href="{% url 'complaints:create' %}"
-            class="btn btn-primary"
-        >
-            Submit Your First Complaint
-        </a>
+        </div>
 
-    {% endif %}
+    {% endfor %}
 
 </div>
 

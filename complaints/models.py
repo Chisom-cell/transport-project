@@ -10,6 +10,16 @@ class Complaint(models.Model):
         INVESTIGATING = "INVESTIGATING", "Investigating"
         RESOLVED = "RESOLVED", "Resolved"
 
+    class Category(models.TextChoices):
+        DRIVER = "DRIVER", "Driver behavior"
+        VEHICLE = "VEHICLE", "Vehicle condition"
+        FARE = "FARE", "Overcharging"
+        DELAY = "DELAY", "Late departure"
+        ROUTE = "ROUTE", "Route issue"
+        SAFETY = "SAFETY", "Safety concern"
+        BOOKING = "BOOKING", "Booking issue"
+        OTHER = "OTHER", "Other"
+
     passenger = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -28,7 +38,10 @@ class Complaint(models.Model):
         related_name="complaints"
     )
 
-    category = models.CharField(max_length=100)
+    category = models.CharField(
+        max_length=20,
+        choices=Category.choices
+    )
 
     description = models.TextField()
 
@@ -39,20 +52,7 @@ class Complaint(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.category} - {self.passenger}"
-    
-class Category(models.TextChoices):
-    DRIVER = "DRIVER", "Driver behavior"
-    VEHICLE = "VEHICLE", "Vehicle condition"
-    FARE = "FARE", "Overcharging"
-    DELAY = "DELAY", "Late departure"
-    ROUTE = "ROUTE", "Route issue"
-    SAFETY = "SAFETY", "Safety concern"
-    BOOKING = "BOOKING", "Booking issue"
-    OTHER = "OTHER", "Other"
-category = models.CharField(
-    max_length=20,
-    choices=Category.choices
-)
