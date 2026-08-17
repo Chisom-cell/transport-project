@@ -90,40 +90,47 @@ def calculate_trip_distance(
     return distance
 
 
-def calculate_fare(distance):
+def calculate_fare(
+    trip,
+    boarding_stop,
+    destination_stop,
+):
     """
-    Find the active fare band that applies to the journey distance.
+    Find the active fare configured for this journey.
 
-    Fare bands follow this pattern:
+    The fare is determined by:
 
-        0–5 km
-        >5–10 km
-        >10–15 km
-        >15–20 km
-        ...
+        Route
+        + Boarding Stop
+        + Destination Stop
 
-    The first band includes its minimum distance.
-    Subsequent bands use a strict minimum.
+    Example:
+
+        Umuahia → Aba
+        Umuahia Terminal → Isialangwa
+        = ₦1,200
     """
 
-    fare_band = (
-        FareBand.objects
+    from transport.models import RouteFare
+
+    fare = (
+        RouteFare.objects
         .filter(
+            route=trip.route,
+            boarding_stop=boarding_stop,
+            destination_stop=destination_stop,
             is_active=True,
-            min_distance_km__lt=distance,
-            max_distance_km__gte=distance,
         )
-        .order_by("min_distance_km")
         .first()
     )
 
-    if fare_band is None:
+    if fare is None:
         raise ValidationError(
-            f"No active fare band exists for a journey "
-            f"of {distance} km."
+            "No fare has been configured for this journey. "
+            "Please choose another boarding and destination stop."
         )
 
-    return fare_band.amount
+    return fare.amount
 
 
 def generate_booking_reference():
@@ -244,7 +251,11 @@ def create_booking(
     # 7. Calculate fare
     # ---------------------------------------------------------
 
-    fare = calculate_fare(distance)
+    fare = calculate_fare(
+        trip=trip,
+        boarding_stop=boarding_stop,
+        destination_stop=destination_stop,
+    )
 
     # ---------------------------------------------------------
     # 8. Generate booking reference

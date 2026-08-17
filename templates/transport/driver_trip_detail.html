@@ -1,0 +1,383 @@
+{% extends "dashboards/dashboard_base.html" %}
+
+
+{% block dashboard_title %}
+Trip Details
+{% endblock %}
+
+
+{% block dashboard_heading %}
+Trip Details
+{% endblock %}
+
+
+{% block role_name %}
+Driver
+{% endblock %}
+
+
+{% block dashboard_description %}
+View and manage your assigned trip.
+{% endblock %}
+
+
+{% block dashboard_navigation %}
+
+<a href="{% url 'accounts:dashboard' %}">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-house"></i>
+    </span>
+
+    <span>Dashboard</span>
+
+</a>
+
+
+<a
+    href="{% url 'transport:driver_trips' %}"
+    class="active"
+>
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-route"></i>
+    </span>
+
+    <span>My Trips</span>
+
+</a>
+
+
+<a href="{% url 'transport:driver_vehicle' %}">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-bus"></i>
+    </span>
+
+    <span>My Vehicle</span>
+
+</a>
+
+
+<a href="{% url 'notifications:list' %}">
+
+    <span class="nav-icon">
+        <i class="fa-regular fa-bell"></i>
+    </span>
+
+    <span>Notifications</span>
+
+</a>
+
+
+<a href="{% url 'complaints:list' %}">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-circle-exclamation"></i>
+    </span>
+
+    <span>Report an Issue</span>
+
+</a>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+
+<!-- =====================================================
+     TRIP INFORMATION
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <h2>
+        {{ trip.route }}
+    </h2>
+
+
+    <div class="trip-card">
+
+        <p>
+            <strong>Organization:</strong>
+            {{ trip.organization }}
+        </p>
+
+
+        <p>
+            <strong>Departure:</strong>
+            {{ trip.departure_time|date:"M d, Y - h:i A" }}
+        </p>
+
+
+        <p>
+            <strong>Vehicle:</strong>
+            {{ trip.vehicle }}
+        </p>
+
+
+        <p>
+            <strong>Vehicle Capacity:</strong>
+            {{ trip.vehicle.capacity }}
+        </p>
+
+
+        <p>
+            <strong>Status:</strong>
+            {{ trip.get_status_display }}
+        </p>
+
+
+        {% if trip.current_stop %}
+
+            <p>
+                <strong>Current Stop:</strong>
+                {{ trip.current_stop }}
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TRIP STATUS MANAGEMENT
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <h2>
+        Trip Status
+    </h2>
+
+
+    <div class="trip-card">
+
+        <p>
+            <strong>Current Status:</strong>
+            {{ trip.get_status_display }}
+        </p>
+
+
+        {% if trip.status == "SCHEDULED" %}
+
+            <p>
+                The trip is scheduled and ready for boarding.
+            </p>
+
+
+            <form
+                method="POST"
+                action="{% url 'transport:update_trip_status' trip.id %}"
+            >
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="status"
+                    value="BOARDING"
+                >
+
+                <button type="submit">
+                    <i class="fa-solid fa-users"></i>
+                    Start Boarding
+                </button>
+
+            </form>
+
+
+        {% elif trip.status == "BOARDING" %}
+
+            <p>
+                Passengers are currently boarding the vehicle.
+            </p>
+
+
+            <form
+                method="POST"
+                action="{% url 'transport:update_trip_status' trip.id %}"
+            >
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="status"
+                    value="DEPARTED"
+                >
+
+                <button type="submit">
+                    <i class="fa-solid fa-road"></i>
+                    Mark as Departed
+                </button>
+
+            </form>
+
+
+        {% elif trip.status == "DEPARTED" %}
+
+            <p>
+                The vehicle has departed.
+            </p>
+
+
+            <form
+                method="POST"
+                action="{% url 'transport:update_trip_status' trip.id %}"
+            >
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="status"
+                    value="IN_TRANSIT"
+                >
+
+                <button type="submit">
+                    <i class="fa-solid fa-location-arrow"></i>
+                    Start Trip
+                </button>
+
+            </form>
+
+
+        {% elif trip.status == "IN_TRANSIT" %}
+
+            <p>
+                The vehicle is currently in transit.
+            </p>
+
+
+            <form
+                method="POST"
+                action="{% url 'transport:update_trip_status' trip.id %}"
+            >
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="status"
+                    value="ARRIVED"
+                >
+
+                <button type="submit">
+                    <i class="fa-solid fa-flag-checkered"></i>
+                    Mark as Arrived
+                </button>
+
+            </form>
+
+
+        {% elif trip.status == "ARRIVED" %}
+
+            <div class="dashboard-empty">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <p>
+                    This trip has been completed.
+                </p>
+
+            </div>
+
+
+        {% elif trip.status == "CANCELLED" %}
+
+            <div class="dashboard-empty">
+
+                <i class="fa-solid fa-ban"></i>
+
+                <p>
+                    This trip has been cancelled.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PASSENGERS
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <h2>
+        Passengers
+    </h2>
+
+
+    {% if passengers %}
+
+        <div class="trip-list">
+
+            {% for booking in passengers %}
+
+                <div class="trip-card">
+
+                    <h3>
+                        {{ booking.passenger.get_full_name|default:booking.passenger.username }}
+                    </h3>
+
+
+                    <p>
+                        <strong>Booking Reference:</strong>
+                        {{ booking.booking_reference }}
+                    </p>
+
+
+                    <p>
+                        <strong>Boarding:</strong>
+                        {{ booking.boarding_stop }}
+                    </p>
+
+
+                    <p>
+                        <strong>Destination:</strong>
+                        {{ booking.destination_stop }}
+                    </p>
+
+
+                    {% if booking.seat %}
+
+                        <p>
+                            <strong>Seat:</strong>
+                            {{ booking.seat.seat_number }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <div class="dashboard-empty">
+
+            <i class="fa-solid fa-users"></i>
+
+            <p>
+                No confirmed passengers for this trip.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

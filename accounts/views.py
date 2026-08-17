@@ -77,6 +77,7 @@ def user_login(request):
                     request,
                     "Your account is inactive. Please contact an administrator.",
                 )
+
                 return render(
                     request,
                     "accounts/login.html",
@@ -146,9 +147,8 @@ def dashboard(request):
     # -----------------------------------------------------
 
     if user.role == user.Role.DRIVER:
-        return render(
-            request,
-            "dashboards/driver.html",
+        return redirect(
+            "transport:driver_dashboard"
         )
 
     # -----------------------------------------------------

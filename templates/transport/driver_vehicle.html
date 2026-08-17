@@ -1,0 +1,202 @@
+{% extends "dashboards/dashboard_base.html" %}
+
+
+{% block dashboard_title %}
+My Vehicle
+{% endblock %}
+
+
+{% block dashboard_heading %}
+My Vehicle
+{% endblock %}
+
+
+{% block role_name %}
+Driver
+{% endblock %}
+
+
+{% block dashboard_description %}
+View the vehicle assigned to your current or upcoming trip.
+{% endblock %}
+
+
+{% block dashboard_navigation %}
+
+<a href="{% url 'accounts:dashboard' %}">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-house"></i>
+    </span>
+
+    <span>Dashboard</span>
+
+</a>
+
+
+<a href="{% url 'transport:driver_trips' %}">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-route"></i>
+    </span>
+
+    <span>My Trips</span>
+
+</a>
+
+
+<a
+    href="{% url 'transport:driver_vehicle' %}"
+    class="active"
+>
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-bus"></i>
+    </span>
+
+    <span>My Vehicle</span>
+
+</a>
+
+
+<a href="{% url 'notifications:list' %}">
+
+    <span class="nav-icon">
+        <i class="fa-regular fa-bell"></i>
+    </span>
+
+    <span>Notifications</span>
+
+</a>
+
+
+<a href="{% url 'complaints:list' %}">
+
+    <span class="nav-icon">
+        <i class="fa-solid fa-circle-exclamation"></i>
+    </span>
+
+    <span>Report an Issue</span>
+
+</a>
+
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<section class="dashboard-section">
+
+    <h2>
+        Assigned Vehicle
+    </h2>
+
+
+    {% if assigned_trip %}
+
+        <div class="trip-card">
+
+            <h3>
+                <i class="fa-solid fa-bus"></i>
+                {{ assigned_trip.vehicle.vehicle_code }}
+            </h3>
+
+
+            <p>
+                <strong>Registration Number:</strong>
+                {{ assigned_trip.vehicle.registration_number }}
+            </p>
+
+
+            <p>
+                <strong>Vehicle Type:</strong>
+                {{ assigned_trip.vehicle.vehicle_type }}
+            </p>
+
+
+            <p>
+                <strong>Capacity:</strong>
+                {{ assigned_trip.vehicle.capacity }} passengers
+            </p>
+
+
+            <p>
+                <strong>Status:</strong>
+                {{ assigned_trip.vehicle.get_status_display }}
+            </p>
+
+
+            <p>
+                <strong>Organization:</strong>
+                {{ assigned_trip.organization }}
+            </p>
+
+
+            {% if assigned_trip.vehicle.maintenance_note %}
+
+                <p>
+                    <strong>Maintenance Note:</strong>
+                    {{ assigned_trip.vehicle.maintenance_note }}
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="dashboard-section">
+
+            <h2>
+                Assigned Trip
+            </h2>
+
+
+            <div class="trip-card">
+
+                <p>
+                    <strong>Route:</strong>
+                    {{ assigned_trip.route }}
+                </p>
+
+
+                <p>
+                    <strong>Departure:</strong>
+                    {{ assigned_trip.departure_time|date:"M d, Y - h:i A" }}
+                </p>
+
+
+                <p>
+                    <strong>Trip Status:</strong>
+                    {{ assigned_trip.get_status_display }}
+                </p>
+
+
+                <a
+                    href="{% url 'transport:driver_trip_detail' assigned_trip.id %}"
+                >
+                    View Trip
+                </a>
+
+            </div>
+
+        </div>
+
+
+    {% else %}
+
+        <div class="dashboard-empty">
+
+            <i class="fa-solid fa-bus"></i>
+
+            <p>
+                You currently have no vehicle assigned to an
+                active or upcoming trip.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -14,6 +14,7 @@ from .models import (
     DriverProfile,
     Trip,  
     FareBand, 
+    RouteFare,
 )
 
 
@@ -144,3 +145,24 @@ class FareBandAdmin(admin.ModelAdmin):
     list_filter = ("is_active",)
 
     ordering = ("min_distance_km",)
+    
+@admin.register(RouteFare)
+class RouteFareAdmin(admin.ModelAdmin):
+    list_display = (
+        "route",
+        "boarding_stop",
+        "destination_stop",
+        "amount",
+        "is_active",
+    )
+
+    list_filter = (
+        "route",
+        "is_active",
+    )
+
+    search_fields = (
+        "route__name",
+        "boarding_stop__name",
+        "destination_stop__name",
+    )

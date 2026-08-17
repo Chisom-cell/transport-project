@@ -34,7 +34,7 @@ Manage your assigned trips, vehicle and passenger operations from one place.
 </a>
 
 
-<a href="#">
+<a href="{% url 'transport:driver_trips' %}">
 
     <span class="nav-icon">
         <i class="fa-solid fa-route"></i>
@@ -45,7 +45,9 @@ Manage your assigned trips, vehicle and passenger operations from one place.
 </a>
 
 
-<a href="#">
+<!-- My Vehicle -->
+
+<a href="{% url 'transport:driver_vehicle' %}">
 
     <span class="nav-icon">
         <i class="fa-solid fa-bus"></i>
@@ -83,7 +85,9 @@ Manage your assigned trips, vehicle and passenger operations from one place.
 {% block dashboard_content %}
 
 
-<!-- Today's Trip -->
+<!-- =====================================================
+     TODAY'S TRIP
+===================================================== -->
 
 <section class="dashboard-section">
 
@@ -100,27 +104,44 @@ Manage your assigned trips, vehicle and passenger operations from one place.
                 {{ todays_trip.route }}
             </h3>
 
+
             <p>
-                <strong>Time:</strong>
-                {{ todays_trip.time }}
+                <strong>Departure:</strong>
+                {{ todays_trip.departure_time|date:"M d, Y - h:i A" }}
             </p>
+
 
             <p>
                 <strong>Vehicle:</strong>
                 {{ todays_trip.vehicle }}
             </p>
 
+
             <p>
                 <strong>Passengers:</strong>
-                {{ todays_trip.passenger_count }}
+                {{ passenger_count }}
             </p>
+
 
             <p>
                 <strong>Status:</strong>
-                {{ todays_trip.status }}
+                {{ todays_trip.get_status_display }}
             </p>
 
-            <a href="#">
+
+            {% if todays_trip.current_stop %}
+
+                <p>
+                    <strong>Current Stop:</strong>
+                    {{ todays_trip.current_stop }}
+                </p>
+
+            {% endif %}
+
+
+            <a
+                href="{% url 'transport:driver_trip_detail' todays_trip.id %}"
+            >
                 View Trip
             </a>
 
@@ -144,7 +165,9 @@ Manage your assigned trips, vehicle and passenger operations from one place.
 
 
 
-<!-- Trip Status -->
+<!-- =====================================================
+     TRIP STATUS
+===================================================== -->
 
 <section class="dashboard-section">
 
@@ -152,21 +175,40 @@ Manage your assigned trips, vehicle and passenger operations from one place.
         Trip Status
     </h2>
 
-    <div class="trip-status">
 
-        <p>Scheduled</p>
-        <p>Boarding</p>
-        <p>Departed</p>
-        <p>In Transit</p>
-        <p>Arrived</p>
+    {% if todays_trip %}
 
-    </div>
+        <div class="trip-status">
+
+            <p>
+                Current status:
+
+                <strong>
+                    {{ todays_trip.get_status_display }}
+                </strong>
+            </p>
+
+        </div>
+
+    {% else %}
+
+        <div class="dashboard-empty">
+
+            <p>
+                No active trip today.
+            </p>
+
+        </div>
+
+    {% endif %}
 
 </section>
 
 
 
-<!-- Quick Actions -->
+<!-- =====================================================
+     QUICK ACTIONS
+===================================================== -->
 
 <section class="dashboard-section">
 
@@ -174,27 +216,98 @@ Manage your assigned trips, vehicle and passenger operations from one place.
         Quick Actions
     </h2>
 
+
     <div class="quick-actions">
 
-        <a href="#">
-            <i class="fa-solid fa-route"></i>&nbsp;
-            Today's Trip
+
+        <!-- Today's Trip -->
+
+        {% if todays_trip %}
+
+            <a
+                href="{% url 'transport:driver_trip_detail' todays_trip.id %}"
+            >
+
+                <i class="fa-solid fa-route"></i>&nbsp;
+
+                Today's Trip
+
+            </a>
+
+        {% endif %}
+
+
+
+        <!-- My Trips -->
+
+        <a href="{% url 'transport:driver_trips' %}">
+
+            <i class="fa-solid fa-list"></i>&nbsp;
+
+            My Trips
+
         </a>
 
-        <a href="#">
-            <i class="fa-solid fa-users"></i>&nbsp;
-            View Passengers
+
+
+        <!-- My Vehicle -->
+
+        <a href="{% url 'transport:driver_vehicle' %}">
+
+            <i class="fa-solid fa-bus"></i>&nbsp;
+
+            My Vehicle
+
         </a>
 
-        <a href="#">
-            <i class="fa-solid fa-map-location-dot"></i>&nbsp;
-            View Route
-        </a>
 
-        <a href="{% url 'complaints:submit' %}">
+
+        <!-- View Passengers -->
+
+        {% if todays_trip %}
+
+            <a
+                href="{% url 'transport:driver_trip_detail' todays_trip.id %}"
+            >
+
+                <i class="fa-solid fa-users"></i>&nbsp;
+
+                View Passengers
+
+            </a>
+
+        {% endif %}
+
+
+
+        <!-- View Route -->
+
+        {% if todays_trip %}
+
+            <a
+                href="{% url 'transport:route_detail' todays_trip.route.id %}"
+            >
+
+                <i class="fa-solid fa-map-location-dot"></i>&nbsp;
+
+                View Route
+
+            </a>
+
+        {% endif %}
+
+
+
+        <!-- Report Issue -->
+
+        <a href="{% url 'complaints:create' %}">
+
             <i class="fa-solid fa-triangle-exclamation"></i>&nbsp;
+
             Report Issue
+
         </a>
+
 
     </div>
 

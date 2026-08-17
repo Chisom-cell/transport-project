@@ -1,4 +1,3 @@
-```html
 {% extends "dashboards/dashboard_base.html" %}
 
 
@@ -32,7 +31,7 @@ Plan your journey, manage your bookings and stay updated throughout your trip.
 </a>
 
 
-<a href="{% url 'transport:home' %}">
+<a href="{% url 'transport:routes' %}">
     <span class="nav-icon">
         <i class="fa-solid fa-ticket"></i>
     </span>
@@ -84,6 +83,7 @@ Plan your journey, manage your bookings and stay updated throughout your trip.
 
 {% block dashboard_content %}
 
+
 <!-- =========================================
      WELCOME
 ========================================= -->
@@ -119,50 +119,50 @@ Plan your journey, manage your bookings and stay updated throughout your trip.
             <div class="trip-card-header">
 
                 <span class="status-badge">
-                    Confirmed
+                    {{ upcoming_trip.status|title }}
                 </span>
 
             </div>
 
 
             <h3>
-                {{ upcoming_trip.trip }}
+                {{ upcoming_trip.trip.route.name }}
             </h3>
 
 
-            {% if upcoming_trip.trip.route %}
-
-                <p>
-                    <strong>Route:</strong>
-                    {{ upcoming_trip.trip.route }}
-                </p>
-
-            {% endif %}
+            <p>
+                <strong>From:</strong>
+                {{ upcoming_trip.boarding_stop.name }}
+            </p>
 
 
-            {% if upcoming_trip.trip.date %}
-
-                <p>
-                    <strong>Date:</strong>
-                    {{ upcoming_trip.trip.date }}
-                </p>
-
-            {% endif %}
+            <p>
+                <strong>To:</strong>
+                {{ upcoming_trip.destination_stop.name }}
+            </p>
 
 
-            {% if upcoming_trip.trip.time %}
+            <p>
+                <strong>Departure:</strong>
+                {{ upcoming_trip.trip.departure_time|date:"M d, Y - h:i A" }}
+            </p>
 
-                <p>
-                    <strong>Time:</strong>
-                    {{ upcoming_trip.trip.time }}
-                </p>
 
-            {% endif %}
+            <p>
+                <strong>Seat:</strong>
+                Seat {{ upcoming_trip.seat.seat_number }}
+            </p>
+
+
+            <p>
+                <strong>Booking Reference:</strong>
+                {{ upcoming_trip.booking_reference }}
+            </p>
 
 
             <div class="trip-actions">
 
-                <a href="{% url 'bookings:my_bookings' %}">
+                <a href="{% url 'bookings:booking_detail' upcoming_trip.id %}">
                     View Booking
                 </a>
 
@@ -191,7 +191,7 @@ Plan your journey, manage your bookings and stay updated throughout your trip.
             </p>
 
 
-            <a href="{% url 'transport:home' %}">
+            <a href="{% url 'transport:routes' %}">
                 Book Your First Trip
             </a>
 
@@ -215,7 +215,7 @@ Plan your journey, manage your bookings and stay updated throughout your trip.
 
     <div class="quick-actions">
 
-        <a href="{% url 'transport:home' %}">
+        <a href="{% url 'transport:routes' %}">
             <i class="fa-solid fa-ticket"></i>
             <span>Book a Trip</span>
         </a>
@@ -278,8 +278,27 @@ Plan your journey, manage your bookings and stay updated throughout your trip.
                     <div class="booking-details">
 
                         <h3>
-                            {{ booking.trip }}
+                            {{ booking.trip.route.name }}
                         </h3>
+
+
+                        <p>
+                            {{ booking.boarding_stop.name }}
+                            →
+                            {{ booking.destination_stop.name }}
+                        </p>
+
+
+                        <p>
+                            Departure:
+                            {{ booking.trip.departure_time|date:"M d, Y - h:i A" }}
+                        </p>
+
+
+                        <p>
+                            Seat:
+                            {{ booking.seat.seat_number }}
+                        </p>
 
 
                         <p>
@@ -288,13 +307,13 @@ Plan your journey, manage your bookings and stay updated throughout your trip.
 
 
                         <span class="booking-status">
-                            {{ booking.status }}
+                            {{ booking.status|title }}
                         </span>
 
                     </div>
 
 
-                    <a href="{% url 'bookings:my_bookings' %}">
+                    <a href="{% url 'bookings:booking_detail' booking.id %}">
                         View
                     </a>
 
@@ -316,7 +335,7 @@ Plan your journey, manage your bookings and stay updated throughout your trip.
             </p>
 
 
-            <a href="{% url 'transport:home' %}">
+            <a href="{% url 'transport:routes' %}">
                 Book a Trip
             </a>
 
@@ -354,4 +373,3 @@ Plan your journey, manage your bookings and stay updated throughout your trip.
 </section>
 
 {% endblock %}
-```

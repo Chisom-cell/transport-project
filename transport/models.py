@@ -309,3 +309,94 @@ class FareBand(models.Model):
             f"{self.max_distance_km} - "
             f"₦{self.amount}"
         )
+        
+        
+class RouteFare(models.Model):
+    route = models.ForeignKey(
+        Route,
+        on_delete=models.CASCADE,
+        related_name="fares",
+    )
+
+    boarding_stop = models.ForeignKey(
+        BusStop,
+        on_delete=models.PROTECT,
+        related_name="departure_fares",
+    )
+
+    destination_stop = models.ForeignKey(
+        BusStop,
+        on_delete=models.PROTECT,
+        related_name="arrival_fares",
+    )
+
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        ordering = ["boarding_stop", "destination_stop"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "route",
+                    "boarding_stop",
+                    "destination_stop",
+                ],
+                name="unique_route_fare",
+            ),
+        ]
+
+    def clean(self):
+        errors = {}
+
+        route_stop_ids = set(
+            self.route.route_stops.values_list(
+                "bus_stop_id",
+                flat=True,
+            )
+        )
+
+        if self.boarding_stop_id not in route_stop_ids:
+            errors["boarding_stop"] = (
+                "The boarding stop must belong to this route."
+            )
+
+        if self.destination_stop_id not in route_stop_ids:
+            errors["destination_stop"] = (
+                "The destination stop must belong to this route."
+            )
+
+        if (
+            self.boarding_stop_id
+            and self.destination_stop_id
+            and self.boarding_stop_id == self.destination_stop_id
+        ):
+            errors["destination_stop"] = (
+                "Boarding and destination stops cannot be the same."
+            )
+
+        if errors:
+            raise ValidationError(errors)
+
+    def __str__(self):
+        return (
+            f"{self.route.name} - "
+            f"{self.boarding_stop.name} → "
+            f"{self.destination_stop.name} - "
+            f"₦{self.amount}"
+        )

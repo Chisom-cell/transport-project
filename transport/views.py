@@ -10,6 +10,8 @@ from bookings.models import Booking
 from accounts.forms import PassengerRegistrationForm
 from django.urls import reverse
 
+
+
 # Create your views here.
 
 
